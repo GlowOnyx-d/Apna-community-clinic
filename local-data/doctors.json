@@ -1,0 +1,108 @@
+[
+  {
+    "id": "doc_sarah_jenkins",
+    "name": "Dr. Sarah Jenkins",
+    "email": "doctor.sarah@communityclinic.org",
+    "specialization": "General Medicine & Family Practice",
+    "qualification": "MBBS, MD (Family Medicine)",
+    "cabin": "Cabin 101 - Primary Care Block",
+    "experience": "12+ years",
+    "avatar": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=80",
+    "availableDays": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "availableSlots": [
+      "09:00 AM",
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "03:00 PM",
+      "04:00 PM"
+    ],
+    "maxPatientsPerSlot": 4,
+    "rating": 4.9,
+    "consultationFee": "Free (Community Health Funded)"
+  },
+  {
+    "id": "doc_priya_nair",
+    "name": "Dr. Priya Nair",
+    "email": "doctor.priya@communityclinic.org",
+    "specialization": "Pediatrics & Child Health",
+    "qualification": "MBBS, DCH, MD (Pediatrics)",
+    "cabin": "Cabin 102 - Maternal & Child Block",
+    "experience": "9+ years",
+    "avatar": "https://images.unsplash.com/photo-1594824813580-b2f7685600cb?w=300&auto=format&fit=crop&q=80",
+    "availableDays": [
+      "Monday",
+      "Wednesday",
+      "Friday",
+      "Saturday"
+    ],
+    "availableSlots": [
+      "09:30 AM",
+      "10:30 AM",
+      "11:30 AM",
+      "02:30 PM",
+      "03:30 PM"
+    ],
+    "maxPatientsPerSlot": 3,
+    "rating": 5,
+    "consultationFee": "Free (Community Health Funded)"
+  },
+  {
+    "id": "doc_amitav_roy",
+    "name": "Dr. Amitav Roy",
+    "email": "doctor.amitav@communityclinic.org",
+    "specialization": "Community Dental Care",
+    "qualification": "BDS, MDS (Conservative Dentistry)",
+    "cabin": "Cabin 103 - Dental Suite",
+    "experience": "8+ years",
+    "avatar": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80",
+    "availableDays": [
+      "Tuesday",
+      "Thursday",
+      "Saturday"
+    ],
+    "availableSlots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "03:00 PM"
+    ],
+    "maxPatientsPerSlot": 3,
+    "rating": 4.8,
+    "consultationFee": "Free (Community Health Funded)"
+  },
+  {
+    "id": "doc_meera_iyer",
+    "name": "Dr. Meera Iyer",
+    "email": "doctor.meera@communityclinic.org",
+    "specialization": "Preventive Diagnostics & Screening",
+    "qualification": "MBBS, DNB (Pathology)",
+    "cabin": "Cabin 104 - Diagnostics Block",
+    "experience": "11+ years",
+    "avatar": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=300&auto=format&fit=crop&q=80",
+    "availableDays": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "availableSlots": [
+      "08:30 AM",
+      "09:30 AM",
+      "10:30 AM",
+      "11:30 AM",
+      "02:30 PM"
+    ],
+    "maxPatientsPerSlot": 5,
+    "rating": 4.9,
+    "consultationFee": "Free (Community Health Funded)"
+  }
+]

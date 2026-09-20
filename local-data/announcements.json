@@ -1,0 +1,51 @@
+[
+  {
+    "id": "ann_sdg_1",
+    "title": "Free Hypertension & Diabetes Screening Camp",
+    "category": "health_camp",
+    "description": "Comprehensive blood pressure checkups, random blood glucose testing, BMI calculation, and nutritional consultation for community residents. Free medication samples and diet charts provided.",
+    "sdgTags": [
+      "SDG 3: Good Health & Well-being",
+      "Target 3.8: Universal Health"
+    ],
+    "date": "2026-09-27",
+    "location": "Apna Community Center - Hall B, Sector 4",
+    "targetGroup": "Adults & Seniors (30+ years)",
+    "organizer": "Apna Community Outreach & Diagnostics Unit",
+    "registeredCount": 24,
+    "createdAt": "2026-09-19T15:00:45.310Z"
+  },
+  {
+    "id": "ann_sdg_2",
+    "title": "Maternal Wellness & Infant Immunization Drive",
+    "category": "vaccination",
+    "description": "Routine childhood vaccinations (Measles, Polio, MMR, DTP), maternal iron & folic acid supplementation, prenatal ultrasound consultations, and pediatric growth monitoring.",
+    "sdgTags": [
+      "SDG 3: Good Health & Well-being",
+      "SDG 5: Gender Equality",
+      "Target 3.2: Child Mortality"
+    ],
+    "date": "2026-10-04",
+    "location": "East Wing Child Welfare Center, Room 102",
+    "targetGroup": "Expectant Mothers & Children (0-5 years)",
+    "organizer": "Pediatric & Maternal Health Division",
+    "registeredCount": 18,
+    "createdAt": "2026-09-19T15:00:45.310Z"
+  },
+  {
+    "id": "ann_sdg_3",
+    "title": "Community Vision & Eye Health Outreach",
+    "category": "awareness",
+    "description": "Free refractive visual acuity testing, cataract screening, glaucoma pressure exams, and distribution of zero-cost reading glasses for underprivileged community elders.",
+    "sdgTags": [
+      "SDG 3: Good Health & Well-being",
+      "SDG 10: Reduced Inequalities"
+    ],
+    "date": "2026-10-12",
+    "location": "Public Library Auditorium, Main Bazaar Road",
+    "targetGroup": "Open to All Residents (Priority for 55+)",
+    "organizer": "Apna Mobile Health Care Mission",
+    "registeredCount": 31,
+    "createdAt": "2026-09-19T15:00:45.310Z"
+  }
+]

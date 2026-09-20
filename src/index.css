@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+    /* Warm Humanist Community Care Palette (Light Mode Default) */
+    --bg-canvas: #FAF7F2;
+    --bg-surface: #F0EBE1;
+    --bg-surface-elevated: #FFFFFF;
+    --border-subtle: #E6DFC6;
+    --border-default: #D8CEB3;
+
+    --text-primary: #22291F;
+    --text-secondary: #6B6B63;
+    --text-muted: #8E8E84;
+
+    --color-forest: #2D6A4F;
+    --color-forest-hover: #23543E;
+    --color-forest-light: #408A68;
+    --color-forest-tint: rgba(45, 106, 79, 0.08);
+
+    --color-terracotta: #C97B4A;
+    --color-terracotta-hover: #B46A3A;
+    --color-terracotta-tint: rgba(201, 123, 74, 0.12);
+  }
+
+  :root.dark, .dark {
+    --bg-canvas: #1A1D19;
+    --bg-surface: #222722;
+    --bg-surface-elevated: #283028;
+    --border-subtle: #2D352C;
+    --border-default: #384337;
+
+    --text-primary: #F5F1EA;
+    --text-secondary: #9EAA9A;
+    --text-muted: #71806F;
+
+    --color-forest: #2D6A4F;
+    --color-forest-hover: #23543E;
+    --color-forest-light: #52B788;
+    --color-forest-tint: rgba(45, 106, 79, 0.2);
+
+    --color-terracotta: #C97B4A;
+    --color-terracotta-hover: #B46A3A;
+    --color-terracotta-tint: rgba(201, 123, 74, 0.14);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Warm Humanist Glassmorphism Header */
+.glass-humanist {
+  background: rgba(250, 247, 242, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dark .glass-humanist {
+  background: rgba(26, 29, 25, 0.94);
+  border-bottom: 1px solid #2D352C;
+}
+
+/* Calm, Community Clinic Card Treatment */
+.card-humanist {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px -2px rgba(34, 41, 31, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.card-humanist:hover {
+  box-shadow: 0 8px 24px -4px rgba(34, 41, 31, 0.09);
+  transform: translateY(-2px);
+}
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 5s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(45, 106, 79, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(45, 106, 79, 0);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(142, 142, 132, 0.28);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 142, 132, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2D352C;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #384337;
+}
+
+/* Hide scrollbar for Chrome, Safari, Edge, Firefox */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Print styles for Token Receipt */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-token, #printable-token * {
+    visibility: visible;
+  }
+  #printable-token {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none;
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #000;
+  }
+}

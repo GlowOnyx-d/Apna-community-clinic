@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Community Clinic Health Platform - Seamless doctor appointments, queue tracking with digital tokens, health camp announcements and SDG 3 community wellness." />
+  <title>Apna Community Health Platform</title>
+  <!-- Modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <!-- Always open in light mode by default; only switch to dark if user manually clicked dark mode -->
+  <script>
+    (function () {
+      try {
+        // Clean up legacy auto-saved theme from previous visits
+        localStorage.removeItem('Apna_theme_preference');
+        const manualTheme = localStorage.getItem('Apna_manual_theme');
+        if (manualTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) { }
+    })();
+  </script>
+</head>
+
+<body
+  class="bg-[#FAF7F2] text-[#22291F] dark:bg-[#1A1D19] dark:text-[#F5F1EA] antialiased font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] min-h-screen transition-colors duration-200">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

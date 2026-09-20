@@ -1,0 +1,183 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  HeartHandshake,
+  PhoneCall,
+  Clock,
+  MapPin,
+  Award,
+  HardDrive,
+  Heart,
+  ChevronRight
+} from 'lucide-react';
+
+export default function Footer() {
+  return (
+    <footer className="bg-[#F0EBE1] dark:bg-[#151815] border-t border-[#E4DCCE] dark:border-[#242A23] text-[#6B6B63] dark:text-[#9EAA9A] transition-colors mt-auto">
+
+      {/* Top Helpline Bar */}
+      <div className="border-b border-[#E4DCCE] dark:border-[#242A23] bg-[#FAF7F2] dark:bg-[#1A1D19]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-[#2D6A4F]/15 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center shrink-0">
+                <PhoneCall className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="font-bold text-[#22291F] dark:text-[#F5F1EA] block">
+                  Clinic Helpline &amp; Emergency Dispatch
+                </span>
+                <span className="text-[11px] text-[#8E8E84] dark:text-[#71806F]">
+                  Toll-Free Emergency: <strong className="text-[#C97B4A]">108</strong> • Clinic Front Desk: <strong className="text-[#22291F] dark:text-[#F5F1EA]">+91 (011) 2345-6789</strong>
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 text-[11px] text-[#6B6B63] dark:text-[#9EAA9A]">
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                <span>Mon–Sat: <strong>8:00 AM – 8:00 PM</strong></span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                <span>Gurugram, Main Health Center</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* Main 4-Column Footer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          {/* Col 1: Identity & SDG 3 Mission */}
+          <div className="space-y-4">
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded-xl bg-[#2D6A4F] text-[#FAF7F2] flex items-center justify-center shadow-xs">
+                <HeartHandshake className="w-4 h-4" />
+              </div>
+              <span className="text-base font-extrabold text-[#22291F] dark:text-[#F5F1EA] font-heading tracking-tight">
+                Apna Clinic
+              </span>
+            </Link>
+
+            <p className="text-xs leading-relaxed">
+              Dignity-first primary health platform providing sequential token allocation, doctor consultation queues, and free community screenings with zero waiting room chaos.
+            </p>
+
+            <div className="pt-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#C97B4A] text-[11px] font-bold border border-[#C97B4A]/30">
+                <Award className="w-3.5 h-3.5 text-[#C97B4A]" />
+                <span>UN SDG 3: Good Health for All</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Col 2: Patient Services */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#22291F] dark:text-[#F5F1EA]">
+              Patient Services
+            </h3>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <Link to="/register" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Instant Queue Token Booking</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/patient/appointments" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>My Appointments &amp; Digital Slips</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/announcements" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Free Community Health Drives</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Patient Medical History Records</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 3: Clinical & Operations */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#22291F] dark:text-[#F5F1EA]">
+              Clinical Portals
+            </h3>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <Link to="/doctor" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Doctor Consultation Queue Stream</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/doctor/patients" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Patient Diagnostic Records</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Clinic Administrator Hub</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/doctors" className="hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-colors flex items-center gap-1">
+                  <ChevronRight className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <span>Specialist Cabin &amp; Slot Management</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 4: Data Sovereignty Guarantee */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#22291F] dark:text-[#F5F1EA]">
+              Local Data Sovereignty
+            </h3>
+            <p className="text-xs leading-relaxed">
+              Operates 100% locally on your machine. All clinic records, users, and tokens are stored directly in your local directory.
+            </p>
+            <div className="p-3 rounded-xl bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#E4DCCE] dark:border-[#2D352C] space-y-1.5 text-[11px]">
+              <div className="flex items-center gap-1.5 text-[#2D6A4F] dark:text-[#52B788] font-semibold">
+                <HardDrive className="w-3.5 h-3.5 shrink-0" />
+                <span>Direct JSON Storage</span>
+              </div>
+              <p className="text-[#8E8E84] dark:text-[#71806F]">
+                Zero third-party trackers. Instant offline recovery.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Bottom Legal & Love Bar */}
+      <div className="border-t border-[#E4DCCE] dark:border-[#242A23] py-5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
+          <p className="text-[#8E8E84] dark:text-[#71806F]">
+            © {new Date().getFullYear()} Apna Community Health Platform. Dedicated to universal primary healthcare.
+          </p>
+          <div className="flex items-center gap-1 text-[#8E8E84] dark:text-[#71806F]">
+            <span>Designed with</span>
+            <Heart className="w-3 h-3 text-[#C97B4A] fill-[#C97B4A]" />
+            <span>for Community Clinics &amp; Patient Well-being</span>
+          </div>
+        </div>
+      </div>
+
+    </footer>
+  );
+}

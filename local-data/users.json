@@ -1,0 +1,44 @@
+[
+  {
+    "uid": "admin_1789799678798",
+    "name": "Dhruv Sehrawat",
+    "email": "sehrawatdhruv87@gmail.com",
+    "role": "admin",
+    "designation": "Clinic Administrator",
+    "phone": "+91 98123 45678",
+    "passwordHash": "64575358786555cdd801da7b9bf904f6:d865caa7a58373acda0dc0c84a869706acdaf0cdcbe65c9b9f376e4aaa13b2b6",
+    "createdAt": "2026-09-19T06:34:38.798Z"
+  },
+  {
+    "uid": "admin_master_1",
+    "name": "Dr. Devendra Verma",
+    "email": "admin@communityclinic.org",
+    "role": "admin",
+    "designation": "Chief Medical Officer & Administrator",
+    "phone": "+91 98765 43210",
+    "passwordHash": "56428e03c236777aa06550d60345d3b5:a5b7ca07f96b219a086bb33a454f5803faea9e895db75e91d5be32f68e269a16",
+    "createdAt": "2026-09-19T07:00:00.000Z"
+  },
+  {
+    "uid": "doc_sarah_jenkins",
+    "name": "Dr. Sarah Jenkins",
+    "email": "doctor.sarah@communityclinic.org",
+    "role": "doctor",
+    "specialization": "General Medicine & Family Practice",
+    "cabin": "Cabin 101 - Primary Care Block",
+    "phone": "+91 98234 56789",
+    "passwordHash": "634d0697366809288854a3f28aafcb96:7530f0bf0c14e64f4c098ab36a762d04e88c992f34abf673a324571eda3120d1",
+    "createdAt": "2026-09-19T07:05:00.000Z"
+  },
+  {
+    "uid": "usr_patient_maya",
+    "name": "Maya Sharma",
+    "email": "patient.maya@example.com",
+    "role": "patient",
+    "phone": "+91 98765 01234",
+    "age": 29,
+    "gender": "Female",
+    "passwordHash": "98077e5249e3d16cc0db7c10dfcdc821:ca58fc82df158ba9dedcb1f5eb20eedb3cb1fca2c56b74e92e9ef7f7cf21e436",
+    "createdAt": "2026-09-19T07:10:00.000Z"
+  }
+]

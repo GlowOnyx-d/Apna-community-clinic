@@ -1,0 +1,328 @@
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
+import {
+  HeartHandshake,
+  Stethoscope,
+  Calendar,
+  FileText,
+  Megaphone,
+  BarChart3,
+  LogOut,
+  Menu,
+  X,
+  Users,
+  Sun,
+  Moon,
+  Tv,
+  QrCode,
+  Cloud
+} from 'lucide-react';
+import MobileQrModal from './MobileQrModal';
+
+export default function Navbar() {
+  const {
+    currentUser,
+    userProfile,
+    role,
+    logout
+  } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+
+  // Dynamic Navigation Links based on role
+  const getNavLinks = () => {
+    if (!currentUser) {
+      return [
+        { name: 'Community Camps', path: '/announcements', icon: Megaphone }
+      ];
+    }
+    if (role === 'patient') {
+      return [
+        { name: 'Dashboard', path: '/patient', icon: Calendar },
+        { name: 'My Appointments', path: '/patient/appointments', icon: FileText },
+        { name: 'Health Camps & SDG', path: '/patient/announcements', icon: Megaphone }
+      ];
+    }
+    if (role === 'doctor') {
+      return [
+        { name: 'Today\'s Queue', path: '/doctor', icon: Stethoscope },
+        { name: 'Patient History', path: '/doctor/patients', icon: Users }
+      ];
+    }
+    if (role === 'admin') {
+      return [
+        { name: 'Admin Hub', path: '/admin', icon: BarChart3 },
+        { name: 'Doctor Slots', path: '/admin/doctors', icon: Stethoscope },
+        { name: 'Master Appointments', path: '/admin/appointments', icon: Calendar },
+        { name: 'SDG Announcements', path: '/admin/announcements', icon: Megaphone }
+      ];
+    }
+    return [];
+  };
+
+  const navLinks = getNavLinks();
+
+  const roleColors = {
+    patient: 'bg-[#2D6A4F]/10 text-[#2D6A4F] border-[#2D6A4F]/25 dark:bg-[#2D6A4F]/20 dark:text-[#52B788] dark:border-[#2D6A4F]/30',
+    doctor: 'bg-[#2D6A4F]/15 text-[#2D6A4F] border-[#2D6A4F]/30 dark:bg-[#2D6A4F]/25 dark:text-[#52B788] dark:border-[#2D6A4F]/40',
+    admin: 'bg-[#C97B4A]/12 text-[#B35F2B] border-[#C97B4A]/25 dark:bg-[#C97B4A]/15 dark:text-[#C97B4A] dark:border-[#C97B4A]/30'
+  };
+
+  return (
+    <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 dark:bg-[#1A1D19]/95 backdrop-blur-md border-b border-[#E6DFC6] dark:border-[#2D352C] transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 gap-4">
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="w-9 h-9 rounded-xl bg-[#2D6A4F] flex items-center justify-center text-[#FAF7F2] shadow-sm group-hover:bg-[#23543E] transition-colors">
+              <HeartHandshake className="w-5 h-5 text-[#FAF7F2]" />
+            </div>
+            <div>
+              <span className="text-lg font-extrabold tracking-tight text-[#22291F] dark:text-[#F5F1EA] block leading-tight font-heading">
+                Apna Clinic
+              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C97B4A]"></span>
+                <span className="text-[10px] font-semibold text-[#6B6B63] dark:text-[#9EAA9A] tracking-wider uppercase">
+                  Community Health
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium transition-colors ${isActive
+                    ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] font-semibold border border-[#2D6A4F]/20 dark:bg-[#2D6A4F]/20 dark:text-[#52B788] dark:border-[#2D6A4F]/40'
+                    : 'text-[#6B6B63] hover:text-[#22291F] hover:bg-[#2D6A4F]/5 dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] dark:hover:bg-[#2D6A4F]/10'
+                    }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#2D6A4F] dark:text-[#52B788]' : 'text-[#6B6B63] dark:text-[#71806F]'}`} />
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right Action Area */}
+          <div className="hidden md:flex items-center gap-2.5">
+            {/* Live OPD TV Waiting Hall Board Link */}
+            <Link
+              to="/display"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open OPD Live TV Waiting Hall Call Board"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-emerald-600/25 bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold transition-all cursor-pointer shadow-xs"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <Tv className="w-3.5 h-3.5" />
+              <span>OPD TV</span>
+            </Link>
+
+            {/* Cloud Firestore Status Badge */}
+            <div
+              title="Connected to Cloud Firestore (Real-time Live Sync Active)"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-emerald-600/20 dark:border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-500/10 text-xs font-medium text-emerald-800 dark:text-emerald-300 transition-colors"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <Cloud className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+              <span className="text-[11px] hidden lg:inline font-semibold">
+                Cloud Sync
+              </span>
+            </div>
+
+            {/* QR Code Quick Scan Button */}
+            <button
+              onClick={() => setShowQrModal(true)}
+              title="Scan QR to open clinic portal on mobile"
+              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2D352C] text-[#6B6B63] dark:text-[#9EAA9A] hover:text-[#2D6A4F] dark:hover:text-[#52B788] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer"
+            >
+              <QrCode className="w-4 h-4" />
+            </button>
+
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
+              aria-label="Toggle visual theme"
+              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2D352C] text-[#6B6B63] dark:text-[#9EAA9A] hover:text-[#2D6A4F] dark:hover:text-[#F5F1EA] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer"
+            >
+              {isDark ? <Sun className="w-4 h-4 text-[#C97B4A]" /> : <Moon className="w-4 h-4 text-[#2D6A4F]" />}
+            </button>
+
+            {/* User Profile / Logout */}
+            {currentUser ? (
+              <div className="flex items-center gap-2 pl-2">
+                <span className="text-xs font-medium text-[#6B6B63] dark:text-[#9EAA9A]">
+                  {userProfile?.name || currentUser.email}
+                </span>
+                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider ${roleColors[role] || 'bg-[#2D6A4F]/10 text-[#2D6A4F]'}`}>
+                  {role}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  title="Sign out"
+                  className="p-2 text-[#6B6B63] hover:text-[#C97B4A] hover:bg-[#C97B4A]/10 rounded-xl transition-colors dark:text-[#71806F] dark:hover:text-[#F5F1EA]"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="px-3.5 py-1.5 text-xs font-semibold text-[#2D6A4F] hover:bg-[#2D6A4F]/10 rounded-xl transition-colors dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA]"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 text-xs font-semibold text-[#FAF7F2] bg-[#2D6A4F] hover:bg-[#23543E] rounded-xl shadow-xs transition-colors"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Actions (Theme Toggle + Hamburger) */}
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              onClick={toggleTheme}
+              title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
+              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2D352C] text-[#6B6B63] dark:text-[#9EAA9A] hover:bg-[#2D6A4F]/10 cursor-pointer shadow-2xs"
+            >
+              {isDark ? <Sun className="w-4 h-4 text-[#C97B4A]" /> : <Moon className="w-4 h-4 text-[#2D6A4F]" />}
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] rounded-xl hover:bg-[#2D6A4F]/10 cursor-pointer"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-[#E6DFC6] dark:border-[#2D352C] bg-[#FAF7F2] dark:bg-[#1A1D19] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
+          
+          {/* Cloud Firestore status inside mobile drawer */}
+          <div
+            className="w-full flex items-center justify-between p-3 rounded-xl border border-emerald-600/20 dark:border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-500/10 text-xs font-semibold text-emerald-800 dark:text-emerald-300"
+          >
+            <div className="flex items-center gap-2">
+              <Cloud className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
+              <span>Database:</span>
+              <span className="font-semibold text-[#22291F] dark:text-[#F5F1EA]">
+                Cloud Firestore (Live)
+              </span>
+            </div>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          </div>
+
+          <div className="space-y-1">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${isActive
+                    ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] font-semibold dark:bg-[#2D6A4F]/20 dark:text-[#52B788]'
+                    : 'text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA]'
+                    }`}
+                >
+                  <Icon className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
+                  {link.name}
+                </Link>
+              );
+            })}
+
+            {/* Mobile OPD TV Link */}
+            <Link
+              to="/display"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-3 rounded-xl border border-emerald-600/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-bold text-sm"
+            >
+              <div className="flex items-center gap-2">
+                <Tv className="w-4 h-4" />
+                <span>Live OPD TV Call Board</span>
+              </div>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            </Link>
+          </div>
+
+          {currentUser ? (
+            <div className="pt-3 border-t border-[#E6DFC6] dark:border-[#2D352C] space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-medium text-[#6B6B63] dark:text-[#9EAA9A]">
+                  {userProfile?.name || currentUser.email}
+                </span>
+                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider ${roleColors[role] || 'bg-[#2D6A4F]/10 text-[#2D6A4F]'}`}>
+                  {role}
+                </span>
+              </div>
+              <button
+                onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                className="w-full flex items-center justify-center gap-2 p-2.5 text-sm font-semibold text-[#2D6A4F] dark:text-[#F5F1EA] bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/40 rounded-xl"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2 pt-2">
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-1 py-2 text-center text-sm font-semibold text-[#2D6A4F] dark:text-[#9EAA9A] bg-[#F0EBE1] dark:bg-[#222722] rounded-xl border border-[#E6DFC6] dark:border-[#2D352C]"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-1 py-2 text-center text-sm font-semibold text-[#FAF7F2] bg-[#2D6A4F] rounded-xl"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Robust, Viewport-Centered Mobile QR Modal */}
+      <MobileQrModal 
+        isOpen={showQrModal} 
+        onClose={() => setShowQrModal(false)} 
+      />
+    </header>
+  );
+}
+
