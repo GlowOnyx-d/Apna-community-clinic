@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  Stethoscope, 
-  Plus, 
-  User, 
-  Mail, 
-  Briefcase, 
-  GraduationCap, 
-  Building, 
-  Clock, 
-  CheckCircle2, 
+import {
+  Stethoscope,
+  Plus,
+  User,
+  Mail,
+  Briefcase,
+  GraduationCap,
+  Building,
+  Clock,
+  CheckCircle2,
   AlertCircle,
   Trash2,
   Edit2,
@@ -28,7 +28,7 @@ export default function DoctorManagement() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [doctorPassword, setDoctorPassword] = useState('Doctor@123');
+  const [doctorPassword, setDoctorPassword] = useState('wasd@121');
   const [specialization, setSpecialization] = useState('');
   const [qualification, setQualification] = useState('');
   const [cabin, setCabin] = useState('');
@@ -104,13 +104,13 @@ export default function DoctorManagement() {
         .map(s => s.trim())
         .filter(Boolean);
 
-      // 1. Create or ensure doctor login account in users.json
+      // 1. Create or ensure doctor login account in Firestore users collection
       let doctorUid;
       try {
         const account = await createDoctorAccount({
           name: name.startsWith('Dr.') ? name : `Dr. ${name}`,
           email,
-          password: doctorPassword || 'Doctor@123',
+          password: doctorPassword || 'wasd@121',
           specialization,
           cabin: cabin || 'Cabin 101 - Primary Wing'
         });
@@ -119,7 +119,7 @@ export default function DoctorManagement() {
         console.warn('Doctor user account already exists or warning:', authErr);
       }
 
-      // 2. Add doctor profile to doctors.json
+      // 2. Add doctor profile to Firestore doctors collection
       await addDoctor({
         id: doctorUid || `doc_${Date.now()}`,
         name: name.startsWith('Dr.') ? name : `Dr. ${name}`,
@@ -136,10 +136,10 @@ export default function DoctorManagement() {
         consultationFee: "Free (Community Health Funded)"
       });
 
-      setSuccess(`Doctor profile for ${name} registered successfully! Login credentials created (Password: ${doctorPassword || 'Doctor@123'}).`);
+      setSuccess(`Doctor profile for ${name} registered successfully! Login credentials created (Password: ${doctorPassword || 'wasd@121'}).`);
       setName('');
       setEmail('');
-      setDoctorPassword('Doctor@123');
+      setDoctorPassword('wasd@121');
       setSpecialization('');
       setQualification('');
       setCabin('');
@@ -156,22 +156,22 @@ export default function DoctorManagement() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
-      
+
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-bold text-[#2D6A4F] dark:text-[#52B788] uppercase tracking-wider">Clinical Administration</span>
-          <h1 className="text-2xl font-black text-[#22291F] dark:text-[#F5F1EA] tracking-tight mt-0.5 font-heading">
+          <h1 className="text-2xl font-black text-[#22291F] dark:text-[#FAF7F2] tracking-tight mt-0.5 font-heading">
             Doctor &amp; Specialist Management
           </h1>
-          <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] mt-1">
+          <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-1">
             Register clinic physicians, configure consultation hours, and manage daily queue slots.
           </p>
         </div>
 
         <button
           onClick={() => { setShowAddForm(!showAddForm); setError(''); }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>{showAddForm ? 'Close Form' : 'Add New Doctor'}</span>
@@ -180,7 +180,7 @@ export default function DoctorManagement() {
 
       {/* Success Notification */}
       {success && (
-        <div className="flex items-center gap-2 p-3 bg-[#2D6A4F]/15 border border-[#2D6A4F]/30 rounded-xl text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">
+        <div className="flex items-center gap-2 p-3 bg-[#2D6A4F]/15 border border-[#2D6A4F]/30 dark:border-[#52B788]/30 rounded-xl text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">
           <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
           <span>{success}</span>
         </div>
@@ -188,20 +188,20 @@ export default function DoctorManagement() {
 
       {/* Add Doctor Form */}
       {showAddForm && (
-        <div className="bg-white dark:bg-[#222722] rounded-3xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-top-4">
-          <div className="flex items-center gap-3 pb-4 mb-6 border-b border-[#E6DFC6] dark:border-[#2D352C]">
-            <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center font-bold">
+        <div className="bg-white dark:bg-[#1C221C] rounded-3xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-top-4">
+          <div className="flex items-center gap-3 pb-4 mb-6 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+            <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center font-bold">
               <Stethoscope className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">Register New Clinic Doctor</h2>
-              <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A]">Provide credentials and consultation schedule for patient bookings</p>
+              <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">Register New Clinic Doctor</h2>
+              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">Provide credentials and consultation schedule for patient bookings</p>
             </div>
           </div>
 
           <form onSubmit={handleCreateDoctor} className="space-y-5">
             {error && (
-              <div className="flex items-center gap-2 p-3 bg-[#C97B4A]/10 border border-[#C97B4A]/30 rounded-xl text-xs font-medium text-[#C97B4A]">
+              <div className="flex items-center gap-2 p-3 bg-[#C97B4A]/10 dark:bg-[#E58A54]/10 border border-[#C97B4A]/30 dark:border-[#E58A54]/30 rounded-xl text-xs font-medium text-[#B35F2B] dark:text-[#E58A54]">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -209,107 +209,107 @@ export default function DoctorManagement() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Doctor Full Name *
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+                  <User className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Dr. Rajesh Patel"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Email Address *
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+                  <Mail className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="doctor@communityclinic.org"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Specialization *
                 </label>
                 <div className="relative">
-                  <Briefcase className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+                  <Briefcase className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
                   <input
                     type="text"
                     required
                     value={specialization}
                     onChange={(e) => setSpecialization(e.target.value)}
                     placeholder="e.g. General Physician, Pediatrics, Cardiology"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Qualifications
                 </label>
                 <div className="relative">
-                  <GraduationCap className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+                  <GraduationCap className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
                   <input
                     type="text"
                     value={qualification}
                     onChange={(e) => setQualification(e.target.value)}
                     placeholder="e.g. MBBS, MD (Internal Medicine)"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Cabin / Clinic Suite
                 </label>
                 <div className="relative">
-                  <Building className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+                  <Building className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
                   <input
                     type="text"
                     value={cabin}
                     onChange={(e) => setCabin(e.target.value)}
                     placeholder="e.g. Cabin 101 - Primary Wing"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Years of Experience
                 </label>
                 <div className="relative">
-                  <Clock className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+                  <Clock className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
                   <input
                     type="text"
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     placeholder="e.g. 10 years"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                 Available Consultation Days
               </label>
               <div className="flex flex-wrap gap-2">
@@ -320,11 +320,10 @@ export default function DoctorManagement() {
                       type="button"
                       key={day}
                       onClick={() => toggleDay(day)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                        isSelected
-                          ? 'bg-[#2D6A4F] text-[#F5F1EA] border-[#2D6A4F] shadow-xs'
-                          : 'bg-[#FAF7F2] dark:bg-[#1A1D19] text-[#6B6B63] dark:text-[#9EAA9A] border-[#D8CEB3] dark:border-[#2D352C] hover:text-[#22291F] dark:hover:text-[#F5F1EA] hover:border-[#2D6A4F]/40'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${isSelected
+                          ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788] shadow-xs'
+                          : 'bg-[#FAF7F2] dark:bg-[#242C24] text-[#6B6B63] dark:text-[#C4CFC3] border-[#D8CEB3] dark:border-[#445644] hover:text-[#22291F] dark:hover:text-[#FAF7F2] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/50'
+                        }`}
                     >
                       {day}
                     </button>
@@ -334,7 +333,7 @@ export default function DoctorManagement() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                 Available Time Slots (comma-separated)
               </label>
               <input
@@ -342,23 +341,23 @@ export default function DoctorManagement() {
                 value={slotsInput}
                 onChange={(e) => setSlotsInput(e.target.value)}
                 placeholder="09:00 AM, 10:00 AM, 11:00 AM, 02:00 PM"
-                className="w-full px-4 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                className="w-full px-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
               />
-              <p className="text-[11px] text-[#8E8E84] dark:text-[#71806F] mt-1">Patients will be able to book into these slots sequentially.</p>
+              <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493] mt-1">Patients will be able to book into these slots sequentially.</p>
             </div>
 
             <div className="flex justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="px-4 py-2.5 text-xs font-semibold text-[#6B6B63] hover:text-[#22291F] hover:bg-[#FAF7F2] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] dark:hover:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl transition-colors"
+                className="px-4 py-2.5 text-xs font-semibold text-[#6B6B63] hover:text-[#22291F] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] dark:hover:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-50"
+                className="px-5 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {loading ? 'Saving Profile...' : 'Save Doctor Profile'}
               </button>
@@ -369,22 +368,22 @@ export default function DoctorManagement() {
 
       {/* Doctor Registry List */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">Registered Clinic Specialists ({doctors.length})</h2>
+        <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">Registered Clinic Specialists ({doctors.length})</h2>
 
         {doctors.length === 0 ? (
-          <div className="bg-[#FAF7F2] dark:bg-[#222722] rounded-3xl border border-dashed border-[#D8CEB3] dark:border-[#2D352C] p-12 text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
+          <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-3xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
               <Stethoscope className="w-7 h-7" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">No Doctors Registered Yet</h3>
-              <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] max-w-sm mx-auto mt-1">
+              <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">No Doctors Registered Yet</h3>
+              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] max-w-sm mx-auto mt-1">
                 Your clinic database is empty. Add your first specialist above so patients can begin booking queue tokens.
               </p>
             </div>
             <button
               onClick={() => setShowAddForm(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] text-xs font-bold rounded-xl shadow-xs transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Add Your First Doctor</span>
@@ -393,48 +392,48 @@ export default function DoctorManagement() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {doctors.map((doctor) => (
-              <div 
+              <div
                 key={doctor.id}
-                className="bg-white dark:bg-[#222722] rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] p-5 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 transition-colors"
+                className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 transition-colors"
               >
                 <div>
                   <div className="flex items-start gap-3.5 mb-3">
-                    <img 
-                      src={doctor.avatar || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100"} 
+                    <img
+                      src={doctor.avatar || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100"}
                       alt={doctor.name}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23FAF7F2' stroke='%232D6A4F' stroke-width='1.5'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 1 0-16 0'/%3E%3C/svg%3E";
                       }}
-                      className="w-12 h-12 rounded-2xl object-cover border border-[#E6DFC6] dark:border-[#2D352C] shrink-0 bg-[#FAF7F2] dark:bg-[#1A1D19]"
+                      className="w-12 h-12 rounded-2xl object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] shrink-0 bg-[#FAF7F2] dark:bg-[#242C24]"
                     />
                     <div>
-                      <h3 className="font-bold text-[#22291F] dark:text-[#F5F1EA] text-sm font-heading">{doctor.name}</h3>
+                      <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm font-heading">{doctor.name}</h3>
                       <p className="text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">{doctor.specialization}</p>
-                      <p className="text-[11px] text-[#8E8E84] dark:text-[#71806F] mt-0.5">{doctor.cabin || 'Cabin 101'}</p>
+                      <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493] mt-0.5">{doctor.cabin || 'Cabin 101'}</p>
                     </div>
                   </div>
 
-                  <div className="py-2.5 border-y border-[#E6DFC6] dark:border-[#2D352C] space-y-1.5 my-3 text-xs">
+                  <div className="py-2.5 border-y border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5 my-3 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-[#6B6B63] dark:text-[#9EAA9A]">Qualifications:</span>
-                      <span className="font-semibold text-[#22291F] dark:text-[#F5F1EA]">{doctor.qualification || 'MBBS, MD'}</span>
+                      <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Qualifications:</span>
+                      <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">{doctor.qualification || 'MBBS, MD'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#6B6B63] dark:text-[#9EAA9A]">Experience:</span>
-                      <span className="font-semibold text-[#22291F] dark:text-[#F5F1EA]">{doctor.experience || '5+ years'}</span>
+                      <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Experience:</span>
+                      <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">{doctor.experience || '5+ years'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#6B6B63] dark:text-[#9EAA9A]">Available Slots:</span>
+                      <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Available Slots:</span>
                       <span className="font-bold text-[#2D6A4F] dark:text-[#52B788]">{doctor.availableSlots?.length || 0} slots/day</span>
                     </div>
                   </div>
 
                   <div className="space-y-1 mb-2">
-                    <span className="text-[10px] font-bold text-[#8E8E84] dark:text-[#71806F] uppercase tracking-wider">Days Available</span>
+                    <span className="text-[10px] font-bold text-[#8E8E84] dark:text-[#94A493] uppercase tracking-wider">Days Available</span>
                     <div className="flex flex-wrap gap-1">
                       {doctor.availableDays?.map(day => (
-                        <span key={day} className="px-2 py-0.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#E6DFC6] dark:border-[#2D352C] text-[#6B6B63] dark:text-[#9EAA9A] rounded text-[10px] font-medium">
+                        <span key={day} className="px-2 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] rounded text-[10px] font-medium">
                           {day}
                         </span>
                       ))}
@@ -442,17 +441,17 @@ export default function DoctorManagement() {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-[#E6DFC6] dark:border-[#2D352C] space-y-2 text-xs">
-                  <div className="flex items-center justify-between text-[#8E8E84] dark:text-[#71806F]">
+                <div className="pt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F] space-y-2 text-xs">
+                  <div className="flex items-center justify-between text-[#8E8E84] dark:text-[#94A493]">
                     <span>Email:</span>
-                    <span className="font-medium text-[#6B6B63] dark:text-[#9EAA9A] truncate max-w-[180px]">{doctor.email}</span>
+                    <span className="font-medium text-[#6B6B63] dark:text-[#C4CFC3] truncate max-w-[180px]">{doctor.email}</span>
                   </div>
 
-                  <div className="flex items-center justify-between p-2 bg-[#FAF7F2] dark:bg-[#1A1D19] rounded-xl border border-[#E6DFC6] dark:border-[#2D352C] text-[11px]">
+                  <div className="flex items-center justify-between p-2 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[11px]">
                     <span className="flex items-center gap-1 text-[#2D6A4F] dark:text-[#52B788] font-semibold">
                       <Key className="w-3 h-3" /> Initial Password:
                     </span>
-                    <code className="font-mono text-[#22291F] dark:text-[#F5F1EA]">Doctor@123</code>
+                    <code className="font-mono text-[#22291F] dark:text-[#FAF7F2]">wasd@121</code>
                   </div>
 
                   <div className="flex items-center gap-2 pt-1">
@@ -463,7 +462,7 @@ export default function DoctorManagement() {
                         setEditSlotsInput(doctor.availableSlots?.join(', ') || '');
                         setEditDays(doctor.availableDays || []);
                       }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-[#FAF7F2] hover:bg-[#E6DFC6]/60 dark:bg-[#1A1D19] dark:hover:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] rounded-lg border border-[#D8CEB3] dark:border-[#2D352C] font-semibold transition-colors cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-[#FAF7F2] hover:bg-[#E6DFC6]/60 dark:bg-[#242C24] dark:hover:bg-[#357A5B]/20 text-[#2D6A4F] dark:text-[#52B788] rounded-lg border border-[#D8CEB3] dark:border-[#445644] font-semibold transition-colors cursor-pointer"
                     >
                       <Edit2 className="w-3 h-3" />
                       <span>Edit Schedule</span>
@@ -474,7 +473,7 @@ export default function DoctorManagement() {
                           deleteDoctor(doctor.id);
                         }
                       }}
-                      className="p-1.5 text-[#8E8E84] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg border border-[#D8CEB3] dark:border-[#2D352C] transition-colors cursor-pointer"
+                      className="p-1.5 text-[#8E8E84] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg border border-[#D8CEB3] dark:border-[#445644] transition-colors cursor-pointer"
                       title="Remove Doctor"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -490,17 +489,17 @@ export default function DoctorManagement() {
       {/* Edit Doctor Modal */}
       {editingDoctor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#222722] w-full max-w-lg rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2D352C]">
+          <div className="bg-white dark:bg-[#1C221C] w-full max-w-lg rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
               <div>
-                <h3 className="font-bold text-base text-[#22291F] dark:text-[#F5F1EA] font-heading">
+                <h3 className="font-bold text-base text-[#22291F] dark:text-[#FAF7F2] font-heading">
                   Edit Schedule: {editingDoctor.name}
                 </h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A]">{editingDoctor.specialization}</p>
+                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">{editingDoctor.specialization}</p>
               </div>
               <button
                 onClick={() => setEditingDoctor(null)}
-                className="p-1 text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] rounded-lg"
+                className="p-1 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-lg cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -508,19 +507,19 @@ export default function DoctorManagement() {
 
             <form onSubmit={handleUpdateDoctor} className="space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-[#6B6B63] dark:text-[#9EAA9A] mb-1">
+                <label className="block font-semibold text-[#6B6B63] dark:text-[#C4CFC3] mb-1">
                   Cabin / Clinic Suite
                 </label>
                 <input
                   type="text"
                   value={editCabin}
                   onChange={(e) => setEditCabin(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-xs text-[#22291F] dark:text-[#F5F1EA]"
+                  className="w-full px-3.5 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2]"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-[#6B6B63] dark:text-[#9EAA9A] mb-1">
+                <label className="block font-semibold text-[#6B6B63] dark:text-[#C4CFC3] mb-1">
                   Available Consultation Days
                 </label>
                 <div className="flex flex-wrap gap-1.5">
@@ -531,11 +530,10 @@ export default function DoctorManagement() {
                         type="button"
                         key={day}
                         onClick={() => toggleEditDay(day)}
-                        className={`px-2.5 py-1 rounded-lg font-semibold border transition-all ${
-                          isSelected
-                            ? 'bg-[#2D6A4F] text-[#F5F1EA] border-[#2D6A4F]'
-                            : 'bg-[#FAF7F2] dark:bg-[#1A1D19] text-[#6B6B63] dark:text-[#9EAA9A] border-[#D8CEB3] dark:border-[#2D352C]'
-                        }`}
+                        className={`px-2.5 py-1 rounded-lg font-semibold border transition-all cursor-pointer ${isSelected
+                            ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788]'
+                            : 'bg-[#FAF7F2] dark:bg-[#242C24] text-[#6B6B63] dark:text-[#C4CFC3] border-[#D8CEB3] dark:border-[#445644]'
+                          }`}
                       >
                         {day}
                       </button>
@@ -545,7 +543,7 @@ export default function DoctorManagement() {
               </div>
 
               <div>
-                <label className="block font-semibold text-[#6B6B63] dark:text-[#9EAA9A] mb-1">
+                <label className="block font-semibold text-[#6B6B63] dark:text-[#C4CFC3] mb-1">
                   Available Time Slots (comma-separated)
                 </label>
                 <input
@@ -553,22 +551,22 @@ export default function DoctorManagement() {
                   value={editSlotsInput}
                   onChange={(e) => setEditSlotsInput(e.target.value)}
                   placeholder="09:00 AM, 10:00 AM, 11:00 AM, 02:00 PM"
-                  className="w-full px-3.5 py-2 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-xs text-[#22291F] dark:text-[#F5F1EA]"
+                  className="w-full px-3.5 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2]"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-[#E6DFC6] dark:border-[#2D352C]">
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
                 <button
                   type="button"
                   onClick={() => setEditingDoctor(null)}
-                  className="px-4 py-2 text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] rounded-xl border border-[#D8CEB3] dark:border-[#2D352C]"
+                  className="px-4 py-2 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-xl border border-[#D8CEB3] dark:border-[#445644] cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={editLoading}
-                  className="px-4 py-2 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] font-semibold rounded-xl"
+                  className="px-4 py-2 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-semibold rounded-xl cursor-pointer"
                 >
                   {editLoading ? 'Saving...' : 'Save Changes'}
                 </button>

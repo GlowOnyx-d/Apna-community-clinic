@@ -15,38 +15,39 @@
     --border-default: #D8CEB3;
 
     --text-primary: #22291F;
-    --text-secondary: #6B6B63;
-    --text-muted: #8E8E84;
+    --text-secondary: #52584E;
+    --text-muted: #62685E;
 
     --color-forest: #2D6A4F;
     --color-forest-hover: #23543E;
     --color-forest-light: #408A68;
     --color-forest-tint: rgba(45, 106, 79, 0.08);
 
-    --color-terracotta: #C97B4A;
-    --color-terracotta-hover: #B46A3A;
-    --color-terracotta-tint: rgba(201, 123, 74, 0.12);
+    --color-terracotta: #A85222;
+    --color-terracotta-hover: #91451C;
+    --color-terracotta-tint: rgba(168, 82, 34, 0.12);
   }
 
   :root.dark, .dark {
-    --bg-canvas: #1A1D19;
-    --bg-surface: #222722;
-    --bg-surface-elevated: #283028;
-    --border-subtle: #2D352C;
-    --border-default: #384337;
+    /* Warm Humanist Botanical Nocturne Palette */
+    --bg-canvas: #151915;
+    --bg-surface: #1C221C;
+    --bg-surface-elevated: #242C24;
+    --border-subtle: #2F3B2F;
+    --border-default: #445644;
 
-    --text-primary: #F5F1EA;
-    --text-secondary: #9EAA9A;
-    --text-muted: #71806F;
+    --text-primary: #FAF7F2;
+    --text-secondary: #C4CFC3;
+    --text-muted: #94A493;
 
-    --color-forest: #2D6A4F;
-    --color-forest-hover: #23543E;
+    --color-forest: #357A5B;
+    --color-forest-hover: #40916C;
     --color-forest-light: #52B788;
-    --color-forest-tint: rgba(45, 106, 79, 0.2);
+    --color-forest-tint: rgba(82, 183, 136, 0.18);
 
-    --color-terracotta: #C97B4A;
-    --color-terracotta-hover: #B46A3A;
-    --color-terracotta-tint: rgba(201, 123, 74, 0.14);
+    --color-terracotta: #E58A54;
+    --color-terracotta-hover: #EE9A68;
+    --color-terracotta-tint: rgba(229, 138, 84, 0.16);
   }
 
   body {
@@ -71,8 +72,8 @@
 }
 
 .dark .glass-humanist {
-  background: rgba(26, 29, 25, 0.94);
-  border-bottom: 1px solid #2D352C;
+  background: rgba(21, 25, 21, 0.94);
+  border-bottom: 1px solid #2F3B2F;
 }
 
 /* Calm, Community Clinic Card Treatment */
@@ -80,7 +81,7 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 1rem;
-  box-shadow: 0 4px 20px -2px rgba(34, 41, 31, 0.05);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25);
   transition: all 0.2s ease-in-out;
 }
 
@@ -121,6 +122,22 @@
   animation: pulse-ring 2.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
 }
 
+/* High-visibility TV Kiosk Token Call Glow */
+@keyframes token-call-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(82, 183, 136, 0.5));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 45px rgba(82, 183, 136, 1)) drop-shadow(0 0 70px rgba(255, 255, 255, 0.8));
+    transform: scale(1.05);
+  }
+}
+
+.animate-token-call-glow {
+  animation: token-call-glow 1.2s ease-in-out infinite;
+}
+
 /* Smooth custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
@@ -141,11 +158,11 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #2D352C;
+  background: #2F3B2F;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #384337;
+  background: #445644;
 }
 
 /* Hide scrollbar for Chrome, Safari, Edge, Firefox */

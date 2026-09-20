@@ -104,16 +104,16 @@ export default function DoctorDashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
       
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-[#F0EBE1] dark:bg-[#222722] border border-[#E4DCCE] dark:border-[#2D352C] text-[#22291F] dark:text-[#F5F1EA] p-6 sm:p-8 shadow-sm">
+      <div className="relative overflow-hidden rounded-2xl bg-[#F0EBE1] dark:bg-[#1C221C] border border-[#E4DCCE] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] p-6 sm:p-8 shadow-sm">
         <div className="space-y-2 max-w-xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-semibold border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-semibold border border-[#2D6A4F]/20 dark:border-[#52B788]/30">
             <Stethoscope className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
             <span>Doctor Clinical Consultation Queue</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-heading tracking-tight text-[#22291F] dark:text-[#F5F1EA]">
+          <h1 className="text-2xl sm:text-3xl font-bold font-heading tracking-tight text-[#22291F] dark:text-[#FAF7F2]">
             Welcome, {userProfile?.name || 'Doctor'}
           </h1>
-          <p className="text-sm text-[#6B6B63] dark:text-[#9EAA9A]">
+          <p className="text-sm text-[#6B6B63] dark:text-[#C4CFC3]">
             {userProfile?.specialization || 'Clinical Specialist'} • Manage your daily patient token stream and record diagnostic notes.
           </p>
         </div>
@@ -121,47 +121,47 @@ export default function DoctorDashboard() {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="bg-white dark:bg-[#222722] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/25 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 flex items-center justify-center shrink-0">
+        <div className="bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#C97B4A]/12 dark:bg-[#E58A54]/18 text-[#C97B4A] dark:text-[#E58A54] border border-[#C97B4A]/25 dark:border-[#E58A54]/30 flex items-center justify-center shrink-0">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider">In Queue</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">{pendingQueue.length}</p>
+            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">In Queue</p>
+            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{pendingQueue.length}</p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#222722] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/25 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 flex items-center justify-center shrink-0">
+        <div className="bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
             <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider">Completed</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">{completedVisits.length}</p>
+            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Completed</p>
+            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{completedVisits.length}</p>
           </div>
         </div>
 
-        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#222722] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/25 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 flex items-center justify-center shrink-0">
+        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
             <Ticket className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider">Total Appointments</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">{doctorAppointments.length}</p>
+            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Total Appointments</p>
+            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{doctorAppointments.length}</p>
           </div>
         </div>
       </div>
 
       {/* Queue Filter & Search Toolbar */}
-      <div className="bg-white dark:bg-[#222722] rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-[#8E8E84] dark:text-[#71806F] absolute left-3.5 top-3" />
+          <Search className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search patient, token, or symptom..."
-            className="w-full pl-10 pr-4 py-2 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-xs text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] transition-colors"
+            className="w-full pl-10 pr-4 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors"
           />
         </div>
 
@@ -169,11 +169,11 @@ export default function DoctorDashboard() {
           {/* Admin Doctor Switcher */}
           {role === 'admin' && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] font-medium">Doctor:</span>
+              <span className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] font-medium">Doctor:</span>
               <select
                 value={adminSelectedDoctorId}
                 onChange={(e) => setAdminSelectedDoctorId(e.target.value)}
-                className="px-3 py-1.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-xs font-medium text-[#22291F] dark:text-[#F5F1EA] focus:outline-none focus:border-[#2D6A4F]"
+                className="px-3 py-1.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs font-medium text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788]"
               >
                 <option value="all">All Doctors ({doctors.length})</option>
                 {doctors.map(d => (
@@ -184,19 +184,19 @@ export default function DoctorDashboard() {
           )}
 
           {/* Date Filter */}
-          <div className="flex bg-[#FAF7F2] dark:bg-[#1A1D19] p-1 rounded-xl gap-1 border border-[#D8CEB3] dark:border-[#2D352C]">
+          <div className="flex bg-[#FAF7F2] dark:bg-[#242C24] p-1 rounded-xl gap-1 border border-[#D8CEB3] dark:border-[#2F3B2F]">
             <button
               onClick={() => setDateFilter('today')}
-              className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
-                dateFilter === 'today' ? 'bg-[#2D6A4F] text-[#F5F1EA]' : 'text-[#6B6B63] dark:text-[#9EAA9A] hover:text-[#22291F] dark:hover:text-[#F5F1EA]'
+              className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                dateFilter === 'today' ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2]' : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
               }`}
             >
               Today
             </button>
             <button
               onClick={() => setDateFilter('all')}
-              className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
-                dateFilter === 'all' ? 'bg-[#2D6A4F] text-[#F5F1EA]' : 'text-[#6B6B63] dark:text-[#9EAA9A] hover:text-[#22291F] dark:hover:text-[#F5F1EA]'
+              className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                dateFilter === 'all' ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2]' : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
               }`}
             >
               All Dates
@@ -208,52 +208,52 @@ export default function DoctorDashboard() {
       {/* Queue Table / List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">
+          <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
             {dateFilter === 'today' ? "Today's Active Patient Queue" : "Active Patient Queue"} ({pendingQueue.length})
           </h2>
-          <span className="text-xs font-medium text-[#6B6B63] dark:text-[#9EAA9A]">
+          <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3]">
             Sorted by daily token sequence
           </span>
         </div>
 
         {pendingQueue.length === 0 ? (
-          <div className="bg-[#FAF7F2] dark:bg-[#222722] rounded-2xl border border-dashed border-[#D8CEB3] dark:border-[#2D352C] p-12 text-center space-y-3">
-            <div className="w-11 h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
+          <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-3">
+            <div className="w-11 h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
               <Clock className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-semibold text-[#22291F] dark:text-[#F5F1EA] font-heading">No Patients in Queue</h3>
-            <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] max-w-sm mx-auto">
+            <h3 className="text-base font-semibold text-[#22291F] dark:text-[#FAF7F2] font-heading">No Patients in Queue</h3>
+            <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] max-w-sm mx-auto">
               There are no pending consultation tokens right now. New patient bookings will automatically populate this queue.
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {pendingQueue.map((apt) => (
-              <div key={apt.id} className="bg-white dark:bg-[#222722] rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] hover:border-[#2D6A4F]/40 p-5 shadow-sm transition-all flex flex-col justify-between">
+              <div key={apt.id} className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#445644] p-5 shadow-sm transition-all flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="px-3 py-1 rounded-xl bg-[#2D6A4F] text-[#F5F1EA] font-bold text-sm tracking-wider shadow-xs">
+                    <span className="px-3 py-1 rounded-xl bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] font-bold text-sm tracking-wider shadow-xs">
                       {apt.tokenNumber || 'TK'}
                     </span>
-                    <span className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] flex items-center gap-1">
+                    <span className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" /> {apt.time}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">{apt.patientName}</h3>
-                  <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] mt-0.5">
+                  <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{apt.patientName}</h3>
+                  <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">
                     {apt.patientGender || 'Unspecified'}, {apt.patientAge || 'Age N/A'} • {apt.patientPhone || 'No Phone'}
                   </p>
 
-                  <div className="mt-3 p-3 bg-[#FAF7F2] dark:bg-[#1A1D19] rounded-xl text-xs space-y-1 border border-[#E6DFC6] dark:border-[#2D352C]">
-                    <span className="text-[#8E8E84] dark:text-[#71806F] font-semibold block uppercase text-[10px]">Reason for Consultation</span>
-                    <p className="text-[#22291F] dark:text-[#F5F1EA]">{apt.reason || 'General Consultation'}</p>
+                  <div className="mt-3 p-3 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl text-xs space-y-1 border border-[#E6DFC6] dark:border-[#2F3B2F]">
+                    <span className="text-[#8E8E84] dark:text-[#94A493] font-semibold block uppercase text-[10px]">Reason for Consultation</span>
+                    <p className="text-[#22291F] dark:text-[#FAF7F2]">{apt.reason || 'General Consultation'}</p>
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleOpenConsultation(apt)}
-                  className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] text-[#F5F1EA] font-semibold text-xs rounded-xl shadow-xs transition-colors"
+                  className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-semibold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Start Consultation &amp; Record Diagnosis</span>
@@ -266,18 +266,18 @@ export default function DoctorDashboard() {
 
       {/* Consultation Modal */}
       {selectedAppointment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#222722] w-full max-w-xl rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-2xl p-6 space-y-5 animate-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2D352C]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-[#1C221C] w-full max-w-xl rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 space-y-5 animate-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
               <div>
                 <span className="text-xs font-semibold text-[#2D6A4F] dark:text-[#52B788] uppercase tracking-wider">Consultation Token: {selectedAppointment.tokenNumber}</span>
-                <h3 className="text-lg font-bold text-[#22291F] dark:text-[#F5F1EA] mt-0.5 font-heading">
+                <h3 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] mt-0.5 font-heading">
                   Patient: {selectedAppointment.patientName}
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedAppointment(null)}
-                className="p-1.5 rounded-lg text-[#6B6B63] hover:bg-[#FAF7F2] dark:text-[#9EAA9A] dark:hover:bg-[#1A1D19]"
+                className="p-1.5 rounded-lg text-[#6B6B63] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:bg-[#242C24] cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -285,7 +285,7 @@ export default function DoctorDashboard() {
 
             <form onSubmit={handleSaveConsultation} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Clinical Diagnosis *
                 </label>
                 <input
@@ -294,12 +294,12 @@ export default function DoctorDashboard() {
                   value={diagnosis}
                   onChange={(e) => setDiagnosis(e.target.value)}
                   placeholder="e.g. Acute Viral Bronchitis, Hypertension Stage 1"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Prescription &amp; Medication
                 </label>
                 <textarea
@@ -307,12 +307,12 @@ export default function DoctorDashboard() {
                   value={prescription}
                   onChange={(e) => setPrescription(e.target.value)}
                   placeholder="1. Tab Paracetamol 500mg TDS&#10;2. Cough Syrup 10ml BD"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] transition-colors font-mono text-xs"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors font-mono text-xs"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Clinical Observations &amp; Follow-up Notes
                 </label>
                 <textarea
@@ -320,7 +320,7 @@ export default function DoctorDashboard() {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Review after 5 days if fever persists. Advised hydration."
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors"
                 />
               </div>
 
@@ -328,14 +328,14 @@ export default function DoctorDashboard() {
                 <button
                   type="button"
                   onClick={() => setSelectedAppointment(null)}
-                  className="px-4 py-2 text-xs font-medium text-[#6B6B63] hover:bg-[#FAF7F2] dark:text-[#9EAA9A] dark:hover:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl transition-colors"
+                  className="px-4 py-2 text-xs font-medium text-[#6B6B63] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:bg-[#242C24] border border-[#D8CEB3] dark:border-[#2F3B2F] rounded-xl transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2 bg-[#2D6A4F] hover:bg-[#23543E] text-[#F5F1EA] text-xs font-semibold rounded-xl shadow-xs transition-colors disabled:opacity-50"
+                  className="px-5 py-2 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {loading ? 'Saving Notes...' : 'Complete Consultation & Save Notes'}
                 </button>

@@ -37,7 +37,7 @@ function PageLoader() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
       <div className="w-8 h-8 rounded-full border-2 border-[#2D6A4F] border-t-transparent animate-spin" />
-      <span className="text-xs font-medium text-[#9EAA9A]">Loading clinic portal...</span>
+      <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3]">Loading clinic portal...</span>
     </div>
   );
 }
@@ -64,7 +64,7 @@ function AppRoutes() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#22291F] dark:bg-[#1A1D19] dark:text-[#F5F1EA] font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#22291F] dark:bg-[#151915] dark:text-[#FAF7F2] font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] transition-colors duration-200">
       <Navbar />
       <main className="flex-1">
         <Suspense fallback={<PageLoader />}>

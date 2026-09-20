@@ -68,19 +68,19 @@ export default function PrescriptionModal({ appointment, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-in fade-in overflow-y-auto">
-      <div className="bg-[#FAF7F2] dark:bg-[#1E231E] rounded-2xl max-w-3xl w-full border border-[#E6DFC6] dark:border-[#2D352C] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl my-auto">
+      <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl max-w-3xl w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl my-auto">
 
         {/* Modal Top Control Bar (Screen only) */}
-        <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#E6DFC6] dark:border-[#2D352C] bg-white dark:bg-[#1A1D19]">
+        <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#151915]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#2D6A4F]/10 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center">
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-[#22291F] dark:text-[#F5F1EA] text-sm font-heading">
+              <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm font-heading">
                 Outpatient Medical Prescription &amp; Clinical Summary
               </h3>
-              <p className="text-[11px] text-[#6B6B63] dark:text-[#9EAA9A]">
+              <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">
                 Token #{appointment.tokenNumber || 'TK'} • Dr. {appointment.doctorName?.replace(/^Dr\.\s*/i, '')}
               </p>
             </div>
@@ -89,16 +89,16 @@ export default function PrescriptionModal({ appointment, onClose }) {
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#D8CEB3] dark:border-[#2D352C] bg-white dark:bg-[#222722] hover:bg-[#FAF7F2] dark:hover:bg-[#1A1D19] text-xs font-semibold text-[#22291F] dark:text-[#F5F1EA] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#151915] text-xs font-semibold text-[#22291F] dark:text-[#FAF7F2] transition-colors cursor-pointer"
               title="Print Prescription"
             >
-              <Printer className="w-3.5 h-3.5 text-[#6B6B63] dark:text-[#9EAA9A]" />
+              <Printer className="w-3.5 h-3.5 text-[#6B6B63] dark:text-[#C4CFC3]" />
               <span className="hidden sm:inline">Print</span>
             </button>
             <button
               onClick={handleDownloadPDF}
               disabled={downloading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2D6A4F] hover:bg-[#245740] text-[#FAF7F2] text-xs font-bold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
               title="Save as A4 PDF"
             >
               <Download className="w-3.5 h-3.5" />
@@ -106,7 +106,7 @@ export default function PrescriptionModal({ appointment, onClose }) {
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] rounded-lg hover:bg-[#E6DFC6]/50 dark:hover:bg-[#1A1D19] transition-colors ml-1 cursor-pointer"
+              className="p-1.5 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-lg hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors ml-1 cursor-pointer"
               title="Close modal"
             >
               <X className="w-5 h-5" />
@@ -115,7 +115,7 @@ export default function PrescriptionModal({ appointment, onClose }) {
         </div>
 
         {/* Scrollable Letterhead Paper Preview */}
-        <div className="p-4 sm:p-6 overflow-y-auto bg-[#ECE6D9] dark:bg-[#151815] flex justify-center">
+        <div className="p-4 sm:p-6 overflow-y-auto bg-[#ECE6D9] dark:bg-[#151915] flex justify-center">
 
           {/* Printable Prescription Canvas Container (Strict White Medical Stationery) */}
           <div
@@ -317,7 +317,7 @@ export default function PrescriptionModal({ appointment, onClose }) {
 
             {/* Small Footer Notice */}
             <div className="mt-6 text-center text-[9px] text-gray-400 border-t border-gray-100 pt-2">
-              Apna Community Clinic • Free Universal Outpatient Health Portal • Powered by Local Data Storage
+              Apna Community Clinic • Free Universal Outpatient Health Portal • Powered by Secure Cloud Healthcare Records
             </div>
 
           </div>

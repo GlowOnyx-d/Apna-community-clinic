@@ -1,32 +1,33 @@
 # Apna Community Health Clinic
 
-A modern, empty-by-default community healthcare management web application built with **React 19**, **Vite**, and **Tailwind CSS**.
+A modern, real-time community healthcare management web application built with **React 19**, **Vite**, **Tailwind CSS**, **Firebase Authentication**, and **Google Cloud Firestore**.
 
-The application is **100% serverless** and operates with **zero external backend dependencies** — no Express server, no MongoDB database, and no Firebase cloud setup required. All appointments, doctors, patient records, and community health announcements are saved directly as real JSON files on your device using the browser's **File System Access API**.
+The application is powered by a real-time, multi-device cloud architecture. All appointments, doctors, patient records, and community health announcements are synchronized live across clinic kiosks, doctor consultation cabins, admin desks, and patient mobile devices.
 
 ---
 
 ## First-Run Experience & Initialization
 
-Apna Clinic contains **no pre-loaded or mock seed data**. The database starts completely empty until real accounts and clinic resources are created:
+Apna Clinic connects directly to your secure Cloud Firestore database:
 
-1. **Connect Local Storage Folder**: On launch, the browser prompts you to select or create a local directory on your device (e.g. a folder named `local-data`).
-2. **Initial Clinic Setup**: Because no users exist yet, the app displays the **"Set Up Your Clinic"** onboarding screen. Enter your administrator name, email, and password.
-3. **Secure Password Hashing**: Passwords are encrypted directly in the browser using the **Web Crypto API** (`crypto.subtle`) with **PBKDF2** (100,000 iterations, SHA-256, and random 16-byte cryptographic salts). Passwords are never stored in plaintext.
-4. **Register Specialists**: Log into the Admin Hub and navigate to **Doctor Management** to register clinic specialists and configure their consultation slots.
-5. **Patient Registration & Queue**: Patients can register real accounts, choose from registered specialists, book appointments, and receive sequential digital token slips (`TK-01`, `TK-02`, etc.).
+1. **Cloud Database Connection**: On launch, the application connects to Firebase and listens to live collections (`users`, `doctors`, `appointments`, `announcements`).
+2. **Initial Clinic Setup**: If no administrator account exists, the app presents the **"Register Master Administrator"** onboarding screen to initialize the primary CMO account.
+3. **Firebase Authentication**: User accounts (administrators, doctors, and patients) are authenticated securely through Firebase Auth with encrypted credentials.
+4. **Register Specialists**: Log into the Admin Hub and navigate to **Doctor Management** to register clinic specialists, assign consultation cabins, and configure weekly slot limits.
+5. **Patient Registration & Queue**: Patients register accounts, choose from active specialists, book appointments, and receive sequential digital token slips (`TK-01`, `TK-02`, etc.) with QR codes.
+6. **Live Queue Display**: Wall-mounted TV displays at `/display` announce tokens in real time as doctors call patients into cabins.
 
 ---
 
 ## Key Features
 
-- **Direct Local JSON Storage**: Automatically writes and reads `users.json`, `doctors.json`, `appointments.json`, and `announcements.json` directly from a folder on your computer.
-- **Persistent Access**: Directory handle access persists across browser restarts via IndexedDB caching.
-- **Transparent Fallback**: Seamlessly falls back to browser `localStorage` if run in unsupported browsers (e.g. Firefox, Safari) or if folder access is skipped.
-- **Real Password Verification**: Secure PBKDF2 hashing and constant-time byte verification for real authentication with zero backend servers.
+- **Real-Time Cloud Firestore Sync**: Instant snapshot synchronization across reception desks, doctor cabins, waiting room TV kiosks, and patient phones.
+- **Secure Firebase Authentication**: Role-based access control (Admin, Doctor, Patient) with session management and protected routes.
+- **Clinic Data Backup & Disaster Recovery**: One-click JSON backup export and snapshot restore directly to and from Cloud Firestore.
 - **Patient Portal**: Schedule appointments with registered specialists, track live token queues, and download printable token slips.
-- **Doctor Portal**: Review assigned patient queues, record clinical diagnoses, and issue structured digital prescriptions.
-- **Admin Hub**: Register clinic doctors, oversee the master appointments registry, and publish UN SDG 3 community health camp drives.
+- **Doctor Portal**: Review assigned patient queues, call tokens, record clinical diagnoses, and issue structured digital prescriptions.
+- **Admin Hub**: Register clinic doctors, oversee the master appointments registry, configure cabins, and publish UN SDG 3 community health camp drives.
+- **Responsive & Accessible Design**: Crafted in light and brand-tailored dark modes with high WCAG contrast and smooth micro-animations.
 
 ---
 
@@ -37,23 +38,34 @@ Apna Clinic contains **no pre-loaded or mock seed data**. The database starts co
 npm install
 ```
 
-### 2. Run the Application
+### 2. Configure Firebase Environment Variables
+Create a `.env` file in the project root with your Firebase project credentials:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 3. Run the Application
 ```bash
 npm run dev
 ```
 
-Open the displayed URL (default: `http://localhost:5173`) in a modern browser (such as Chrome, Edge, Brave, or Opera).
+Open `http://localhost:5173` in your browser.
 
 ---
 
-## Local Data Files
+## Firestore Collections
 
-When connected to a local folder, your clinic data is organized as formatted JSON files in `local-data/`:
+Clinical data is structured in Cloud Firestore collections:
 
-- `users.json`: Registered administrators, doctors, and patients (with hashed passwords).
-- `doctors.json`: Clinical specialists, cabin numbers, consultation slots, and weekly availability.
-- `appointments.json`: Patient bookings, assigned sequential tokens, diagnoses, and prescriptions.
-- `announcements.json`: Free public health camps, pediatric immunizations, and community health drives.
+- `users`: Registered administrators, doctors, and patients with role metadata.
+- `doctors`: Clinical specialists, cabin numbers, consultation slots, and weekly availability.
+- `appointments`: Patient bookings, assigned sequential tokens, diagnoses, and prescriptions.
+- `announcements`: Free public health camps, pediatric immunizations, and community health drives.
 
 ---
 

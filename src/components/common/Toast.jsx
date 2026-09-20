@@ -9,14 +9,14 @@ export default function Toast() {
 
   const icons = {
     success: <CheckCircle2 className="w-5 h-5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />,
-    error: <AlertCircle className="w-5 h-5 text-[#B35F2B] dark:text-[#C97B4A] shrink-0" />,
+    error: <AlertCircle className="w-5 h-5 text-[#B35F2B] dark:text-[#E58A54] shrink-0" />,
     info: <Info className="w-5 h-5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
   };
 
   const borderColors = {
-    success: 'border-[#2D6A4F]/40 bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA] shadow-xl',
-    error: 'border-[#C97B4A]/50 bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA] shadow-xl',
-    info: 'border-[#E6DFC6] dark:border-[#2D352C] bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA] shadow-xl'
+    success: 'border-[#2D6A4F]/40 bg-white dark:bg-[#1C221C] text-[#22291F] dark:text-[#FAF7F2] shadow-xl',
+    error: 'border-[#C97B4A]/50 bg-white dark:bg-[#1C221C] text-[#22291F] dark:text-[#FAF7F2] shadow-xl',
+    info: 'border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#1C221C] text-[#22291F] dark:text-[#FAF7F2] shadow-xl'
   };
 
   return (

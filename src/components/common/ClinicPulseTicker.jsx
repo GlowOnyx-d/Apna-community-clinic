@@ -27,7 +27,7 @@ export default function ClinicPulseTicker() {
     {
       id: 2,
       badge: 'Live Queue',
-      badgeColor: 'bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#C97B4A] border-[#C97B4A]/30',
+      badgeColor: 'bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] border-[#C97B4A]/30 dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15',
       icon: Ticket,
       title: 'Real-Time Queue Wait: ~10 Mins',
       description: 'Zero crowded waiting rooms • Receive immediate digital token slips on your device',
@@ -47,7 +47,7 @@ export default function ClinicPulseTicker() {
     {
       id: 4,
       badge: 'SDG 3 Health Camp',
-      badgeColor: 'bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#C97B4A] border-[#C97B4A]/30',
+      badgeColor: 'bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] border-[#C97B4A]/30 dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15',
       icon: Award,
       title: 'Free Community Health Camp',
       description: 'Blood pressure, glucose checks & maternal wellness • UN Sustainable Development Goal 3',
@@ -69,7 +69,7 @@ export default function ClinicPulseTicker() {
 
   return (
     <div 
-      className="bg-[#F0EBE1] dark:bg-[#1E231E] border-b border-[#E6DFC6] dark:border-[#2D352C] transition-colors"
+      className="bg-[#F0EBE1] dark:bg-[#1C221C] border-b border-[#E6DFC6] dark:border-[#2F3B2F] transition-colors"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -94,11 +94,11 @@ export default function ClinicPulseTicker() {
               <span>{current.badge}</span>
             </span>
 
-            <span className="font-bold text-[#22291F] dark:text-[#F5F1EA] text-[11px] sm:text-xs truncate">
+            <span className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-[11px] sm:text-xs truncate">
               {current.title}
             </span>
 
-            <span className="text-[#6B6B63] dark:text-[#9EAA9A] hidden md:inline truncate">
+            <span className="text-[#6B6B63] dark:text-[#C4CFC3] hidden md:inline truncate">
               — {current.description}
             </span>
           </div>
@@ -114,17 +114,17 @@ export default function ClinicPulseTicker() {
             </Link>
 
             {/* Arrows only on tablet and desktop */}
-            <div className="hidden sm:flex items-center border-l border-[#E6DFC6] dark:border-[#2D352C] pl-2 ml-1">
+            <div className="hidden sm:flex items-center border-l border-[#E6DFC6] dark:border-[#2F3B2F] pl-2 ml-1">
               <button
                 onClick={() => setCurrentIndex((prev) => (prev - 1 + updates.length) % updates.length)}
-                className="p-1 rounded text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] hover:bg-[#E6DFC6]/50 dark:hover:bg-[#2D352C] transition-colors cursor-pointer"
+                className="p-1 rounded text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors cursor-pointer"
                 aria-label="Previous update"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => setCurrentIndex((prev) => (prev + 1) % updates.length)}
-                className="p-1 rounded text-[#6B6B63] hover:text-[#22291F] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] hover:bg-[#E6DFC6]/50 dark:hover:bg-[#2D352C] transition-colors cursor-pointer"
+                className="p-1 rounded text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors cursor-pointer"
                 aria-label="Next update"
               >
                 <ChevronRight className="w-3.5 h-3.5" />

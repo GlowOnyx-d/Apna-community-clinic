@@ -83,20 +83,20 @@ export default function AnnouncementManager() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C97B4A]/15 text-[#C97B4A] text-xs font-bold border border-[#C97B4A]/30 mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C97B4A]/15 text-[#C97B4A] dark:text-[#E58A54] dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15 text-xs font-bold border border-[#C97B4A]/30 mb-2">
             <span>SDG 3 Outreach</span>
           </div>
-          <h1 className="text-2xl font-black text-[#22291F] dark:text-[#F5F1EA] tracking-tight mt-0.5 font-heading">
+          <h1 className="text-2xl font-black text-[#22291F] dark:text-[#FAF7F2] tracking-tight mt-0.5 font-heading">
             Community Health Camps &amp; SDG Initiatives
           </h1>
-          <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] mt-1">
+          <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-1">
             Publish free health screenings, immunization campaigns, and community awareness drives under UN SDG 3.
           </p>
         </div>
 
         <button
           onClick={() => { setShowAddForm(!showAddForm); setError(''); }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>{showAddForm ? 'Close Form' : 'New Health Camp'}</span>
@@ -105,7 +105,7 @@ export default function AnnouncementManager() {
 
       {/* Success Notification */}
       {success && (
-        <div className="flex items-center gap-2 p-3 bg-[#2D6A4F]/15 border border-[#2D6A4F]/30 rounded-xl text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">
+        <div className="flex items-center gap-2 p-3 bg-[#2D6A4F]/15 border border-[#2D6A4F]/30 dark:border-[#52B788]/30 rounded-xl text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">
           <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
           <span>{success}</span>
         </div>
@@ -113,27 +113,27 @@ export default function AnnouncementManager() {
 
       {/* Add Announcement Form */}
       {showAddForm && (
-        <div className="bg-white dark:bg-[#222722] rounded-3xl border border-[#E6DFC6] dark:border-[#2D352C] shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-top-4">
-          <div className="flex items-center gap-3 pb-4 mb-6 border-b border-[#E6DFC6] dark:border-[#2D352C]">
-            <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center font-bold">
+        <div className="bg-white dark:bg-[#1C221C] rounded-3xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-top-4">
+          <div className="flex items-center gap-3 pb-4 mb-6 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+            <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center font-bold">
               <Megaphone className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">Publish Health Camp Announcement</h2>
-              <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A]">Visible to patients and the community</p>
+              <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">Publish Health Camp Announcement</h2>
+              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">Visible to patients and the community</p>
             </div>
           </div>
 
           <form onSubmit={handleCreateAnnouncement} className="space-y-4">
             {error && (
-              <div className="flex items-center gap-2 p-3 bg-[#C97B4A]/10 border border-[#C97B4A]/30 rounded-xl text-xs font-medium text-[#C97B4A]">
+              <div className="flex items-center gap-2 p-3 bg-[#C97B4A]/10 border border-[#C97B4A]/30 dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15 rounded-xl text-xs font-medium text-[#C97B4A] dark:text-[#E58A54]">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                 Camp Title *
               </label>
               <input
@@ -142,29 +142,29 @@ export default function AnnouncementManager() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Free Hypertension & Diabetes Screening Camp"
-                className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                 >
-                  <option value="health_camp" className="bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA]">Health Camp / Diagnostic</option>
-                  <option value="vaccination" className="bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA]">Vaccination &amp; Immunization</option>
-                  <option value="awareness" className="bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA]">Awareness &amp; Education</option>
-                  <option value="maternal" className="bg-white dark:bg-[#222722] text-[#22291F] dark:text-[#F5F1EA]">Maternal &amp; Child Health</option>
+                  <option value="health_camp" className="bg-white dark:bg-[#242C24] text-[#22291F] dark:text-[#FAF7F2]">Health Camp / Diagnostic</option>
+                  <option value="vaccination" className="bg-white dark:bg-[#242C24] text-[#22291F] dark:text-[#FAF7F2]">Vaccination &amp; Immunization</option>
+                  <option value="awareness" className="bg-white dark:bg-[#242C24] text-[#22291F] dark:text-[#FAF7F2]">Awareness &amp; Education</option>
+                  <option value="maternal" className="bg-white dark:bg-[#242C24] text-[#22291F] dark:text-[#FAF7F2]">Maternal &amp; Child Health</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Date of Event *
                 </label>
                 <input
@@ -172,12 +172,12 @@ export default function AnnouncementManager() {
                   required
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Location / Venue *
                 </label>
                 <input
@@ -186,13 +186,13 @@ export default function AnnouncementManager() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="e.g. Community Center Hall B, Sector 4"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                 Description &amp; Health Objectives *
               </label>
               <textarea
@@ -201,13 +201,13 @@ export default function AnnouncementManager() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe the medical services, target demographic, and free facilities provided..."
-                className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Target Group
                 </label>
                 <input
@@ -215,12 +215,12 @@ export default function AnnouncementManager() {
                   value={targetGroup}
                   onChange={(e) => setTargetGroup(e.target.value)}
                   placeholder="e.g. Senior Citizens (45+ yrs) or Mothers & Infants"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                   Organizer / Lead Unit
                 </label>
                 <input
@@ -228,13 +228,13 @@ export default function AnnouncementManager() {
                   value={organizer}
                   onChange={(e) => setOrganizer(e.target.value)}
                   placeholder="e.g. Apna Community Outreach Team"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl text-sm text-[#22291F] dark:text-[#F5F1EA] placeholder-[#8E8E84] dark:placeholder-[#71806F] focus:outline-none focus:border-[#2D6A4F] focus:ring-1 focus:ring-[#2D6A4F] transition-all"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] focus:ring-1 focus:ring-[#2D6A4F] dark:focus:ring-[#52B788] transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#9EAA9A] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
                 UN SDG Alignment Tags
               </label>
               <div className="flex flex-wrap gap-2">
@@ -245,9 +245,9 @@ export default function AnnouncementManager() {
                       type="button"
                       key={tag}
                       onClick={() => toggleTag(tag)}
-                      className={`px-3 py-1 rounded-lg text-xs font-semibold border transition-all ${isSelected
-                        ? 'bg-[#2D6A4F] text-[#F5F1EA] border-[#2D6A4F] shadow-xs'
-                        : 'bg-[#FAF7F2] dark:bg-[#1A1D19] border-[#D8CEB3] dark:border-[#2D352C] text-[#6B6B63] dark:text-[#9EAA9A] hover:text-[#22291F] dark:hover:text-[#F5F1EA] hover:border-[#2D6A4F]/40'
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${isSelected
+                        ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788] shadow-xs'
+                        : 'bg-[#FAF7F2] dark:bg-[#242C24] border-[#D8CEB3] dark:border-[#445644] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/50'
                         }`}
                     >
                       {tag}
@@ -261,14 +261,14 @@ export default function AnnouncementManager() {
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="px-4 py-2 text-xs font-semibold text-[#6B6B63] hover:text-[#22291F] hover:bg-[#FAF7F2] dark:text-[#9EAA9A] dark:hover:text-[#F5F1EA] dark:hover:bg-[#1A1D19] border border-[#D8CEB3] dark:border-[#2D352C] rounded-xl transition-colors"
+                className="px-4 py-2 text-xs font-semibold text-[#6B6B63] hover:text-[#22291F] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] dark:hover:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-50"
+                className="px-5 py-2 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {loading ? 'Publishing...' : 'Publish Camp Announcement'}
               </button>
@@ -279,22 +279,22 @@ export default function AnnouncementManager() {
 
       {/* Announcements List */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">Active Health Camps ({announcements.length})</h2>
+        <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">Active Health Camps ({announcements.length})</h2>
 
         {announcements.length === 0 ? (
-          <div className="bg-[#FAF7F2] dark:bg-[#222722] rounded-3xl border border-dashed border-[#D8CEB3] dark:border-[#2D352C] p-12 text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
+          <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-3xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-4">
+            <div className="w-14 h-14 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
               <Megaphone className="w-7 h-7" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">No Announcements Published Yet</h3>
-              <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] max-w-sm mx-auto mt-1">
+              <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">No Announcements Published Yet</h3>
+              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] max-w-sm mx-auto mt-1">
                 Share free clinical screening camps, vaccination drives, or health education seminars with your community.
               </p>
             </div>
             <button
               onClick={() => setShowAddForm(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] text-[#F5F1EA] text-xs font-bold rounded-xl shadow-xs transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Publish First Health Camp</span>
@@ -303,12 +303,12 @@ export default function AnnouncementManager() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {announcements.map((ann) => (
-              <div key={ann.id} className="bg-white dark:bg-[#222722] rounded-2xl border border-[#E6DFC6] dark:border-[#2D352C] p-5 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 transition-colors">
+              <div key={ann.id} className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 transition-colors">
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex flex-wrap gap-1.5">
                       {ann.sdgTags?.map(tag => (
-                        <span key={tag} className="px-2.5 py-0.5 bg-[#2D6A4F]/10 dark:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#2D6A4F]/30 rounded-md text-[10px] font-bold">
+                        <span key={tag} className="px-2.5 py-0.5 bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 rounded-md text-[10px] font-bold">
                           {tag}
                         </span>
                       ))}
@@ -320,16 +320,16 @@ export default function AnnouncementManager() {
                         }
                       }}
                       title="Delete Announcement"
-                      className="p-1.5 text-[#8E8E84] dark:text-[#71806F] hover:text-[#C97B4A] hover:bg-[#C97B4A]/10 rounded-lg transition-colors"
+                      className="p-1.5 text-[#8E8E84] dark:text-[#94A493] hover:text-[#C97B4A] dark:hover:text-[#E58A54] hover:bg-[#C97B4A]/10 rounded-lg transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#22291F] dark:text-[#F5F1EA] font-heading">{ann.title}</h3>
-                  <p className="text-xs text-[#6B6B63] dark:text-[#9EAA9A] leading-relaxed">{ann.description}</p>
+                  <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{ann.title}</h3>
+                  <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">{ann.description}</p>
 
-                  <div className="pt-2 border-t border-[#E6DFC6] dark:border-[#2D352C] flex flex-wrap gap-4 text-xs text-[#6B6B63] dark:text-[#9EAA9A]">
+                  <div className="pt-2 border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex flex-wrap gap-4 text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
                     <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" /> {ann.date}</span>
                     <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" /> {ann.location}</span>
                   </div>
