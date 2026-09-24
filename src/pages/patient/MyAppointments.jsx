@@ -4,6 +4,7 @@ import { useData } from '../../context/DataContext';
 import TokenSlipModal from '../../components/patient/TokenSlipModal';
 import BookAppointmentModal from '../../components/patient/BookAppointmentModal';
 import PrescriptionModal from '../../components/patient/PrescriptionModal';
+import ConfirmModal from '../../components/common/ConfirmModal';
 import { 
   Ticket, 
   Plus, 
@@ -21,6 +22,7 @@ export default function MyAppointments() {
   const [selectedSlipAppointment, setSelectedSlipAppointment] = useState(null);
   const [selectedPrescription, setSelectedPrescription] = useState(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [cancelAptTarget, setCancelAptTarget] = useState(null);
 
   // Filter for this patient
   const myAppointments = appointments.filter(
@@ -30,10 +32,8 @@ export default function MyAppointments() {
   const activeAppointments = myAppointments.filter(a => a.status === 'pending');
   const pastAppointments = myAppointments.filter(a => a.status === 'done' || a.status === 'cancelled');
 
-  const handleCancel = (id) => {
-    if (window.confirm("Are you sure you want to cancel this appointment token?")) {
-      cancelAppointment(id);
-    }
+  const handleCancel = (apt) => {
+    setCancelAptTarget(apt);
   };
 
   return (
@@ -152,7 +152,7 @@ export default function MyAppointments() {
                       <span>View Token Slip</span>
                     </button>
                     <button
-                      onClick={() => handleCancel(apt.id)}
+                      onClick={() => handleCancel(apt)}
                       className="px-3 py-2 text-xs font-semibold text-[#6B6B63] hover:text-[#C97B4A] hover:bg-[#C97B4A]/10 rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] dark:text-[#C4CFC3] dark:hover:text-[#E58A54] transition-colors cursor-pointer"
                     >
                       Cancel
@@ -281,6 +281,23 @@ export default function MyAppointments() {
           }}
         />
       )}
+
+      {/* Cancel Appointment Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!cancelAptTarget}
+        onClose={() => setCancelAptTarget(null)}
+        onConfirm={async () => {
+          if (cancelAptTarget) {
+            await cancelAppointment(cancelAptTarget.id);
+            setCancelAptTarget(null);
+          }
+        }}
+        title="Cancel Appointment Token"
+        message={`Are you sure you want to cancel token ${cancelAptTarget?.tokenNumber} with ${cancelAptTarget?.doctorName}? You will lose your current spot in the OPD queue.`}
+        confirmText="Yes, Cancel Token"
+        cancelText="Keep Token"
+        type="warning"
+      />
 
     </div>
   );

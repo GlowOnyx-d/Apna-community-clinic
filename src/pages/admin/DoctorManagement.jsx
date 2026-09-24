@@ -18,6 +18,8 @@ import {
   Key
 } from 'lucide-react';
 
+import ConfirmModal from '../../components/common/ConfirmModal';
+
 const DEFAULT_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const DEFAULT_SLOTS = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "02:00 PM", "02:30 PM", "03:30 PM"];
 
@@ -38,6 +40,7 @@ export default function DoctorManagement() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [doctorToDelete, setDoctorToDelete] = useState(null);
 
   // Editing Doctor state
   const [editingDoctor, setEditingDoctor] = useState(null);
@@ -468,11 +471,7 @@ export default function DoctorManagement() {
                       <span>Edit Schedule</span>
                     </button>
                     <button
-                      onClick={() => {
-                        if (window.confirm(`Are you sure you want to remove ${doctor.name} from the clinic?`)) {
-                          deleteDoctor(doctor.id);
-                        }
-                      }}
+                      onClick={() => setDoctorToDelete(doctor)}
                       className="p-1.5 text-[#8E8E84] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg border border-[#D8CEB3] dark:border-[#445644] transition-colors cursor-pointer"
                       title="Remove Doctor"
                     >
@@ -576,6 +575,22 @@ export default function DoctorManagement() {
         </div>
       )}
 
+      {/* Delete Doctor Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!doctorToDelete}
+        onClose={() => setDoctorToDelete(null)}
+        onConfirm={async () => {
+          if (doctorToDelete) {
+            await deleteDoctor(doctorToDelete.id);
+            setDoctorToDelete(null);
+          }
+        }}
+        title="Remove Doctor"
+        message={`Are you sure you want to remove ${doctorToDelete?.name || 'this doctor'} from the clinic directory? Their consultation slots will no longer be available.`}
+        confirmText="Yes, Remove"
+        cancelText="Cancel"
+        type="danger"
+      />
     </div>
   );
 }

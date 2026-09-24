@@ -33,7 +33,7 @@
   {
     "uid": "usr_patient_maya",
     "name": "Maya Sharma",
-    "email": "patient.maya@example.com",
+    "email": "maya.sharma@example.com",
     "role": "patient",
     "phone": "+91 98765 01234",
     "age": 29,

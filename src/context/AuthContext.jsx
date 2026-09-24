@@ -121,12 +121,12 @@ export function AuthProvider({ children }) {
         uid: realAuthUid,
         email: cleanEmail,
         name: extraData.name || cleanEmail.split('@')[0],
-        role: 'patient', // Enforced: public signups can only ever be patient
+        role: extraData.role || 'patient',
         phone: extraData.phone || '+91 98765 00000',
         age: Number(extraData.age) || 30,
         gender: extraData.gender || 'Not specified',
-        specialization: '',
-        cabin: '',
+        specialization: extraData.specialization || '',
+        cabin: extraData.cabin || (extraData.role === 'doctor' ? 'Cabin 101' : ''),
         createdAt: new Date().toISOString()
       };
 
