@@ -11,6 +11,7 @@ import {
   AlertCircle,
   Sparkles
 } from 'lucide-react';
+import HealthcareBackground from '../../components/common/HealthcareBackground';
 
 export default function InitialSetup() {
   const [name, setName] = useState('');
@@ -53,8 +54,9 @@ export default function InitialSetup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-[#FAF7F2] dark:bg-[#151915]">
-      <div className="w-full max-w-lg">
+    <div className="min-h-screen flex items-center justify-center p-4 py-12 relative overflow-hidden">
+      <HealthcareBackground />
+      <div className="w-full max-w-lg relative z-10">
 
         {/* Header Branding */}
         <div className="text-center mb-6">

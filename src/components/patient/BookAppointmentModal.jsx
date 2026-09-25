@@ -10,6 +10,7 @@ import {
   ChevronRight, 
   AlertCircle 
 } from 'lucide-react';
+import { getDoctorAvatar, getDoctorFallbackAvatar } from '../../utils/doctorVisuals';
 
 export default function BookAppointmentModal({ initialDoctor = null, onClose, onSuccess }) {
   const { userProfile } = useAuth();
@@ -148,11 +149,11 @@ export default function BookAppointmentModal({ initialDoctor = null, onClose, on
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <img 
-                        src={docItem.avatar || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100"} 
+                        src={getDoctorAvatar(docItem)} 
                         alt={docItem.name} 
                         onError={(e) => {
                           e.currentTarget.onerror = null;
-                          e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23FAF7F2' stroke='%232D6A4F' stroke-width='1.5'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 1 0-16 0'/%3E%3C/svg%3E";
+                          e.currentTarget.src = getDoctorFallbackAvatar(docItem.name);
                         }}
                         className="w-8 h-8 rounded-full object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#151915]"
                       />

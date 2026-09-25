@@ -64,7 +64,7 @@ export default function LandingPage() {
       nextToken: 'TK-10',
       estWait: '~12 mins',
       slotsLeft: 4,
-      avatar: 'https://images.unsplash.com/photo-1594824813580-b2f7685600cb?w=100'
+      avatar: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=100'
     },
     {
       id: 'dental',
@@ -75,7 +75,7 @@ export default function LandingPage() {
       nextToken: 'TK-07',
       estWait: '~15 mins',
       slotsLeft: 3,
-      avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100'
+      avatar: 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=100'
     },
     {
       id: 'diagnostic',
@@ -111,7 +111,7 @@ export default function LandingPage() {
       cabin: 'Cabin 102',
       experience: '9+ yrs',
       days: ['Mon', 'Wed', 'Fri', 'Sat'],
-      avatar: 'https://images.unsplash.com/photo-1594824813580-b2f7685600cb?w=100'
+      avatar: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=100'
     },
     {
       id: 'doc_3',
@@ -120,7 +120,7 @@ export default function LandingPage() {
       cabin: 'Cabin 103',
       experience: '8+ yrs',
       days: ['Tue', 'Thu', 'Sat'],
-      avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100'
+      avatar: 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=100'
     }
   ];
 

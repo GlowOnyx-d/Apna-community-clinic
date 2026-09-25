@@ -8,6 +8,7 @@ import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import Toast from './components/common/Toast';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import HealthcareBackground from './components/common/HealthcareBackground';
 
 import InitialSetup from './pages/setup/InitialSetup';
 import LandingPage from './pages/LandingPage';
@@ -54,19 +55,23 @@ function AppRoutes() {
   // Full-screen Waiting Room TV kiosk mode without standard website headers/footers
   if (isDisplayMode) {
     return (
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/display" element={<LiveQueueDisplay />} />
-        </Routes>
-        <Toast />
-      </Suspense>
+      <div className="relative min-h-screen">
+        <HealthcareBackground />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/display" element={<LiveQueueDisplay />} />
+          </Routes>
+          <Toast />
+        </Suspense>
+      </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#22291F] dark:bg-[#151915] dark:text-[#FAF7F2] font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F8F6F1] text-[#22291F] dark:bg-[#131713] dark:text-[#FAF7F2] font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] transition-colors duration-200 relative overflow-x-hidden">
+      <HealthcareBackground />
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Public Routes */}

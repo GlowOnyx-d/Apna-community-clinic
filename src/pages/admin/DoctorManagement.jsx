@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 import ConfirmModal from '../../components/common/ConfirmModal';
+import { getDoctorAvatar, getDoctorFallbackAvatar, getSpecialtyConfig } from '../../utils/doctorVisuals';
 
 const DEFAULT_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const DEFAULT_SLOTS = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "02:00 PM", "02:30 PM", "03:30 PM"];
@@ -400,20 +401,27 @@ export default function DoctorManagement() {
                 className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 transition-colors"
               >
                 <div>
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wide border ${getSpecialtyConfig(doctor.specialization).badgeClass}`}>
+                      {getSpecialtyConfig(doctor.specialization).label}
+                    </span>
+                    <span className="text-[11px] text-[#8E8E84] dark:text-[#94A493]">{doctor.cabin || 'Cabin 101'}</span>
+                  </div>
+
                   <div className="flex items-start gap-3.5 mb-3">
                     <img
-                      src={doctor.avatar || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100"}
+                      src={getDoctorAvatar(doctor)}
                       alt={doctor.name}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23FAF7F2' stroke='%232D6A4F' stroke-width='1.5'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 1 0-16 0'/%3E%3C/svg%3E";
+                        e.currentTarget.src = getDoctorFallbackAvatar(doctor.name);
                       }}
                       className="w-12 h-12 rounded-2xl object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] shrink-0 bg-[#FAF7F2] dark:bg-[#242C24]"
                     />
-                    <div>
+                    <div className="min-w-0">
                       <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm font-heading">{doctor.name}</h3>
-                      <p className="text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">{doctor.specialization}</p>
-                      <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493] mt-0.5">{doctor.cabin || 'Cabin 101'}</p>
+                      <p className="text-xs font-medium text-[#2D6A4F] dark:text-[#52B788] truncate">{doctor.specialization}</p>
+                      <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493] mt-0.5">{doctor.email}</p>
                     </div>
                   </div>
 

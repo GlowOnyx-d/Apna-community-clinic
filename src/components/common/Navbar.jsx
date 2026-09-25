@@ -92,7 +92,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 dark:bg-[#151915]/95 backdrop-blur-md border-b border-[#E6DFC6] dark:border-[#2F3B2F] transition-colors duration-200">
+    <header className="sticky top-0 z-40 bg-[#F8F6F1]/85 dark:bg-[#131713]/90 backdrop-blur-md border-b border-[#E6DFC6] dark:border-[#2F3B2F] transition-colors duration-200">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3 lg:gap-6">
 

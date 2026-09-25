@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -16,6 +16,11 @@ import {
   Megaphone,
   MapPin
 } from 'lucide-react';
+import { 
+  getDoctorAvatar, 
+  getDoctorFallbackAvatar, 
+  getSpecialtyConfig 
+} from '../../utils/doctorVisuals';
 
 export default function PatientDashboard() {
   const { userProfile } = useAuth();
@@ -25,6 +30,8 @@ export default function PatientDashboard() {
   const [selectedDoctorForBooking, setSelectedDoctorForBooking] = useState(null);
   const [activeSlipAppointment, setActiveSlipAppointment] = useState(null);
 
+  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
+
   // Filter appointments for current patient
   const myAppointments = appointments.filter(
     a => a.patientId === userProfile?.uid || a.patientEmail === userProfile?.email
@@ -33,6 +40,40 @@ export default function PatientDashboard() {
   const pendingAppointments = myAppointments.filter(a => a.status === 'pending');
   const nextAppointment = pendingAppointments[0] || null;
   const completedAppointments = myAppointments.filter(a => a.status === 'done');
+
+  // Compute live availability and highlight doctor(s) with highest remaining daily capacity
+  const doctorsWithAvailability = useMemo(() => {
+    const list = doctors.map(doc => {
+      const bookedToday = appointments.filter(a => {
+        if (a.date !== todayStr || a.status === 'cancelled') return false;
+        if (a.doctorId && doc.id && a.doctorId === doc.id) return true;
+        if (a.doctorEmail && doc.email && a.doctorEmail.toLowerCase() === doc.email.toLowerCase()) return true;
+        if (a.doctorName && doc.name) {
+          const aName = a.doctorName.replace(/^Dr\.\s*/i, '').trim().toLowerCase();
+          const dName = doc.name.replace(/^Dr\.\s*/i, '').trim().toLowerCase();
+          return aName === dName;
+        }
+        return false;
+      }).length;
+
+      const totalSlots = doc.availableSlots?.length || 4;
+      const remainingToday = Math.max(0, totalSlots - bookedToday);
+
+      return {
+        ...doc,
+        bookedToday,
+        totalSlots,
+        remainingToday
+      };
+    });
+
+    const maxRemaining = Math.max(0, ...list.map(d => d.remainingToday));
+
+    return list.map(doc => ({
+      ...doc,
+      hasMoreAvailability: doc.remainingToday === maxRemaining && maxRemaining > 0
+    }));
+  }, [doctors, appointments, todayStr]);
 
   const handleOpenBooking = (doc = null) => {
     setSelectedDoctorForBooking(doc);
@@ -175,68 +216,90 @@ export default function PatientDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {doctors.map((doctor) => (
-              <div 
-                key={doctor.id}
-                className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#445644] p-5 transition-all flex flex-col justify-between shadow-sm"
-              >
-                <div>
-                  <div className="flex items-start gap-3 mb-3.5">
-                    <img 
-                      src={doctor.avatar || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100"} 
-                      alt={doctor.name}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23FAF7F2' stroke='%232D6A4F' stroke-width='1.5'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 1 0-16 0'/%3E%3C/svg%3E";
-                      }}
-                      className="w-12 h-12 rounded-xl object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] shrink-0 bg-[#FAF7F2] dark:bg-[#242C24]"
-                    />
-                    <div>
-                      <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm font-heading">{doctor.name}</h3>
-                      <p className="text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">{doctor.specialization}</p>
-                      <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">{doctor.cabin || 'Cabin 101'}</p>
-                    </div>
-                  </div>
-
-                  <div className="py-2.5 border-y border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5 my-3 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Available Slots:</span>
-                      <span className="font-medium text-[#22291F] dark:text-[#FAF7F2]">{doctor.availableSlots?.length || 4} slots / day</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Experience:</span>
-                      <span className="font-medium text-[#22291F] dark:text-[#FAF7F2]">{doctor.experience || '10+ yrs'}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Consultation:</span>
-                      <span className="font-semibold text-[#2D6A4F] dark:text-[#52B788]">Free (Community Care)</span>
-                    </div>
-                  </div>
-
-                  {/* Available Days Tags */}
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {(doctor.availableDays || ["Mon", "Tue", "Wed", "Thu", "Fri"]).slice(0, 4).map(day => (
-                      <span key={day} className="px-2 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] text-[#6B6B63] dark:text-[#C4CFC3] border border-[#E6DFC6] dark:border-[#2F3B2F] rounded-md text-[10px] font-medium">
-                        {day.slice(0, 3)}
-                      </span>
-                    ))}
-                    {doctor.availableDays?.length > 4 && (
-                      <span className="px-1.5 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] text-[#8E8E84] dark:text-[#94A493] rounded-md text-[10px]">
-                        +{doctor.availableDays.length - 4}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleOpenBooking(doctor)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-semibold text-xs rounded-xl transition-colors shadow-xs cursor-pointer"
+            {doctorsWithAvailability.map((doctor) => {
+              const specialty = getSpecialtyConfig(doctor.specialization);
+              return (
+                <div 
+                  key={doctor.id}
+                  className={`bg-white dark:bg-[#1C221C] rounded-2xl border transition-all flex flex-col justify-between shadow-sm p-5 relative ${
+                    doctor.hasMoreAvailability
+                      ? 'border-[#2D6A4F]/35 dark:border-[#52B788]/35 hover:border-[#2D6A4F]/60 dark:hover:border-[#52B788]/60 shadow-xs'
+                      : 'border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#445644]'
+                  }`}
                 >
-                  <Ticket className="w-3.5 h-3.5" />
-                  <span>Book Appointment &amp; Token</span>
-                </button>
-              </div>
-            ))}
+                  <div>
+                    {/* Top Row: Specialty Badge & Subtle Availability Tag */}
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wide border ${specialty.badgeClass}`}>
+                        {specialty.label}
+                      </span>
+                      {doctor.hasMoreAvailability && (
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/15 dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#2D6A4F] dark:bg-[#52B788]"></span>
+                          More Availability
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-start gap-3 mb-3.5">
+                      <img 
+                        src={getDoctorAvatar(doctor)} 
+                        alt={doctor.name}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = getDoctorFallbackAvatar(doctor.name);
+                        }}
+                        className="w-12 h-12 rounded-xl object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] shrink-0 bg-[#FAF7F2] dark:bg-[#242C24]"
+                      />
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm font-heading">{doctor.name}</h3>
+                        <p className="text-xs font-medium text-[#2D6A4F] dark:text-[#52B788] truncate">{doctor.specialization}</p>
+                        <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">{doctor.cabin || 'Cabin 101'}</p>
+                      </div>
+                    </div>
+
+                    <div className="py-2.5 border-y border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5 my-3 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Available Slots:</span>
+                        <span className="font-medium text-[#22291F] dark:text-[#FAF7F2]">
+                          {doctor.remainingToday} open today <span className="text-[#8E8E84] dark:text-[#94A493]">({doctor.totalSlots} / day)</span>
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Experience:</span>
+                        <span className="font-medium text-[#22291F] dark:text-[#FAF7F2]">{doctor.experience || '10+ yrs'}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Consultation:</span>
+                        <span className="font-semibold text-[#2D6A4F] dark:text-[#52B788]">Free (Community Care)</span>
+                      </div>
+                    </div>
+
+                    {/* Available Days Tags */}
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {(doctor.availableDays || ["Mon", "Tue", "Wed", "Thu", "Fri"]).slice(0, 4).map(day => (
+                        <span key={day} className="px-2 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] text-[#6B6B63] dark:text-[#C4CFC3] border border-[#E6DFC6] dark:border-[#2F3B2F] rounded-md text-[10px] font-medium">
+                          {day.slice(0, 3)}
+                        </span>
+                      ))}
+                      {doctor.availableDays?.length > 4 && (
+                        <span className="px-1.5 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] text-[#8E8E84] dark:text-[#94A493] rounded-md text-[10px]">
+                          +{doctor.availableDays.length - 4}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleOpenBooking(doctor)}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-semibold text-xs rounded-xl transition-colors shadow-xs cursor-pointer"
+                  >
+                    <Ticket className="w-3.5 h-3.5" />
+                    <span>Book Appointment &amp; Token</span>
+                  </button>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

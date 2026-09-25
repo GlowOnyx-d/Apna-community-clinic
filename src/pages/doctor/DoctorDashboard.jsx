@@ -74,6 +74,52 @@ export default function DoctorDashboard() {
   const pendingQueue = doctorAppointments.filter(a => a.status === 'pending');
   const completedVisits = doctorAppointments.filter(a => a.status === 'done');
 
+  // Match active doctor profile to read their daily slot capacity
+  const activeDoctor = useMemo(() => {
+    if (role === 'admin') {
+      if (adminSelectedDoctorId !== 'all') {
+        return doctors.find(d => d.id === adminSelectedDoctorId) || null;
+      }
+      return null;
+    }
+    return (
+      doctors.find(d => matchDoctor({ doctorId: d.id, doctorEmail: d.email, doctorName: d.name }, userProfile)) ||
+      doctors.find(d => d.email && userProfile?.email && d.email.toLowerCase() === userProfile.email.toLowerCase()) ||
+      null
+    );
+  }, [doctors, role, userProfile, adminSelectedDoctorId]);
+
+  // Appointments specifically scheduled for today to monitor daily schedule utilization
+  const todayDoctorAppointments = useMemo(() => {
+    return appointments.filter(apt => {
+      if (apt.date !== todayStr) return false;
+      if (role === 'admin') {
+        if (adminSelectedDoctorId !== 'all' && apt.doctorId !== adminSelectedDoctorId) return false;
+        return true;
+      }
+      return matchDoctor(apt, userProfile);
+    });
+  }, [appointments, role, userProfile, adminSelectedDoctorId, todayStr]);
+
+  const todayBookedCount = todayDoctorAppointments.length;
+  const todayCompletedCount = todayDoctorAppointments.filter(a => a.status === 'done').length;
+  const todayPendingCount = todayDoctorAppointments.filter(a => a.status === 'pending').length;
+
+  const maxDailySlots = useMemo(() => {
+    if (activeDoctor) {
+      return activeDoctor.maxSlotsPerDay || activeDoctor.availableSlots?.length || 6;
+    }
+    if (role === 'admin' && adminSelectedDoctorId === 'all') {
+      const sum = doctors.reduce((acc, d) => acc + (d.maxSlotsPerDay || d.availableSlots?.length || 4), 0);
+      return sum > 0 ? sum : 20;
+    }
+    return 6;
+  }, [activeDoctor, role, adminSelectedDoctorId, doctors]);
+
+  const bookedSlotsPct = maxDailySlots > 0 ? Math.round((todayBookedCount / maxDailySlots) * 100) : 0;
+  const completionPct = todayBookedCount > 0 ? Math.round((todayCompletedCount / todayBookedCount) * 100) : 0;
+  const queuePct = todayBookedCount > 0 ? Math.round((todayPendingCount / todayBookedCount) * 100) : 0;
+
   const handleOpenConsultation = (apt) => {
     setSelectedAppointment(apt);
     setDiagnosis(apt.diagnosis || '');
@@ -119,35 +165,93 @@ export default function DoctorDashboard() {
         </div>
       </div>
 
-      {/* Metrics Row */}
+      {/* Metrics Row with Lightweight Progress Indicators */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#C97B4A]/12 dark:bg-[#E58A54]/18 text-[#C97B4A] dark:text-[#E58A54] border border-[#C97B4A]/25 dark:border-[#E58A54]/30 flex items-center justify-center shrink-0">
-            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+        {/* Card 1: In Queue */}
+        <div className="bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#C97B4A]/12 dark:bg-[#E58A54]/18 text-[#C97B4A] dark:text-[#E58A54] border border-[#C97B4A]/25 dark:border-[#E58A54]/30 flex items-center justify-center shrink-0">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">In Queue</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{pendingQueue.length}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">In Queue</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{pendingQueue.length}</p>
+
+          <div className="mt-3.5 pt-2.5 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Awaiting consult</span>
+              <span className="font-semibold text-[#C97B4A] dark:text-[#E58A54]">
+                {todayBookedCount > 0 ? `${queuePct}% today` : `${pendingQueue.length} waiting`}
+              </span>
+            </div>
+            <div className="w-full h-1.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-full overflow-hidden border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+              <div 
+                className="h-full bg-[#C97B4A] dark:bg-[#E58A54] rounded-full transition-all duration-500" 
+                style={{ width: `${Math.min(100, todayBookedCount > 0 ? queuePct : (pendingQueue.length > 0 ? 50 : 0))}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+        {/* Card 2: Completed */}
+        <div className="bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Completed</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{completedVisits.length}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Completed</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{completedVisits.length}</p>
+
+          <div className="mt-3.5 pt-2.5 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Consultation rate</span>
+              <span className="font-semibold text-[#2D6A4F] dark:text-[#52B788]">
+                {todayBookedCount > 0 ? `${completionPct}% completed` : `${completedVisits.length} total`}
+              </span>
+            </div>
+            <div className="w-full h-1.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-full overflow-hidden border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+              <div 
+                className="h-full bg-[#2D6A4F] dark:bg-[#52B788] rounded-full transition-all duration-500" 
+                style={{ width: `${Math.min(100, todayBookedCount > 0 ? completionPct : (completedVisits.length > 0 ? 100 : 0))}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4">
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
-            <Ticket className="w-4 h-4 sm:w-5 sm:h-5" />
+        {/* Card 3: Total Appointments & Daily Slot Capacity */}
+        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
+              <Ticket className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Total Appointments</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{doctorAppointments.length}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Total Appointments</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{doctorAppointments.length}</p>
+
+          <div className="mt-3.5 pt-2.5 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Today's schedule</span>
+              <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">
+                {todayBookedCount} of {maxDailySlots} slots booked
+              </span>
+            </div>
+            <div className="w-full h-1.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-full overflow-hidden border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+              <div 
+                className={`h-full rounded-full transition-all duration-500 ${
+                  bookedSlotsPct >= 100 
+                    ? 'bg-[#C97B4A] dark:bg-[#E58A54]' 
+                    : 'bg-[#2D6A4F] dark:bg-[#52B788]'
+                }`} 
+                style={{ width: `${Math.min(100, bookedSlotsPct)}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>

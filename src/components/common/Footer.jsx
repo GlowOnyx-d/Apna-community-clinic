@@ -13,10 +13,10 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F0EBE1] dark:bg-[#121512] border-t border-[#E4DCCE] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] transition-colors mt-auto">
+    <footer className="bg-[#F8F6F1]/80 dark:bg-[#131713]/85 backdrop-blur-md border-t border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] transition-colors mt-auto relative z-10">
 
       {/* Top Helpline Bar */}
-      <div className="border-b border-[#E4DCCE] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915]">
+      <div className="border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#F8F6F1]/50 dark:bg-[#131713]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
 

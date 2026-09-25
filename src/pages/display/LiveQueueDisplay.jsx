@@ -18,6 +18,7 @@ import {
   QrCode
 } from 'lucide-react';
 import MobileQrModal from '../../components/common/MobileQrModal';
+import HealthcareBackground from '../../components/common/HealthcareBackground';
 
 export default function LiveQueueDisplay() {
   const { doctors, appointments, announcements } = useData();
@@ -194,7 +195,8 @@ export default function LiveQueueDisplay() {
   }, [doctors, pendingAppointments]);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#22291F] dark:bg-[#151915] dark:text-[#FAF7F2] flex flex-col justify-between selection:bg-[#2D6A4F] selection:text-[#FAF7F2] font-sans overflow-x-hidden transition-colors duration-200">
+    <div className="min-h-screen bg-[#F8F6F1] text-[#22291F] dark:bg-[#131713] dark:text-[#FAF7F2] flex flex-col justify-between selection:bg-[#2D6A4F] selection:text-[#FAF7F2] font-sans overflow-x-hidden transition-colors duration-200 relative">
+      <HealthcareBackground />
 
       {/* Top Header Bar */}
       <header className="border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-white/95 dark:bg-[#1C221C]/95 px-3 sm:px-6 py-3 sm:py-4 backdrop-blur-md sticky top-0 z-30 transition-colors">
