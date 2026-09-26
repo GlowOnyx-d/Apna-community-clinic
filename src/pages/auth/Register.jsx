@@ -31,7 +31,6 @@ export default function Register() {
   const [bloodGroup, setBloodGroup] = useState('O+');
   const [specialization, setSpecialization] = useState('General Medicine');
   const [cabin, setCabin] = useState('Cabin 101');
-  const [department, setDepartment] = useState('OPD Operations');
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -78,24 +77,28 @@ export default function Register() {
       return;
     }
 
+    if (role === 'admin') {
+      setError('Administrative accounts cannot be self-registered publicly. They must be provisioned directly by the Clinic Administrator.');
+      return;
+    }
+
     try {
       setError('');
       setLoading(true);
+      const safeRole = role === 'doctor' ? 'doctor' : 'patient';
       const user = await signup(cleanEmail, password, {
-        name: role === 'doctor' && !cleanName.toLowerCase().startsWith('dr.') ? `Dr. ${cleanName}` : cleanName,
-        role,
+        name: safeRole === 'doctor' && !cleanName.toLowerCase().startsWith('dr.') ? `Dr. ${cleanName}` : cleanName,
+        role: safeRole,
         phone: phone.trim() || '+91 98765 00000',
         age: Number(age) || 28,
         gender,
-        bloodGroup: role === 'patient' ? bloodGroup : '',
-        specialization: role === 'doctor' ? (specialization.trim() || 'General Physician') : '',
-        cabin: role === 'doctor' ? (cabin.trim() || 'Cabin 101') : '',
-        department: role === 'admin' ? (department.trim() || 'Clinic Operations') : ''
+        bloodGroup: safeRole === 'patient' ? bloodGroup : '',
+        specialization: safeRole === 'doctor' ? (specialization.trim() || 'General Physician') : '',
+        cabin: safeRole === 'doctor' ? (cabin.trim() || 'Cabin 101') : ''
       });
 
       if (user.role === 'patient') navigate('/patient');
       else if (user.role === 'doctor') navigate('/doctor');
-      else if (user.role === 'admin') navigate('/admin');
       else navigate('/');
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
@@ -195,7 +198,7 @@ export default function Register() {
                 Join the Apna Community Network
               </h2>
               <p className="text-xs sm:text-sm text-[#FAF7F2]/80 mt-2 font-normal leading-relaxed">
-                Whether you are seeking consultations, managing clinic visits, or volunteering as healthcare staff, Apna Clinic connects you in seconds.
+                Whether you are seeking consultations, booking doctor appointments, or accessing health camp care, Apna Clinic connects you in seconds.
               </p>
             </div>
 
@@ -278,16 +281,16 @@ export default function Register() {
               </div>
             </div>
 
-            {/* Role Picker Tiles */}
-            <div className="mb-6">
-              <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-2">
+            {/* Role Picker Tiles (Only Patient & Doctor are publicly registerable) */}
+            <div className="mb-6 space-y-2.5">
+              <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider">
                 1. Select Account Type
               </label>
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setRole('patient')}
-                  className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
+                  className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
                     role === 'patient'
                       ? 'bg-gradient-to-b from-[#2D6A4F] to-[#245740] dark:from-[#357A5B] dark:to-[#2D6A4F] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788] shadow-md ring-2 ring-[#2D6A4F]/20'
                       : 'bg-[#FAF7F2] dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#52584E] dark:text-[#C4CFC3] hover:border-[#2D6A4F]/40'
@@ -296,14 +299,14 @@ export default function Register() {
                   <User className="w-5 h-5" />
                   <span className="text-xs font-bold">Patient</span>
                   <span className={`text-[10px] ${role === 'patient' ? 'text-white/80' : 'text-[#6B6B63] dark:text-[#94A493]'}`}>
-                    Book OPD Tokens
+                    Book OPD Tokens &amp; Records
                   </span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setRole('doctor')}
-                  className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
+                  className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
                     role === 'doctor'
                       ? 'bg-gradient-to-b from-[#2D6A4F] to-[#245740] dark:from-[#357A5B] dark:to-[#2D6A4F] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788] shadow-md ring-2 ring-[#2D6A4F]/20'
                       : 'bg-[#FAF7F2] dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#52584E] dark:text-[#C4CFC3] hover:border-[#2D6A4F]/40'
@@ -315,22 +318,12 @@ export default function Register() {
                     Consult &amp; Prescribe
                   </span>
                 </button>
+              </div>
 
-                <button
-                  type="button"
-                  onClick={() => setRole('admin')}
-                  className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
-                    role === 'admin'
-                      ? 'bg-gradient-to-b from-[#2D6A4F] to-[#245740] dark:from-[#357A5B] dark:to-[#2D6A4F] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788] shadow-md ring-2 ring-[#2D6A4F]/20'
-                      : 'bg-[#FAF7F2] dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#52584E] dark:text-[#C4CFC3] hover:border-[#2D6A4F]/40'
-                  }`}
-                >
-                  <ShieldCheck className="w-5 h-5" />
-                  <span className="text-xs font-bold">Admin / Staff</span>
-                  <span className={`text-[10px] ${role === 'admin' ? 'text-white/80' : 'text-[#6B6B63] dark:text-[#94A493]'}`}>
-                    Manage Clinic Ops
-                  </span>
-                </button>
+              {/* Informative Security Notice about Admin / Staff Accounts */}
+              <div className="flex items-center gap-2 p-2.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">
+                <ShieldCheck className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                <span>Admin &amp; Staff accounts are private and issued directly by the Clinic Administrator.</span>
               </div>
             </div>
 
@@ -482,21 +475,6 @@ export default function Register() {
                       className="w-full px-3 py-2 bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F]"
                     />
                   </div>
-                </div>
-              )}
-
-              {role === 'admin' && (
-                <div className="p-3.5 bg-[#FAF7F2]/80 dark:bg-[#242C24]/60 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                  <label className="block text-[11px] font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1">
-                    Clinic Department / Designation
-                  </label>
-                  <input
-                    type="text"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    placeholder="e.g. Clinic CMO, Lead Receptionist, Camp Coordinator"
-                    className="w-full px-3 py-2 bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F]"
-                  />
                 </div>
               )}
 

@@ -1,17 +1,39 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   Printer,
   Download,
   CheckCircle2,
   HeartHandshake,
-  QrCode
+  QrCode,
+  MessageSquare,
+  Smartphone
 } from 'lucide-react';
 import QRCodeImage from '../common/QRCodeImage';
+import { sendDirectSMS, formatAppointmentSMS } from '../../services/smsService';
 
 export default function TokenSlipModal({ appointment, onClose }) {
   const slipRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
+  const [recipientPhone, setRecipientPhone] = useState(appointment?.patientPhone || '');
+  const [smsSent, setSmsSent] = useState(false);
+  const [smsLoading, setSmsLoading] = useState(false);
+  const [smsDeliveryInfo, setSmsDeliveryInfo] = useState(null);
+
+  const [pdfDownloaded, setPdfDownloaded] = useState(false);
+
+  // Lock background scroll when modal is open
+  useEffect(() => {
+    if (appointment) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [appointment]);
 
   if (!appointment) return null;
 
@@ -20,34 +42,165 @@ export default function TokenSlipModal({ appointment, onClose }) {
   };
 
   const handleDownloadPDF = async () => {
-    if (!slipRef.current) return;
+    if (!appointment) return;
     try {
       setDownloading(true);
-      const [{ jsPDF }, { default: html2canvas }] = await Promise.all([
+
+      // Dynamically load jsPDF and QRCode
+      const [jspdfModule, qrcodeModule] = await Promise.all([
         import('jspdf'),
-        import('html2canvas')
+        import('qrcode')
       ]);
-      const isDarkActive = document.documentElement.classList.contains('dark');
-      const canvas = await html2canvas(slipRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: isDarkActive ? '#151915' : '#FFFFFF'
+
+      const jsPDF = jspdfModule.jsPDF || jspdfModule.default?.jsPDF || jspdfModule.default;
+      const QRCode = qrcodeModule.default || qrcodeModule;
+
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a5'
       });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a5');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
-      pdf.save(`Token_Slip_${appointment.tokenNumber}_${appointment.patientName.replace(/\s+/g, '_')}.pdf`);
+
+      // Prepare QR Code Payload & Data URL
+      const qrPayload = `APNA-CLINIC-TOKEN|${appointment.tokenNumber || 'TK'}|${appointment.patientName || 'Patient'}|${appointment.doctorName || 'Doctor'}|${appointment.date || ''}|${appointment.id || ''}`;
+      let qrDataUrl = '';
+      try {
+        qrDataUrl = await QRCode.toDataURL(qrPayload, {
+          width: 160,
+          margin: 1,
+          color: {
+            dark: '#2D6A4F',
+            light: '#FFFFFF'
+          }
+        });
+      } catch (qrErr) {
+        console.warn('QR code generation notice:', qrErr);
+      }
+
+      // 1. Header Banner
+      doc.setFillColor(45, 106, 79);
+      doc.roundedRect(12, 10, 124, 22, 2, 2, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.text('APNA COMMUNITY HEALTH CLINIC', 74, 19, { align: 'center' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text('Universal Primary Healthcare & Wellness Hub • UN SDG 3', 74, 26, { align: 'center' });
+
+      // 2. Token Card
+      doc.setFillColor(242, 248, 245);
+      doc.setDrawColor(45, 106, 79);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(12, 36, 124, 28, 2, 2, 'FD');
+      doc.setTextColor(45, 106, 79);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text('QUEUE TOKEN NUMBER', 74, 43, { align: 'center' });
+      doc.setFontSize(22);
+      doc.text(String(appointment.tokenNumber || 'TK-01'), 74, 54, { align: 'center' });
+      doc.setFontSize(7.5);
+      doc.text('CONFIRMED • PRIORITY CLINIC QUEUE', 74, 60, { align: 'center' });
+
+      // 3. Details Card
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(216, 206, 179);
+      doc.roundedRect(12, 68, 124, 60, 2, 2, 'FD');
+
+      const rows = [
+        ['Patient Name:', appointment.patientName || 'Registered Patient'],
+        ['Contact Phone:', appointment.patientPhone || recipientPhone || '+91 98765 00000'],
+        ['Consulting Doctor:', appointment.doctorName || 'General Physician'],
+        ['Specialization:', appointment.specialization || 'General OPD & Primary Care'],
+        ['Appointment Date:', appointment.date || 'Today'],
+        ['Allocated Slot:', appointment.time || 'Walk-In Queue'],
+        ['Clinic Cabin:', appointment.cabin || 'Cabin 101, Main Clinic Block'],
+        ['Token Record ID:', appointment.id || 'N/A']
+      ];
+
+      let startY = 75;
+      rows.forEach(([label, val]) => {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(107, 107, 99);
+        doc.text(label, 16, startY);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(34, 41, 31);
+        doc.text(String(val), 52, startY);
+        startY += 6.5;
+      });
+
+      // 4. Digital QR Verification Card
+      doc.setFillColor(250, 247, 242);
+      doc.setDrawColor(230, 223, 198);
+      doc.roundedRect(12, 132, 124, 32, 2, 2, 'FD');
+      if (qrDataUrl) {
+        doc.addImage(qrDataUrl, 'PNG', 16, 134, 28, 28);
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(45, 106, 79);
+      doc.text('DIGITAL TRIAGE QR VERIFICATION', 48, 142);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(80, 80, 80);
+      doc.text('Scan at clinic reception or nurse desk for instant OPD check-in.', 48, 148);
+      doc.text('100% Free Consultation • UN SDG 3 Public Health', 48, 154);
+      doc.text(`Slip Ref: ${appointment.id || 'N/A'}`, 48, 160);
+
+      // 5. Footer Instructions
+      doc.setFontSize(7.5);
+      doc.setTextColor(120, 120, 115);
+      doc.text('Please arrive 10 minutes prior to your allocated slot.', 74, 174, { align: 'center' });
+      doc.text('Show this digital token slip at the reception or nurse station.', 74, 179, { align: 'center' });
+      doc.text(`Generated on: ${new Date().toLocaleString()} | Apna Community Clinic`, 74, 185, { align: 'center' });
+
+      const safePatient = (appointment.patientName || 'Patient').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const safeToken = (appointment.tokenNumber || 'TK').replace(/[^a-zA-Z0-9_-]/g, '_');
+      doc.save(`Apna_Token_Slip_${safeToken}_${safePatient}.pdf`);
+
+      setPdfDownloaded(true);
+      setTimeout(() => setPdfDownloaded(false), 3000);
     } catch (e) {
-      console.error("PDF generation failed:", e);
+      console.error("PDF generation error:", e);
+      window.print();
     } finally {
       setDownloading(false);
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in">
+  const handleSendSMS = async () => {
+    const phone = (recipientPhone || appointment.patientPhone || '').trim();
+    if (!phone) {
+      alert('Please enter a recipient mobile number to send the SMS.');
+      return;
+    }
+
+    setSmsLoading(true);
+
+    try {
+      const smsBody = formatAppointmentSMS({ ...appointment, patientPhone: phone });
+      const result = await sendDirectSMS({
+        recipientPhone: phone,
+        message: smsBody,
+        tokenNumber: appointment.tokenNumber,
+        patientName: appointment.patientName,
+        doctorName: appointment.doctorName,
+        type: 'token_booking'
+      });
+
+      setSmsDeliveryInfo(result);
+      setSmsSent(true);
+    } catch (err) {
+      alert(err.message || 'Failed to dispatch SMS.');
+    } finally {
+      setSmsLoading(false);
+    }
+  };
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
       <div className="bg-white dark:bg-[#1C221C] rounded-2xl max-w-md w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
 
         {/* Modal Top Bar */}
@@ -118,9 +271,9 @@ export default function TokenSlipModal({ appointment, onClose }) {
             {/* QR Code Verification Section */}
             <div className="mt-4 p-3 bg-[#FAF7F2] dark:bg-[#1C221C] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center gap-3">
               <div className="p-1 bg-white rounded-lg border border-[#E6DFC6] shrink-0">
-                <QRCodeImage 
-                  value={`AROGYA-TOKEN|${appointment.tokenNumber || 'TK'}|${appointment.patientName}|${appointment.doctorName}|${appointment.date}|${appointment.id}`} 
-                  size={58} 
+                <QRCodeImage
+                  value={`AROGYA-TOKEN|${appointment.tokenNumber || 'TK'}|${appointment.patientName}|${appointment.doctorName}|${appointment.date}|${appointment.id}`}
+                  size={58}
                   darkColor="#2D6A4F"
                   alt="Token QR Code"
                 />
@@ -143,26 +296,81 @@ export default function TokenSlipModal({ appointment, onClose }) {
           </div>
         </div>
 
+        {/* Recipient Phone Input Row */}
+        <div className="px-5 py-2.5 bg-[#FAF7F2] dark:bg-[#151915] border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between gap-3 text-xs">
+          <span className="text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1.5 font-medium">
+            <Smartphone className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+            <span>SMS Phone:</span>
+          </span>
+          <input
+            type="tel"
+            value={recipientPhone}
+            onChange={(e) => {
+              setRecipientPhone(e.target.value);
+              setSmsSent(false);
+            }}
+            placeholder="+91 98765 43210"
+            className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] text-xs font-mono font-bold text-[#22291F] dark:text-[#FAF7F2] max-w-[170px] text-right focus:outline-none focus:border-[#2D6A4F]"
+          />
+        </div>
+
+        {/* In-Website Direct SMS Delivery Confirmation Banner */}
+        {smsSent && (
+          <div className="mx-5 my-2 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200 animate-in fade-in space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>SMS Dispatched Directly to {recipientPhone || appointment.patientPhone}</span>
+              </span>
+              <span className="text-[10px] font-mono text-emerald-700/80 dark:text-emerald-400">
+                {smsDeliveryInfo?.messageId || 'GATEWAY-OK'}
+              </span>
+            </div>
+            <p className="text-[11px] text-emerald-800 dark:text-emerald-300/90 leading-tight">
+              ✓ Sent directly from Apna Clinic Gateway . Please show the SMS message at the reception counter.
+            </p>
+          </div>
+        )}
+
         {/* Action Buttons */}
-        <div className="p-4 bg-[#FAF7F2] dark:bg-[#151915] border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex gap-3">
+        <div className="p-4 bg-[#FAF7F2] dark:bg-[#151915] border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex flex-wrap gap-2.5">
           <button
-            onClick={handlePrint}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] text-xs font-semibold rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] transition-colors shadow-xs cursor-pointer"
+            type="button"
+            onClick={handleSendSMS}
+            disabled={smsLoading}
+            className={`flex-1 min-w-[130px] flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer ${smsSent
+                ? 'bg-emerald-600 text-white'
+                : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
+              }`}
           >
-            <Printer className="w-4 h-4 text-[#6B6B63] dark:text-[#C4CFC3]" />
-            <span>Print Receipt</span>
+            {smsSent ? <CheckCircle2 className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
+            <span>{smsSent ? 'SMS Dispatched ✓' : (smsLoading ? 'Sending SMS...' : 'Send SMS Details')}</span>
           </button>
           <button
+            type="button"
+            onClick={handlePrint}
+            className="flex-1 min-w-[90px] flex items-center justify-center gap-2 py-2.5 px-3 bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] text-xs font-semibold rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] transition-colors shadow-xs cursor-pointer"
+          >
+            <Printer className="w-4 h-4 text-[#6B6B63] dark:text-[#C4CFC3]" />
+            <span>Print</span>
+          </button>
+          <button
+            type="button"
             onClick={handleDownloadPDF}
             disabled={downloading}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] disabled:opacity-50 text-[#FAF7F2] text-xs font-semibold rounded-xl transition-colors shadow-xs cursor-pointer"
+            className={`flex-1 min-w-[110px] flex items-center justify-center gap-2 py-2.5 px-3 border text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer ${
+              pdfDownloaded
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2]'
+            } disabled:opacity-50`}
           >
-            <Download className="w-4 h-4" />
-            <span>{downloading ? 'Generating PDF...' : 'Download PDF'}</span>
+            {pdfDownloaded ? <CheckCircle2 className="w-4 h-4 text-white" /> : <Download className="w-4 h-4" />}
+            <span>{downloading ? 'Saving PDF...' : (pdfDownloaded ? 'Downloaded ✓' : 'PDF Slip')}</span>
           </button>
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

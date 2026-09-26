@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   Printer,
@@ -16,6 +17,18 @@ import QRCodeImage from '../common/QRCodeImage';
 export default function PrescriptionModal({ appointment, onClose }) {
   const prescriptionRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
+
+  // Lock background scroll when open
+  useEffect(() => {
+    if (appointment) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [appointment]);
 
   if (!appointment) return null;
 
@@ -66,8 +79,8 @@ export default function PrescriptionModal({ appointment, onClose }) {
 
   const prescriptionLines = parsePrescriptionLines(appointment.prescription);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-in fade-in overflow-y-auto">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs animate-in fade-in overflow-y-auto">
       <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl max-w-3xl w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl my-auto">
 
         {/* Modal Top Control Bar (Screen only) */}
@@ -325,6 +338,7 @@ export default function PrescriptionModal({ appointment, onClose }) {
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { CheckCircle2, AlertCircle, Info } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
@@ -19,12 +20,13 @@ export default function Toast() {
     info: 'border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#1C221C] text-[#22291F] dark:text-[#FAF7F2] shadow-xl'
   };
 
-  return (
-    <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-5 duration-300">
+  return createPortal(
+    <div className="fixed bottom-6 right-6 z-[99999] animate-in fade-in slide-in-from-bottom-5 duration-300">
       <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${borderColors[toastMessage.type] || borderColors.info}`}>
         {icons[toastMessage.type] || icons.info}
         <p className="text-sm font-medium">{toastMessage.message}</p>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

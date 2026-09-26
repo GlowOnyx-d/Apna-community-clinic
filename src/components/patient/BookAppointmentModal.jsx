@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -12,12 +13,21 @@ import {
 } from 'lucide-react';
 import { getDoctorAvatar, getDoctorFallbackAvatar } from '../../utils/doctorVisuals';
 
-export default function BookAppointmentModal({ initialDoctor = null, onClose, onSuccess }) {
+export default function BookAppointmentModal({ 
+  isOpen = true, 
+  initialDoctor = null, 
+  selectedDoctor: propSelectedDoctor = null, 
+  onClose, 
+  onSuccess 
+}) {
+  if (!isOpen) return null;
+
   const { userProfile } = useAuth();
   const { doctors, bookAppointment, generateTokenNumber } = useData();
 
+  const effectiveInitialDoc = propSelectedDoctor || initialDoctor;
   const [selectedDoctorId, setSelectedDoctorId] = useState(
-    initialDoctor ? initialDoctor.id : (doctors[0]?.id || '')
+    effectiveInitialDoc ? effectiveInitialDoc.id : (doctors[0]?.id || '')
   );
   
   const todayStr = new Date().toISOString().split('T')[0];
@@ -28,9 +38,35 @@ export default function BookAppointmentModal({ initialDoctor = null, onClose, on
   const [patientName, setPatientName] = useState(userProfile?.name || '');
   const [loading, setLoading] = useState(false);
 
+  // Sync selected doctor if prop changes
+  useEffect(() => {
+    if (propSelectedDoctor?.id) {
+      setSelectedDoctorId(propSelectedDoctor.id);
+    } else if (initialDoctor?.id) {
+      setSelectedDoctorId(initialDoctor.id);
+    }
+  }, [propSelectedDoctor, initialDoctor]);
+
+  // Lock background scroll and listen for Escape key when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose?.();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   if (!doctors || doctors.length === 0) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in">
+    return createPortal(
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
         <div className="bg-white dark:bg-[#1C221C] w-full max-w-md rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-6 text-center space-y-4 shadow-2xl">
           <div className="w-12 h-12 rounded-xl bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] flex items-center justify-center mx-auto">
             <AlertCircle className="w-6 h-6" />
@@ -46,7 +82,8 @@ export default function BookAppointmentModal({ initialDoctor = null, onClose, on
             Close
           </button>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
@@ -99,9 +136,19 @@ export default function BookAppointmentModal({ initialDoctor = null, onClose, on
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-white dark:bg-[#1C221C] rounded-2xl max-w-xl w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
+  return createPortal(
+    <div 
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose?.();
+        }
+      }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white dark:bg-[#1C221C] rounded-2xl max-w-xl w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl"
+      >
         
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915]">
@@ -115,8 +162,14 @@ export default function BookAppointmentModal({ initialDoctor = null, onClose, on
             </div>
           </div>
           <button 
-            onClick={onClose}
-            className="p-1 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-lg hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors cursor-pointer"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose?.();
+            }}
+            aria-label="Close booking modal"
+            className="p-1.5 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-lg hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -291,6 +344,7 @@ export default function BookAppointmentModal({ initialDoctor = null, onClose, on
         </form>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

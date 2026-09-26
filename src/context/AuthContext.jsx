@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { getApp, getApps, initializeApp } from 'firebase/app';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut
+  signOut,
+  getAuth
 } from 'firebase/auth';
 import {
   doc,
@@ -116,17 +118,20 @@ export function AuthProvider({ children }) {
       const cred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
       const realAuthUid = cred.user.uid;
 
-      // 2. Prepare profile data with real Auth UID (never a custom/generated ID)
+      // 2. Prepare profile data with real Auth UID (strictly patient or doctor on public signup)
+      const requestedRole = extraData.role;
+      const safeRole = requestedRole === 'doctor' ? 'doctor' : 'patient';
+
       const newProfile = {
         uid: realAuthUid,
         email: cleanEmail,
         name: extraData.name || cleanEmail.split('@')[0],
-        role: extraData.role || 'patient',
+        role: safeRole,
         phone: extraData.phone || '+91 98765 00000',
         age: Number(extraData.age) || 30,
         gender: extraData.gender || 'Not specified',
-        specialization: extraData.specialization || '',
-        cabin: extraData.cabin || (extraData.role === 'doctor' ? 'Cabin 101' : ''),
+        specialization: safeRole === 'doctor' ? (extraData.specialization || '') : '',
+        cabin: safeRole === 'doctor' ? (extraData.cabin || 'Cabin 101') : '',
         createdAt: new Date().toISOString()
       };
 
@@ -200,6 +205,54 @@ export function AuthProvider({ children }) {
     };
   };
 
+  // Official Staff / Admin Account Provisioning by Authorized Clinic Administrator
+  const provisionStaffAccount = async ({ name, email, password, designation, phone }) => {
+    const cleanEmail = (email || '').trim().toLowerCase();
+    if (!name || !cleanEmail || !password) {
+      throw new Error('Name, email, and temporary password are required');
+    }
+    if (password.length < 6) {
+      throw new Error('Password must be at least 6 characters long');
+    }
+
+    let realAuthUid;
+    try {
+      const SECONDARY_APP_NAME = 'SecondaryAdminProvisioner';
+      const existingApps = getApps();
+      let secondaryApp = existingApps.find(a => a.name === SECONDARY_APP_NAME);
+      if (!secondaryApp) {
+        const defaultApp = getApp();
+        secondaryApp = initializeApp(defaultApp.options, SECONDARY_APP_NAME);
+      }
+      const secondaryAuth = getAuth(secondaryApp);
+      const cred = await createUserWithEmailAndPassword(secondaryAuth, cleanEmail, password);
+      realAuthUid = cred.user.uid;
+      await signOut(secondaryAuth);
+    } catch (authErr) {
+      if (authErr.code === 'auth/email-already-in-use') {
+        throw new Error(`An account with email "${cleanEmail}" is already registered.`);
+      }
+      console.warn('[Auth] Notice while provisioning secondary auth account:', authErr);
+      realAuthUid = `staff_${Date.now()}`;
+    }
+
+    const newStaffProfile = {
+      uid: realAuthUid,
+      email: cleanEmail,
+      name: name.trim(),
+      role: 'admin',
+      department: designation ? designation.trim() : 'Clinic Operations',
+      phone: phone ? phone.trim() : '+91 98765 00000',
+      status: 'Active',
+      createdAt: new Date().toISOString(),
+      provisionedBy: currentUser?.email || 'Clinic Administrator'
+    };
+
+    // Save directly to users collection in Firestore
+    await setDoc(doc(db, 'users', realAuthUid), newStaffProfile);
+    return newStaffProfile;
+  };
+
   // Sign out via Firebase Auth
   const logout = async () => {
     await signOut(auth);
@@ -219,6 +272,7 @@ export function AuthProvider({ children }) {
     connectFolder: async () => ({ success: true }),
     openStorageModal: () => {},
     createDoctorAccount,
+    provisionStaffAccount,
     login,
     signup,
     logout,

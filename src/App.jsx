@@ -1,12 +1,14 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import Toast from './components/common/Toast';
+import MobileBottomNav from './components/common/MobileBottomNav';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import HealthcareBackground from './components/common/HealthcareBackground';
 
@@ -33,6 +35,9 @@ const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const DoctorManagement = lazy(() => import('./pages/admin/DoctorManagement'));
 const AppointmentsMaster = lazy(() => import('./pages/admin/AppointmentsMaster'));
 const AnnouncementManager = lazy(() => import('./pages/admin/AnnouncementManager'));
+
+// Pharmacy & Dispensary Desk
+const PharmacyDesk = lazy(() => import('./pages/pharmacy/PharmacyDesk'));
 
 function PageLoader() {
   return (
@@ -71,7 +76,7 @@ function AppRoutes() {
     <div className="min-h-screen flex flex-col bg-[#F8F6F1] text-[#22291F] dark:bg-[#131713] dark:text-[#FAF7F2] font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] transition-colors duration-200 relative overflow-x-hidden">
       <HealthcareBackground />
       <Navbar />
-      <main className="flex-1 relative z-10">
+      <main className="flex-1 relative z-10 pb-16 md:pb-0">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Public Routes */}
@@ -125,6 +130,16 @@ function AppRoutes() {
               } 
             />
 
+            {/* Community Dispensary & Pharmacy Fulfillment Desk */}
+            <Route 
+              path="/pharmacy" 
+              element={
+                <ProtectedRoute allowedRoles={['admin', 'doctor', 'patient']}>
+                  <PharmacyDesk />
+                </ProtectedRoute>
+              } 
+            />
+
             {/* Admin Portal Routes */}
             <Route 
               path="/admin" 
@@ -165,6 +180,7 @@ function AppRoutes() {
         </Suspense>
       </main>
       <Footer />
+      <MobileBottomNav />
       <Toast />
     </div>
   );
@@ -174,11 +190,13 @@ export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AuthProvider>
-          <DataProvider>
-            <AppRoutes />
-          </DataProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <DataProvider>
+              <AppRoutes />
+            </DataProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

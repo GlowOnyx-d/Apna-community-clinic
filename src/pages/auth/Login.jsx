@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -442,8 +443,8 @@ export default function Login() {
       </div>
 
       {/* Forgot Password Modal */}
-      {showForgotModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+      {showForgotModal && createPortal(
+        <div className="fixed inset-0 z-[9999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white dark:bg-[#1C221C] rounded-3xl border border-[#E6DFC6] dark:border-[#2F3B2F] max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
             <div className="w-12 h-12 rounded-2xl bg-[#A85222]/10 dark:bg-[#E58A54]/20 text-[#A85222] dark:text-[#E58A54] flex items-center justify-center mx-auto">
               <Lock className="w-6 h-6" />
@@ -463,7 +464,8 @@ export default function Login() {
               Understood
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
     </div>

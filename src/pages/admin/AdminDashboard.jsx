@@ -31,8 +31,11 @@ import {
   TrendingUp,
   AlertCircle,
   Sparkles,
-  RotateCcw
+  RotateCcw,
+  Pill,
+  Users
 } from 'lucide-react';
+import StaffManagementModal from './StaffManagementModal';
 
 const PIE_COLORS = ['#2D6A4F', '#40916C', '#52B788', '#E58A54', '#74C69D', '#D97706'];
 
@@ -42,6 +45,7 @@ export default function AdminDashboard() {
     doctors, 
     appointments, 
     announcements, 
+    clinicStaff = [],
     exportBackup, 
     restoreBackup,
     seedSampleClinicData,
@@ -51,6 +55,7 @@ export default function AdminDashboard() {
   const fileInputRef = useRef(null);
   const [restoreError, setRestoreError] = useState('');
   const [isRestoring, setIsRestoring] = useState(false);
+  const [staffModalOpen, setStaffModalOpen] = useState(false);
 
   const pendingAppointments = appointments.filter(a => a.status === 'pending');
   const completedAppointments = appointments.filter(a => a.status === 'done');
@@ -138,8 +143,15 @@ export default function AdminDashboard() {
 
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2.5 w-full sm:w-auto">
             <Link
-              to="/admin/doctors"
+              to="/pharmacy"
               className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl transition-colors shadow-xs text-center cursor-pointer"
+            >
+              <Pill className="w-4 h-4 shrink-0" />
+              <span>Pharmacy Desk</span>
+            </Link>
+            <Link
+              to="/admin/doctors"
+              className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 border border-[#D8CEB3] dark:border-[#2F3B2F] bg-white dark:bg-[#242C24] hover:bg-[#2D6A4F]/10 dark:hover:bg-[#2F3B2F] text-[#22291F] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#FAF7F2] text-xs font-medium rounded-xl transition-colors shadow-xs text-center cursor-pointer"
             >
               <Plus className="w-4 h-4 shrink-0" />
               <span>Add Doctor</span>
@@ -151,6 +163,13 @@ export default function AdminDashboard() {
               <Megaphone className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
               <span className="truncate">New Health Camp</span>
             </Link>
+            <button
+              onClick={() => setStaffModalOpen(true)}
+              className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 border border-[#2D6A4F]/30 dark:border-[#52B788]/30 bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 hover:bg-[#2D6A4F]/20 dark:hover:bg-[#52B788]/25 text-[#2D6A4F] dark:text-[#52B788] text-xs font-bold rounded-xl transition-colors shadow-xs text-center cursor-pointer"
+            >
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              <span>Staff &amp; Admin Access</span>
+            </button>
           </div>
         </div>
       </div>
@@ -415,7 +434,7 @@ export default function AdminDashboard() {
           <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={() => {
-                if (window.confirm('Load starter clinic dataset (4 specialists, queues, and SDG 3 health camps)?')) {
+                if (window.confirm('Load complete clinic dataset across all 3 dashboards (5 specialists, active doctor consultation queues, patient tokens, and SDG 3 health camps)?')) {
                   seedSampleClinicData();
                 }
               }}
@@ -488,6 +507,12 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Official Staff & Admin Management Modal */}
+      <StaffManagementModal
+        isOpen={staffModalOpen}
+        onClose={() => setStaffModalOpen(false)}
+      />
 
     </div>
   );

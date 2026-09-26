@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Search, Ticket, Download, Filter } from 'lucide-react';
+import { 
+  Search, 
+  Ticket, 
+  Download, 
+  Filter, 
+  PlusCircle, 
+  Pill, 
+  Activity, 
+  Printer,
+  FileText
+} from 'lucide-react';
+import WalkInTokenModal from '../../components/common/WalkInTokenModal';
+import DispensaryModal from '../../components/common/DispensaryModal';
+import VitalsModal from '../../components/common/VitalsModal';
+import TokenSlipModal from '../../components/patient/TokenSlipModal';
 
 export default function AppointmentsMaster() {
   const { appointments, doctors, cancelAppointment } = useData();
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterDoctorId, setFilterDoctorId] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showWalkInModal, setShowWalkInModal] = useState(false);
+  const [showDispensaryModal, setShowDispensaryModal] = useState(false);
+  const [vitalsModalApt, setVitalsModalApt] = useState(null);
+  const [slipModalApt, setSlipModalApt] = useState(null);
 
   const filteredAppointments = appointments.filter((apt) => {
     const matchesStatus = filterStatus === 'all' || apt.status === filterStatus;
@@ -62,14 +80,32 @@ export default function AppointmentsMaster() {
           </p>
         </div>
 
-        <button
-          onClick={exportToCSV}
-          disabled={filteredAppointments.length === 0}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] disabled:opacity-50 text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors self-start sm:self-center cursor-pointer"
-        >
-          <Download className="w-4 h-4" />
-          <span>Export to CSV ({filteredAppointments.length})</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-center">
+          <button
+            onClick={() => setShowWalkInModal(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>+ Issue Walk-In Token</span>
+          </button>
+
+          <button
+            onClick={() => setShowDispensaryModal(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#C97B4A] hover:bg-[#B36839] dark:bg-[#D48956] dark:hover:bg-[#C97B4A] text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+          >
+            <Pill className="w-4 h-4" />
+            <span>Free Pharmacy Desk</span>
+          </button>
+
+          <button
+            onClick={exportToCSV}
+            disabled={filteredAppointments.length === 0}
+            className="flex items-center gap-1.5 px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] hover:bg-[#E6DFC6]/50 dark:hover:bg-[#2F3B2F] disabled:opacity-50 text-[#22291F] dark:text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export CSV ({filteredAppointments.length})</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -160,18 +196,42 @@ export default function AppointmentsMaster() {
                     </span>
                   </div>
 
-                  {apt.status === 'pending' && (
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <button
-                      onClick={() => {
-                        if (window.confirm(`Cancel token ${apt.tokenNumber} for ${apt.patientName}?`)) {
-                          cancelAppointment(apt.id);
-                        }
-                      }}
-                      className="px-2.5 py-1 text-xs text-rose-600 hover:text-rose-700 dark:text-rose-400 font-semibold rounded-lg border border-rose-200 dark:border-rose-900/40 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                      onClick={() => setVitalsModalApt(apt)}
+                      className={`px-2 py-1 text-[11px] font-semibold rounded-lg border transition-colors cursor-pointer flex items-center gap-1 ${
+                        apt.vitals
+                          ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] dark:text-[#52B788] border-[#2D6A4F]/30'
+                          : 'text-[#6B6B63] dark:text-[#C4CFC3] border-[#D8CEB3] dark:border-[#445644] hover:border-[#2D6A4F]/50'
+                      }`}
+                      title="Pre-Consultation Vitals & Triage"
                     >
-                      Cancel
+                      <Activity className="w-3 h-3" />
+                      <span>{apt.vitals ? 'Vitals ✓' : '+ Vitals'}</span>
                     </button>
-                  )}
+
+                    <button
+                      onClick={() => setSlipModalApt(apt)}
+                      className="px-2 py-1 text-[11px] font-semibold text-[#6B6B63] dark:text-[#C4CFC3] border border-[#D8CEB3] dark:border-[#445644] hover:border-[#2D6A4F]/50 rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                      title="View & Share Token Slip"
+                    >
+                      <Printer className="w-3 h-3" />
+                      <span>Slip</span>
+                    </button>
+
+                    {apt.status === 'pending' && (
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`Cancel token ${apt.tokenNumber} for ${apt.patientName}?`)) {
+                            cancelAppointment(apt.id);
+                          }
+                        }}
+                        className="px-2 py-1 text-[11px] text-rose-600 hover:text-rose-700 dark:text-rose-400 font-semibold rounded-lg border border-rose-200 dark:border-rose-900/40 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Patient Information */}
@@ -279,18 +339,42 @@ export default function AppointmentsMaster() {
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right">
-                        {apt.status === 'pending' && (
+                        <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => {
-                              if (window.confirm(`Cancel token ${apt.tokenNumber} for ${apt.patientName}?`)) {
-                                cancelAppointment(apt.id);
-                              }
-                            }}
-                            className="px-2.5 py-1 text-xs text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#C97B4A] dark:hover:text-[#E58A54] hover:bg-[#C97B4A]/10 border border-[#D8CEB3] dark:border-[#445644] hover:border-[#C97B4A]/40 rounded-lg font-semibold transition-colors cursor-pointer"
+                            onClick={() => setVitalsModalApt(apt)}
+                            className={`px-2 py-1 text-[11px] font-semibold rounded-lg border transition-colors cursor-pointer flex items-center gap-1 ${
+                              apt.vitals
+                                ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] dark:text-[#52B788] border-[#2D6A4F]/30'
+                                : 'text-[#6B6B63] dark:text-[#C4CFC3] border-[#D8CEB3] dark:border-[#445644] hover:border-[#2D6A4F]/50'
+                            }`}
+                            title="Pre-Consultation Vitals & Triage"
                           >
-                            Cancel
+                            <Activity className="w-3 h-3" />
+                            <span>{apt.vitals ? 'Vitals ✓' : '+ Vitals'}</span>
                           </button>
-                        )}
+
+                          <button
+                            onClick={() => setSlipModalApt(apt)}
+                            className="px-2 py-1 text-[11px] font-semibold text-[#6B6B63] dark:text-[#C4CFC3] border border-[#D8CEB3] dark:border-[#445644] hover:border-[#2D6A4F]/50 rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                            title="View & Share Token Slip"
+                          >
+                            <Printer className="w-3 h-3" />
+                            <span>Slip</span>
+                          </button>
+
+                          {apt.status === 'pending' && (
+                            <button
+                              onClick={() => {
+                                if (window.confirm(`Cancel token ${apt.tokenNumber} for ${apt.patientName}?`)) {
+                                  cancelAppointment(apt.id);
+                                }
+                              }}
+                              className="px-2.5 py-1 text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#C97B4A] dark:hover:text-[#E58A54] hover:bg-[#C97B4A]/10 border border-[#D8CEB3] dark:border-[#445644] hover:border-[#C97B4A]/40 rounded-lg font-semibold transition-colors cursor-pointer"
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -300,6 +384,32 @@ export default function AppointmentsMaster() {
           </div>
         </>
       )}
+
+      {/* Walk-in Token Registration Modal */}
+      <WalkInTokenModal
+        isOpen={showWalkInModal}
+        onClose={() => setShowWalkInModal(false)}
+      />
+
+      {/* Free Dispensary / Pharmacy Desk Modal */}
+      <DispensaryModal
+        isOpen={showDispensaryModal}
+        onClose={() => setShowDispensaryModal(false)}
+      />
+
+      {/* Pre-Consultation Vitals / Triage Modal */}
+      <VitalsModal
+        isOpen={Boolean(vitalsModalApt)}
+        appointment={vitalsModalApt}
+        onClose={() => setVitalsModalApt(null)}
+      />
+
+      {/* Token Slip with SMS sharing Modal */}
+      <TokenSlipModal
+        isOpen={Boolean(slipModalApt)}
+        appointment={slipModalApt}
+        onClose={() => setSlipModalApt(null)}
+      />
 
     </div>
   );

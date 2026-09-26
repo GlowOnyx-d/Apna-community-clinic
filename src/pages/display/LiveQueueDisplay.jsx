@@ -15,7 +15,9 @@ import {
   Sparkles,
   Sun,
   Moon,
-  QrCode
+  QrCode,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import MobileQrModal from '../../components/common/MobileQrModal';
 import HealthcareBackground from '../../components/common/HealthcareBackground';
@@ -25,6 +27,7 @@ export default function LiveQueueDisplay() {
   const { isDark, toggleTheme } = useTheme();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [privacyMasked, setPrivacyMasked] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [selectedDoctorId, setSelectedDoctorId] = useState('all');
   const [showQrModal, setShowQrModal] = useState(false);
@@ -48,16 +51,13 @@ export default function LiveQueueDisplay() {
   }, []);
 
   // Resume / Unlock AudioContext upon user gesture
-  const unlockAudio = useCallback(() => {
+  const unlockAudio = useCallback(async () => {
     try {
       const ctx = getAudioContext();
-      if (ctx && ctx.state === 'suspended') {
-        ctx.resume().then(() => {
-          setAudioUnlocked(true);
-        }).catch(() => {
-          setAudioUnlocked(true);
-        });
-      } else {
+      if (ctx) {
+        if (ctx.state === 'suspended') {
+          await ctx.resume();
+        }
         setAudioUnlocked(true);
       }
     } catch {
@@ -88,40 +88,87 @@ export default function LiveQueueDisplay() {
     return () => clearInterval(timer);
   }, []);
 
-  // Web Audio API Chime generator (only plays when unlocked to avoid browser autoplay warnings)
-  const playCallChime = useCallback(() => {
-    if (!soundEnabled || !audioUnlocked) return;
+  // Web Audio API Chime generator with multi-harmonic hospital bell acoustics
+  const playCallChime = useCallback(async () => {
+    if (!soundEnabled) return;
     try {
-      const ctx = getAudioContext();
-      if (!ctx || ctx.state !== 'running') return;
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new AudioContextClass();
+      }
+      const ctx = audioCtxRef.current;
+      
+      // Auto-resume audio context if suspended (unlocks browser autoplay policy)
+      if (ctx.state === 'suspended') {
+        await ctx.resume();
+      }
+      setAudioUnlocked(true);
 
-      // Note 1: C5 (523.25 Hz)
+      const now = ctx.currentTime;
+
+      // Master output volume gain
+      const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0.85, now);
+      masterGain.connect(ctx.destination);
+
+      // --- NOTE 1: Higher Bright Bell (E5: 659.25 Hz) ---
       const osc1 = ctx.createOscillator();
       const gain1 = ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(523.25, ctx.currentTime);
-      gain1.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(659.25, now);
+      gain1.gain.setValueAtTime(0, now);
+      gain1.gain.linearRampToValueAtTime(0.7, now + 0.02);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
       osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start(ctx.currentTime);
-      osc1.stop(ctx.currentTime + 0.6);
+      gain1.connect(masterGain);
+      osc1.start(now);
+      osc1.stop(now + 0.8);
 
-      // Note 2: E5 (659.25 Hz)
+      // Note 1 Shimmer Overtone (G5: 783.99 Hz)
+      const osc1b = ctx.createOscillator();
+      const gain1b = ctx.createGain();
+      osc1b.type = 'sine';
+      osc1b.frequency.setValueAtTime(783.99, now);
+      gain1b.gain.setValueAtTime(0, now);
+      gain1b.gain.linearRampToValueAtTime(0.25, now + 0.02);
+      gain1b.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+      osc1b.connect(gain1b);
+      gain1b.connect(masterGain);
+      osc1b.start(now);
+      osc1b.stop(now + 0.65);
+
+      // --- NOTE 2: Lower Resonant Ding-Dong Resolution (C5: 523.25 Hz) ---
+      const note2Start = now + 0.22;
       const osc2 = ctx.createOscillator();
       const gain2 = ctx.createGain();
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(659.25, ctx.currentTime + 0.25);
-      gain2.gain.setValueAtTime(0.35, ctx.currentTime + 0.25);
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(523.25, note2Start);
+      gain2.gain.setValueAtTime(0, note2Start);
+      gain2.gain.linearRampToValueAtTime(0.8, note2Start + 0.03);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, note2Start + 1.3);
       osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(ctx.currentTime + 0.25);
-      osc2.stop(ctx.currentTime + 1.1);
+      gain2.connect(masterGain);
+      osc2.start(note2Start);
+      osc2.stop(note2Start + 1.35);
+
+      // Note 2 Octave Bell Overtone (C6: 1046.5 Hz)
+      const osc2b = ctx.createOscillator();
+      const gain2b = ctx.createGain();
+      osc2b.type = 'sine';
+      osc2b.frequency.setValueAtTime(1046.5, note2Start);
+      gain2b.gain.setValueAtTime(0, note2Start);
+      gain2b.gain.linearRampToValueAtTime(0.3, note2Start + 0.02);
+      gain2b.gain.exponentialRampToValueAtTime(0.0001, note2Start + 0.9);
+      osc2b.connect(gain2b);
+      gain2b.connect(masterGain);
+      osc2b.start(note2Start);
+      osc2b.stop(note2Start + 0.95);
+
     } catch (e) {
       console.warn('Audio chime error:', e);
     }
-  }, [soundEnabled, audioUnlocked, getAudioContext]);
+  }, [soundEnabled]);
 
   // Fullscreen toggle
   const toggleFullscreen = () => {
@@ -158,11 +205,13 @@ export default function LiveQueueDisplay() {
   const [isNewTokenAlert, setIsNewTokenAlert] = useState(false);
   const prevTokenRef = useRef(null);
 
+  // Track token changes for attention pulse and audio chime
   useEffect(() => {
     const token = currentCalling?.tokenNumber;
     if (token) {
       if (prevTokenRef.current && prevTokenRef.current !== token) {
         setIsNewTokenAlert(true);
+        playCallChime();
         const timer = setTimeout(() => {
           setIsNewTokenAlert(false);
         }, 5000); // 5-second attention-grabbing pulse & glow
@@ -170,14 +219,18 @@ export default function LiveQueueDisplay() {
       }
       prevTokenRef.current = token;
     }
-  }, [currentCalling?.tokenNumber]);
+  }, [currentCalling?.tokenNumber, playCallChime]);
 
-  // Trigger chime when the lead calling token changes
-  useEffect(() => {
-    if (audioUnlocked && currentCalling?.tokenNumber) {
-      playCallChime();
+  // Privacy Masking Formatter
+  const formatPatientDisplayName = (name) => {
+    if (!name) return 'Community Patient';
+    if (!privacyMasked) return name;
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+      return parts[0].length > 2 ? `${parts[0].slice(0, 2)}***` : `${parts[0]}*`;
     }
-  }, [currentCalling?.tokenNumber, playCallChime, audioUnlocked]);
+    return `${parts[0]} ${parts[parts.length - 1][0]}.***`;
+  };
 
   // Group queue by doctor
   const doctorQueues = useMemo(() => {
@@ -274,7 +327,13 @@ export default function LiveQueueDisplay() {
 
               {/* Sound Toggle Button */}
               <button
-                onClick={() => setSoundEnabled(!soundEnabled)}
+                onClick={() => {
+                  const nextState = !soundEnabled;
+                  setSoundEnabled(nextState);
+                  if (nextState) {
+                    playCallChime();
+                  }
+                }}
                 className={`p-2 sm:p-2.5 rounded-xl border transition-colors cursor-pointer shadow-xs ${soundEnabled
                   ? 'bg-[#2D6A4F]/15 dark:bg-[#357A5B]/25 border-[#2D6A4F]/40 dark:border-[#52B788]/40 text-[#2D6A4F] dark:text-[#52B788]'
                   : 'bg-white dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#8E8E84] dark:text-[#94A493]'
@@ -284,16 +343,29 @@ export default function LiveQueueDisplay() {
                 {soundEnabled ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
               </button>
 
+              {/* Patient Privacy Masking Toggle Button */}
+              <button
+                onClick={() => setPrivacyMasked(!privacyMasked)}
+                className={`p-2 sm:px-2.5 sm:py-2 rounded-xl border text-xs font-semibold cursor-pointer shadow-xs transition-colors flex items-center gap-1.5 ${
+                  privacyMasked
+                    ? 'bg-[#2D6A4F]/15 dark:bg-[#357A5B]/25 border-[#2D6A4F]/40 dark:border-[#52B788]/40 text-[#2D6A4F] dark:text-[#52B788]'
+                    : 'bg-white dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#8E8E84] dark:text-[#94A493]'
+                }`}
+                title={privacyMasked ? "Privacy Mask Enabled (Patient names partially hidden)" : "Privacy Mask Disabled (Showing full names)"}
+              >
+                {privacyMasked ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                <span className="hidden lg:inline">Privacy</span>
+              </button>
+
               {/* Audio Chime Test Button */}
               <button
                 onClick={() => {
-                  unlockAudio();
                   playCallChime();
                   setIsNewTokenAlert(true);
                   setTimeout(() => setIsNewTokenAlert(false), 5000);
                 }}
                 className="p-2 sm:px-3 sm:py-2 bg-white dark:bg-[#242C24] hover:bg-[#2D6A4F]/10 dark:hover:bg-[#357A5B]/20 border border-[#E6DFC6] dark:border-[#445644] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
-                title="Test Waiting Hall Audio Chime & Visual Flash"
+                title="Test Waiting Hall Audio Chime"
               >
                 <Bell className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54]" />
                 <span className="hidden sm:inline">Chime</span>
@@ -329,7 +401,9 @@ export default function LiveQueueDisplay() {
         {/* Non-blocking One-Time Audio Unlock Banner for Unattended TV / Kiosk Display */}
         {!audioUnlocked && (
           <div 
-            onClick={unlockAudio}
+            onClick={() => {
+              playCallChime();
+            }}
             className="fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-[#2D6A4F]/95 dark:bg-[#1C221C]/95 text-[#FAF7F2] border border-[#52B788]/40 shadow-2xl backdrop-blur-md cursor-pointer animate-bounce select-none transition-all max-w-[92vw]"
             title="Click or tap anywhere to enable sound alerts"
           >
@@ -408,7 +482,7 @@ export default function LiveQueueDisplay() {
                     {currentCalling.tokenNumber}
                   </div>
                   <p className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-[#D8F3DC] font-heading tracking-tight">
-                    Patient: <span className="text-white">{currentCalling.patientName}</span>
+                    Patient: <span className="text-white">{formatPatientDisplayName(currentCalling.patientName)}</span>
                   </p>
                 </div>
               ) : (

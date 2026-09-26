@@ -17,8 +17,11 @@ import {
   Moon,
   Tv,
   QrCode,
-  Cloud
+  Cloud,
+  Languages,
+  Pill
 } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 import MobileQrModal from './MobileQrModal';
 import ConfirmModal from './ConfirmModal';
 
@@ -30,6 +33,7 @@ export default function Navbar() {
     logout
   } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,28 +60,31 @@ export default function Navbar() {
   const getNavLinks = () => {
     if (!currentUser) {
       return [
-        { name: 'Community Camps', path: '/announcements', icon: Megaphone }
+        { name: t('navAnnouncements', 'Community Camps'), path: '/announcements', icon: Megaphone }
       ];
     }
     if (role === 'patient') {
       return [
-        { name: 'Dashboard', path: '/patient', icon: Calendar },
-        { name: 'My Appointments', path: '/patient/appointments', icon: FileText },
-        { name: 'Health Camps & SDG', path: '/patient/announcements', icon: Megaphone }
+        { name: t('navDashboard', 'Dashboard'), path: '/patient', icon: Calendar },
+        { name: t('navMyAppointments', 'My Appointments'), path: '/patient/appointments', icon: FileText },
+        { name: 'Dispensary', path: '/pharmacy', icon: Pill },
+        { name: t('navHealthCamps', 'Health Camps & SDG'), path: '/patient/announcements', icon: Megaphone }
       ];
     }
     if (role === 'doctor') {
       return [
-        { name: 'Today\'s Queue', path: '/doctor', icon: Stethoscope },
-        { name: 'Patient History', path: '/doctor/patients', icon: Users }
+        { name: t('navDoctorQueue', "Today's Queue"), path: '/doctor', icon: Stethoscope },
+        { name: t('navPatientHistory', 'Patient History'), path: '/doctor/patients', icon: Users },
+        { name: 'Pharmacy Desk', path: '/pharmacy', icon: Pill }
       ];
     }
     if (role === 'admin') {
       return [
-        { name: 'Admin Hub', path: '/admin', icon: BarChart3 },
-        { name: 'Doctor Slots', path: '/admin/doctors', icon: Stethoscope },
-        { name: 'Master Appointments', path: '/admin/appointments', icon: Calendar },
-        { name: 'SDG Announcements', path: '/admin/announcements', icon: Megaphone }
+        { name: t('navAdminHub', 'Admin Hub'), path: '/admin', icon: BarChart3 },
+        { name: 'Pharmacy Desk', path: '/pharmacy', icon: Pill },
+        { name: t('navDoctorSlots', 'Doctor Slots'), path: '/admin/doctors', icon: Stethoscope },
+        { name: t('navMasterAppointments', 'Master Ledger'), path: '/admin/appointments', icon: Calendar },
+        { name: t('navAnnouncements', 'SDG Announcements'), path: '/admin/announcements', icon: Megaphone }
       ];
     }
     return [];
@@ -104,12 +111,12 @@ export default function Navbar() {
               </div>
               <div>
                 <span className="text-lg font-extrabold tracking-tight text-[#22291F] dark:text-[#FAF7F2] block leading-tight font-heading">
-                  Apna Clinic
+                  {t('clinicTitle', 'Apna Clinic')}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C97B4A] dark:bg-[#E58A54]"></span>
                   <span className="text-[10px] font-semibold text-[#6B6B63] dark:text-[#C4CFC3] tracking-wider uppercase">
-                    Community Health
+                    {t('tagline', 'Community Health')}
                   </span>
                 </div>
               </div>
@@ -149,7 +156,7 @@ export default function Navbar() {
             >
               <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
               <Tv className="w-3.5 h-3.5" />
-              <span>OPD TV</span>
+              <span>{t('navOpdTv', 'OPD TV')}</span>
             </Link>
 
             {/* Cloud Firestore Status Badge */}
@@ -160,7 +167,7 @@ export default function Navbar() {
               <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
               <Cloud className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
               <span className="text-[11px] hidden xl:inline font-semibold">
-                Cloud Sync
+                {t('navCloudSync', 'Cloud Sync')}
               </span>
             </div>
 
@@ -171,6 +178,16 @@ export default function Navbar() {
               className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#52B788] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer"
             >
               <QrCode className="w-4 h-4" />
+            </button>
+
+            {/* Language Switcher Button */}
+            <button
+              onClick={toggleLanguage}
+              title={language === 'en' ? "हिंदी में बदलें (Switch to Hindi)" : "Switch to English"}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#52B788] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer text-xs font-semibold"
+            >
+              <Languages className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+              <span className="font-bold">{language === 'en' ? 'हिं' : 'EN'}</span>
             </button>
 
             {/* Theme Toggle Button */}
@@ -194,7 +211,7 @@ export default function Navbar() {
                 </span>
                 <button
                   onClick={() => setShowLogoutConfirm(true)}
-                  title="Sign out"
+                  title={t('logout', 'Sign Out')}
                   className="p-2 text-[#6B6B63] hover:text-[#C97B4A] hover:bg-[#C97B4A]/10 rounded-xl transition-colors dark:text-[#94A493] dark:hover:text-[#FAF7F2] cursor-pointer shrink-0"
                 >
                   <LogOut className="w-4 h-4" />
@@ -206,20 +223,27 @@ export default function Navbar() {
                   to="/login"
                   className="px-3.5 py-1.5 text-xs font-semibold text-[#2D6A4F] hover:bg-[#2D6A4F]/10 rounded-xl transition-colors dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] whitespace-nowrap"
                 >
-                  Sign In
+                  {t('login', 'Sign In')}
                 </Link>
                 <Link
                   to="/register"
                   className="px-4 py-2 text-xs font-semibold text-[#FAF7F2] bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] rounded-xl shadow-xs transition-colors whitespace-nowrap"
                 >
-                  Register
+                  {t('register', 'Register')}
                 </Link>
               </div>
             ) : null}
           </div>
 
-          {/* Mobile Actions (Theme Toggle + Hamburger) */}
+          {/* Mobile Actions (Language + Theme Toggle + Hamburger) */}
           <div className="flex items-center gap-2 md:hidden shrink-0">
+            <button
+              onClick={toggleLanguage}
+              title="Toggle Language"
+              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#2D6A4F] dark:text-[#52B788] text-xs font-bold hover:bg-[#2D6A4F]/10 cursor-pointer"
+            >
+              {language === 'en' ? 'हिं' : 'EN'}
+            </button>
             <button
               onClick={toggleTheme}
               title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
@@ -249,9 +273,9 @@ export default function Navbar() {
           >
             <div className="flex items-center gap-2">
               <Cloud className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
-              <span>Database:</span>
+              <span>{language === 'hi' ? 'डेटाबेस:' : 'Database:'}</span>
               <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">
-                Cloud Firestore (Live)
+                {t('navCloudSync', 'Cloud Sync (Live)')}
               </span>
             </div>
             <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
@@ -287,7 +311,7 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <Tv className="w-4 h-4" />
-                <span>Live OPD TV Call Board</span>
+                <span>{t('navLiveDisplay', 'Live OPD TV Call Board')}</span>
               </div>
               <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
             </Link>
@@ -311,7 +335,7 @@ export default function Navbar() {
                 className="w-full flex items-center justify-center gap-2 p-2.5 text-sm font-semibold text-[#A85222] dark:text-[#E58A54] bg-[#A85222]/10 dark:bg-[#E58A54]/15 border border-[#A85222]/20 dark:border-[#E58A54]/30 rounded-xl cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
-                Sign Out
+                {t('logout', 'Sign Out')}
               </button>
             </div>
           ) : !isAuthPage ? (
@@ -321,14 +345,14 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex-1 py-2 text-center text-sm font-semibold text-[#2D6A4F] dark:text-[#C4CFC3] bg-[#F0EBE1] dark:bg-[#1C221C] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F]"
               >
-                Sign In
+                {t('login', 'Sign In')}
               </Link>
               <Link
                 to="/register"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex-1 py-2 text-center text-sm font-semibold text-[#FAF7F2] bg-[#2D6A4F] dark:bg-[#357A5B] rounded-xl"
               >
-                Register
+                {t('register', 'Register')}
               </Link>
             </div>
           ) : null}

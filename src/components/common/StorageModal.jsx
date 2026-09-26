@@ -1,9 +1,10 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { Cloud, CheckCircle, ShieldCheck, RefreshCw } from 'lucide-react';
 
 export default function StorageModal({ onConnect, onSkip, isConnecting }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-fadeIn">
       <div className="bg-white dark:bg-[#1C221C] rounded-2xl shadow-2xl max-w-lg w-full p-6 md:p-8 border border-[#E6DFC6] dark:border-[#2F3B2F] relative">
         <div className="flex items-center justify-center w-16 h-16 bg-[#2D6A4F]/15 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/30 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] rounded-2xl mx-auto mb-5 shadow-xs">
           <Cloud className="w-8 h-8" />
@@ -42,6 +43,7 @@ export default function StorageModal({ onConnect, onSkip, isConnecting }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

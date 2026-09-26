@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useData } from '../../context/DataContext';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -25,7 +26,7 @@ const DEFAULT_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "S
 const DEFAULT_SLOTS = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "02:00 PM", "02:30 PM", "03:30 PM"];
 
 export default function DoctorManagement() {
-  const { doctors, addDoctor, deleteDoctor, updateDoctorSlots } = useData();
+  const { doctors, addDoctor, deleteDoctor, updateDoctorSlots, toggleDoctorLeave } = useData();
   const { createDoctorAccount } = useAuth();
 
   const [showAddForm, setShowAddForm] = useState(false);
@@ -49,6 +50,18 @@ export default function DoctorManagement() {
   const [editSlotsInput, setEditSlotsInput] = useState('');
   const [editDays, setEditDays] = useState([]);
   const [editLoading, setEditLoading] = useState(false);
+
+  // Lock background scroll when editing modal is open
+  useEffect(() => {
+    if (editingDoctor) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [editingDoctor]);
 
   const toggleEditDay = (day) => {
     if (editDays.includes(day)) {
@@ -402,9 +415,16 @@ export default function DoctorManagement() {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2.5">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wide border ${getSpecialtyConfig(doctor.specialization).badgeClass}`}>
-                      {getSpecialtyConfig(doctor.specialization).label}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wide border ${getSpecialtyConfig(doctor.specialization).badgeClass}`}>
+                        {getSpecialtyConfig(doctor.specialization).label}
+                      </span>
+                      {doctor.isOnLeave && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-800/60">
+                          On Leave Today
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[11px] text-[#8E8E84] dark:text-[#94A493]">{doctor.cabin || 'Cabin 101'}</span>
                   </div>
 
@@ -459,6 +479,26 @@ export default function DoctorManagement() {
                   </div>
 
                   <div className="flex items-center justify-between p-2 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[11px]">
+                    <div className="flex items-center gap-1.5">
+                      <span className={`w-2 h-2 rounded-full ${doctor.isOnLeave ? 'bg-amber-500' : 'bg-emerald-500'}`} />
+                      <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">
+                        {doctor.isOnLeave ? 'On Leave' : 'Available'}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => toggleDoctorLeave(doctor.id, !doctor.isOnLeave)}
+                      className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors cursor-pointer border ${
+                        doctor.isOnLeave
+                          ? 'bg-amber-500 text-white border-amber-600 hover:bg-amber-600'
+                          : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#D8CEB3] dark:border-[#445644] hover:border-amber-500/50'
+                      }`}
+                    >
+                      {doctor.isOnLeave ? 'Mark Present' : 'Mark On Leave'}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between p-2 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[11px]">
                     <span className="flex items-center gap-1 text-[#2D6A4F] dark:text-[#52B788] font-semibold">
                       <Key className="w-3 h-3" /> Initial Password:
                     </span>
@@ -494,8 +534,8 @@ export default function DoctorManagement() {
       </div>
 
       {/* Edit Doctor Modal */}
-      {editingDoctor && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+      {editingDoctor && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white dark:bg-[#1C221C] w-full max-w-lg rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
               <div>
@@ -580,7 +620,8 @@ export default function DoctorManagement() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Delete Doctor Confirmation Modal */}
@@ -589,8 +630,9 @@ export default function DoctorManagement() {
         onClose={() => setDoctorToDelete(null)}
         onConfirm={async () => {
           if (doctorToDelete) {
-            await deleteDoctor(doctorToDelete.id);
+            const idToRemove = doctorToDelete.id || doctorToDelete.docId;
             setDoctorToDelete(null);
+            await deleteDoctor(idToRemove);
           }
         }}
         title="Remove Doctor"

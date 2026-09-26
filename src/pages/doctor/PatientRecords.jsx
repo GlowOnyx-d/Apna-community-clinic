@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useData } from '../../context/DataContext';
 import PrescriptionModal from '../../components/patient/PrescriptionModal';
+import LabReportsSection from '../../components/patient/LabReportsSection';
 import { 
   Users, 
   Search, 
@@ -220,6 +221,14 @@ export default function PatientRecords() {
                       <span className="font-semibold truncate">{activePatient.email}</span>
                     </div>
                   </div>
+                </div>
+
+                {/* Diagnostic Pathology & Lab Reports */}
+                <div className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-6 shadow-sm">
+                  <LabReportsSection 
+                    customPatientId={activePatient.id} 
+                    customPatientName={activePatient.name} 
+                  />
                 </div>
 
                 {/* Medical Consultations Timeline */}
