@@ -12,8 +12,8 @@ Built with **React 19**, **Vite**, **Tailwind CSS**, **Firebase Authentication**
 - **Sequential Token Generation**: Guarantees unique, sequential token numbers (`TK-01`, `TK-02`...) per doctor consultation queue.
 - **Official Digital Token Slip**: Interactive slip with QR triage verification, cabin directions, slot timings, and arrival instructions.
 - **Multi-Channel Token Delivery**:
-  - 📧 **Direct Email Receipt**: Instant rich HTML receipt sent directly to the patient's inbox via zero-cost Gmail SMTP.
-  - 🖨️ **Print & PDF Download**: Exportable vector PDF token slip generated client-side via `jsPDF` and `qrcode`.
+  - **Direct Email Receipt**: Instant rich HTML receipt sent directly to the patient's inbox via zero-cost Gmail SMTP.
+  - **Print & PDF Download**: Exportable vector PDF token slip generated client-side via `jsPDF` and `qrcode`.
 - **Live Waiting Room TV Display (`/display`)**: Wall-mounted OPD queue screen that announces tokens with synthesized audio chimes as specialists call patients.
 
 ### 2. Community Pharmacy & Medicine Dispensary (`/pharmacy`)
@@ -48,7 +48,7 @@ Built with **React 19**, **Vite**, **Tailwind CSS**, **Firebase Authentication**
 
 ---
 
-## 🚀 Quick Start Guide
+##  Quick Start Guide
 
 ### 1. Prerequisites
 - **Node.js** v18 or higher
@@ -97,7 +97,7 @@ Open **`http://localhost:5173`** in your browser.
 
 ---
 
-## 🛠️ Available Scripts
+## Available Scripts
 
 | Command | Description |
 | :--- | :--- |
@@ -141,7 +141,7 @@ Community service/
 
 ---
 
-## 🔒 Security & Privacy
+## Security & Privacy
 
 - **Credentials Safety**: Email credentials and API secrets are strictly loaded through `functions/.env.local` or Google Secret Manager and are excluded from version control via `.gitignore`.
 - **Role-Based Routing**: Strict route guards isolate Patient, Doctor, Pharmacist, and Admin views.
@@ -149,5 +149,5 @@ Community service/
 
 ---
 
-## 📄 License
+## License
 This project is open-source under the [MIT License](LICENSE). Contributions dedicated to UN Sustainable Development Goal 3 are welcome!
