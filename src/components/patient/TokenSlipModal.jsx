@@ -184,7 +184,7 @@ export default function TokenSlipModal({ appointment, onClose }) {
 
     try {
       const emailHtml = generateAppointmentEmailHtml(appointment);
-      const subject = `🏥 Apna Clinic Token Confirmation: ${appointment.tokenNumber || 'TK'} (${appointment.patientName || 'Patient'})`;
+      const subject = `Apna Clinic Token Confirmation: ${appointment.tokenNumber || 'TK'} (${appointment.patientName || 'Patient'})`;
       const result = await sendDirectEmail({
         recipientEmail: email,
         subject,
@@ -357,11 +357,10 @@ export default function TokenSlipModal({ appointment, onClose }) {
             type="button"
             onClick={handleSendEmail}
             disabled={emailLoading}
-            className={`flex-1 min-w-[130px] flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer ${
-              emailSent
+            className={`flex-1 min-w-[130px] flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer ${emailSent
                 ? 'bg-emerald-600 text-white'
                 : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
-            } disabled:opacity-60`}
+              } disabled:opacity-60`}
           >
             {emailLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -374,8 +373,8 @@ export default function TokenSlipModal({ appointment, onClose }) {
               {emailSent
                 ? 'Email Sent ✓'
                 : emailLoading
-                ? 'Sending Email...'
-                : 'Send to Email'}
+                  ? 'Sending Email...'
+                  : 'Send to Email'}
             </span>
           </button>
           <button
@@ -390,11 +389,10 @@ export default function TokenSlipModal({ appointment, onClose }) {
             type="button"
             onClick={handleDownloadPDF}
             disabled={downloading}
-            className={`flex-1 min-w-[95px] flex items-center justify-center gap-2 py-2.5 px-3 border text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer ${
-              pdfDownloaded
+            className={`flex-1 min-w-[95px] flex items-center justify-center gap-2 py-2.5 px-3 border text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer ${pdfDownloaded
                 ? 'bg-emerald-600 text-white border-emerald-600'
                 : 'bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2]'
-            } disabled:opacity-50`}
+              } disabled:opacity-50`}
           >
             {pdfDownloaded ? <CheckCircle2 className="w-4 h-4 text-white" /> : <Download className="w-4 h-4" />}
             <span>{downloading ? 'Saving PDF...' : (pdfDownloaded ? 'Downloaded ✓' : 'PDF Slip')}</span>

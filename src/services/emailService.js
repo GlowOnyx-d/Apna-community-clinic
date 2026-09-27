@@ -36,8 +36,7 @@ export async function sendDirectEmail({
   }
 
   const endpointUrl =
-    import.meta.env.VITE_CLINIC_EMAIL_FUNCTION_URL ||
-    (import.meta.env.DEV ? '/api/sendEmail' : DEFAULT_CLOUD_FUNCTION_EMAIL_URL);
+    import.meta.env.VITE_CLINIC_EMAIL_FUNCTION_URL || '/api/sendEmail';
 
   try {
     const response = await fetch(endpointUrl, {

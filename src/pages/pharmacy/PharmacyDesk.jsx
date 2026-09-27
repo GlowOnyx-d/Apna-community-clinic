@@ -103,7 +103,7 @@ export default function PharmacyDesk() {
     }
 
     const emailHtml = generatePharmacyPickupEmailHtml(apt);
-    const subject = `🏥 Prescriptions Ready for Pickup - Token ${apt.tokenNumber || 'TK'} (Apna Clinic)`;
+    const subject = ` Prescriptions Ready for Pickup - Token ${apt.tokenNumber || 'TK'} (Apna Clinic)`;
     setEmailSendingId(apt.id);
     setEmailErrorMap(prev => ({ ...prev, [apt.id]: null }));
 
@@ -297,11 +297,10 @@ export default function PharmacyDesk() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('queue')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              activeTab === 'queue'
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'queue'
                 ? 'bg-[#2D6A4F] text-[#FAF7F2] shadow-xs'
                 : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] border border-[#E6DFC6] dark:border-[#2F3B2F]'
-            }`}
+              }`}
           >
             <Clock className="w-3.5 h-3.5" />
             <span>Prescription Queue ({pendingCount} pending)</span>
@@ -309,11 +308,10 @@ export default function PharmacyDesk() {
 
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              activeTab === 'inventory'
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'inventory'
                 ? 'bg-[#2D6A4F] text-[#FAF7F2] shadow-xs'
                 : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] border border-[#E6DFC6] dark:border-[#2F3B2F]'
-            }`}
+              }`}
           >
             <Package className="w-3.5 h-3.5" />
             <span>Essential Medicines Stock ({totalStockItems} total units)</span>
@@ -341,31 +339,28 @@ export default function PharmacyDesk() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setFilter('pending')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                filter === 'pending'
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'pending'
                   ? 'bg-[#C97B4A] text-white border-[#C97B4A]'
                   : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#E6DFC6] dark:border-[#2F3B2F]'
-              }`}
+                }`}
             >
               Awaiting Dispense ({pendingCount})
             </button>
             <button
               onClick={() => setFilter('dispensed')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                filter === 'dispensed'
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'dispensed'
                   ? 'bg-[#2D6A4F] text-white border-[#2D6A4F]'
                   : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#E6DFC6] dark:border-[#2F3B2F]'
-              }`}
+                }`}
             >
               Dispensed Today ({dispensedCount})
             </button>
             <button
               onClick={() => setFilter('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                filter === 'all'
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'all'
                   ? 'bg-[#22291F] text-[#FAF7F2] border-[#22291F] dark:bg-[#FAF7F2] dark:text-[#1C221C] dark:border-[#FAF7F2]'
                   : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#E6DFC6] dark:border-[#2F3B2F]'
-              }`}
+                }`}
             >
               All Prescriptions
             </button>
@@ -480,13 +475,12 @@ export default function PharmacyDesk() {
 
                         <div className="flex items-center gap-2 self-start sm:self-center">
                           {/* 3. Progress indicator */}
-                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider transition-colors ${
-                            checkedCount === rxLines.length
+                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider transition-colors ${checkedCount === rxLines.length
                               ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
                               : checkedCount > 0
                                 ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-800'
                                 : 'bg-[#FAF7F2] text-[#6B6B63] dark:bg-[#242C24] dark:text-[#C4CFC3] border border-[#E6DFC6] dark:border-[#2F3B2F]'
-                          }`}>
+                            }`}>
                             {checkedCount === rxLines.length ? `All ${rxLines.length} Verified ✓` : `${checkedCount} of ${rxLines.length} verified`}
                           </span>
 
@@ -505,11 +499,10 @@ export default function PharmacyDesk() {
                       {/* Progress Bar */}
                       <div className="w-full bg-[#E6DFC6]/50 dark:bg-[#2F3B2F] rounded-full h-1.5 overflow-hidden">
                         <div
-                          className={`h-full transition-all duration-300 ${
-                            checkedCount === rxLines.length 
-                              ? 'bg-[#2D6A4F] dark:bg-[#52B788]' 
+                          className={`h-full transition-all duration-300 ${checkedCount === rxLines.length
+                              ? 'bg-[#2D6A4F] dark:bg-[#52B788]'
                               : 'bg-[#C97B4A] dark:bg-[#E58A54]'
-                          }`}
+                            }`}
                           style={{ width: `${rxLines.length > 0 ? (checkedCount / rxLines.length) * 100 : 0}%` }}
                         />
                       </div>
@@ -525,27 +518,24 @@ export default function PharmacyDesk() {
                             <div
                               key={idx}
                               onClick={() => !isDispensed && toggleMedCheck(apt.id, idx)}
-                              className={`flex items-start justify-between gap-3 p-3 rounded-xl border text-xs transition-all ${
-                                isChecked
+                              className={`flex items-start justify-between gap-3 p-3 rounded-xl border text-xs transition-all ${isChecked
                                   ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/60 shadow-2xs'
                                   : 'bg-[#FAF7F2] dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/50 cursor-pointer shadow-2xs'
-                              }`}
+                                }`}
                             >
                               <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                                <div className={`w-4 h-4 rounded mt-0.5 flex items-center justify-center shrink-0 border transition-colors ${
-                                  isChecked 
-                                    ? 'bg-[#2D6A4F] border-[#2D6A4F] text-[#FAF7F2] dark:bg-[#52B788] dark:border-[#52B788] dark:text-[#151915]' 
+                                <div className={`w-4 h-4 rounded mt-0.5 flex items-center justify-center shrink-0 border transition-colors ${isChecked
+                                    ? 'bg-[#2D6A4F] border-[#2D6A4F] text-[#FAF7F2] dark:bg-[#52B788] dark:border-[#52B788] dark:text-[#151915]'
                                     : 'border-[#8E8E84] dark:border-[#94A493] bg-white dark:bg-[#1C221C]'
-                                }`}>
+                                  }`}>
                                   {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
                                 </div>
 
                                 <div className="min-w-0 flex-1 space-y-1">
-                                  <p className={`font-mono text-xs leading-relaxed transition-all ${
-                                    isChecked
+                                  <p className={`font-mono text-xs leading-relaxed transition-all ${isChecked
                                       ? 'line-through text-emerald-950/70 dark:text-emerald-200/70 font-medium'
                                       : 'text-[#22291F] dark:text-[#FAF7F2] font-semibold'
-                                  }`}>
+                                    }`}>
                                     {line}
                                   </p>
 
@@ -574,11 +564,10 @@ export default function PharmacyDesk() {
                               </div>
 
                               <div className="shrink-0 flex items-center">
-                                <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${
-                                  isChecked
+                                <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${isChecked
                                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40'
                                     : 'bg-[#E6DFC6]/50 text-[#8E8E84] dark:bg-[#2F3B2F] dark:text-[#94A493]'
-                                }`}>
+                                  }`}>
                                   {isChecked ? 'Verified ✓' : 'To Pack'}
                                 </span>
                               </div>
@@ -590,7 +579,7 @@ export default function PharmacyDesk() {
 
                     {/* Action Bar */}
                     <div className="pt-2 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] flex flex-wrap items-center justify-between gap-2 text-xs">
-                      
+
                       {/* Secondary Actions */}
                       <div className="flex items-center gap-1.5">
                         <button
@@ -606,15 +595,14 @@ export default function PharmacyDesk() {
                           type="button"
                           disabled={emailSendingId === apt.id}
                           onClick={() => handleSendPickupEmail(apt)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer font-semibold ${
-                            emailSendingId === apt.id
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer font-semibold ${emailSendingId === apt.id
                               ? 'bg-[#FAF7F2] dark:bg-[#242C24] text-[#8E8E84] border-[#D8CEB3] cursor-not-allowed'
                               : emailSent
                                 ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-300'
                                 : emailErrorMap[apt.id]
                                   ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-300'
                                   : 'bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2]'
-                          }`}
+                            }`}
                         >
                           {emailSendingId === apt.id ? (
                             <>
@@ -661,11 +649,10 @@ export default function PharmacyDesk() {
                           }}
                           disabled={processingId === apt.id}
                           title={!isAllMedsChecked ? `Verify all ${rxLines.length} checklist items before dispensing` : 'Confirm all medications packaged and dispensed'}
-                          className={`flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl shadow-xs transition-all text-xs cursor-pointer ${
-                            !isAllMedsChecked
+                          className={`flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl shadow-xs transition-all text-xs cursor-pointer ${!isAllMedsChecked
                               ? 'bg-[#E6DFC6]/60 dark:bg-[#2F3B2F]/60 text-[#8E8E84] dark:text-[#94A493] border border-[#D8CEB3] dark:border-[#445644] hover:bg-[#E6DFC6]/80'
                               : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
-                          }`}
+                            }`}
                         >
                           <CheckCircle2 className={`w-4 h-4 ${!isAllMedsChecked ? 'text-[#8E8E84] dark:text-[#94A493]' : ''}`} />
                           <span>
@@ -728,11 +715,10 @@ export default function PharmacyDesk() {
                       </p>
                     </div>
 
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
-                      isLow 
-                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200' 
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${isLow
+                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200'
                         : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200'
-                    }`}>
+                      }`}>
                       {isLow ? 'Low Stock' : 'In Stock'}
                     </span>
                   </div>
