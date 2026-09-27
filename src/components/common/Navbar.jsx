@@ -75,7 +75,8 @@ export default function Navbar() {
       return [
         { name: t('navDoctorQueue', "Today's Queue"), path: '/doctor', icon: Stethoscope },
         { name: t('navPatientHistory', 'Patient History'), path: '/doctor/patients', icon: Users },
-        { name: 'Pharmacy Desk', path: '/pharmacy', icon: Pill }
+        { name: 'Pharmacy Desk', path: '/pharmacy', icon: Pill },
+        { name: t('navHealthCamps', 'Health Camps & SDG'), path: '/announcements', icon: Megaphone }
       ];
     }
     if (role === 'admin') {

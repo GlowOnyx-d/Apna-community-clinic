@@ -114,14 +114,14 @@ export const TRANSLATIONS = {
     consultationsAhead: "consultations ahead of you in",
     nextInLine: "You are next in line! Please wait near the cabin.",
 
-    // Token Slip & SMS
+    // Token Slip & Email
     tokenSlip: "Official Clinic Consultation Token",
-    sendSMS: "Send SMS Details",
-    smsSent: "SMS Dispatched",
+    sendEmail: "Send to Email",
+    emailSent: "Email Dispatched",
     printSlip: "Print Slip",
     downloadSlip: "Download Slip",
     signInRequiredTitle: "Please Sign In to Book Your Token",
-    signInRequiredDesc: "To allocate your sequential queue token, display your wait time on the OPD TV, and send direct SMS appointment alerts, please sign in or register your free patient account.",
+    signInRequiredDesc: "To allocate your sequential queue token, display your wait time on the OPD TV, and receive direct email appointment receipts with QR triage verification, please sign in or register your free patient account.",
     signInAction: "Sign In to Your Account",
     createAccountAction: "Create Free Patient Account",
 
@@ -273,14 +273,14 @@ export const TRANSLATIONS = {
     consultationsAhead: "मरीज़ आपसे आगे हैं",
     nextInLine: "अब आपकी बारी है! कृपया केबिन के पास रहें।",
 
-    // Token Slip & SMS
+    // Token Slip & Email
     tokenSlip: "आधिकारिक क्लिनिक परामर्श टोकन",
-    sendSMS: "एसएमएस द्वारा विवरण भेजें",
-    smsSent: "एसएमएस भेज दिया गया",
+    sendEmail: "ईमेल द्वारा रसीद भेजें",
+    emailSent: "ईमेल भेज दिया गया",
     printSlip: "पर्ची प्रिंट करें",
     downloadSlip: "डाउनलोड करें",
     signInRequiredTitle: "टोकन लेने के लिए कृपया पहले साइन इन करें",
-    signInRequiredDesc: "अपना आधिकारिक कतार टोकन प्राप्त करने, ओपीडी टीवी पर कतार देखने और अपने मोबाइल पर एसएमएस विवरण पाने के लिए कृपया पहले साइन इन करें या नया खाता बनाएं।",
+    signInRequiredDesc: "अपना आधिकारिक कतार टोकन प्राप्त करने, ओपीडी टीवी पर कतार देखने और अपने ईमेल पर रसीद पाने के लिए कृपया पहले साइन इन करें या नया खाता बनाएं।",
     signInAction: "अपने खाते में साइन इन करें",
     createAccountAction: "नया मुफ्त मरीज़ खाता बनाएं",
 

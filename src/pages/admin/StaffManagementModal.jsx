@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
-import { sendDirectSMS, formatStaffCredentialsSMS } from '../../services/smsService';
+import { sendDirectEmail, generateStaffCredentialsEmailHtml } from '../../services/emailService';
 import {
   ShieldCheck,
   UserPlus,
@@ -15,7 +15,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Copy,
-  MessageSquare,
   Trash2,
   X,
   Sparkles,
@@ -52,10 +51,10 @@ export default function StaffManagementModal({ isOpen, onClose }) {
   const [successData, setSuccessData] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // In-modal SMS state
-  const [isSendingSMS, setIsSendingSMS] = useState(false);
-  const [smsDeliveryReceipt, setSmsDeliveryReceipt] = useState(null);
-  const [smsError, setSmsError] = useState('');
+  // In-modal Email state
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [emailDeliveryReceipt, setEmailDeliveryReceipt] = useState(null);
+  const [emailError, setEmailError] = useState('');
 
   if (!isOpen) return null;
 
@@ -65,36 +64,36 @@ export default function StaffManagementModal({ isOpen, onClose }) {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleSendCredentialsSMS = async (targetStaff) => {
-    const targetPhone = targetStaff.phone || phone;
-    if (!targetPhone || targetPhone.trim().length < 8) {
-      setSmsError('Please enter a valid phone number for SMS delivery.');
+  const handleSendCredentialsEmail = async (targetStaff) => {
+    const targetEmail = (targetStaff.email || email || '').trim();
+    if (!targetEmail) {
+      setEmailError('Please enter a valid email address for credentials delivery.');
       return;
     }
 
     try {
-      setIsSendingSMS(true);
-      setSmsError('');
-      const smsText = formatStaffCredentialsSMS({
+      setIsSendingEmail(true);
+      setEmailError('');
+      const emailHtml = generateStaffCredentialsEmailHtml({
         name: targetStaff.name,
-        email: targetStaff.email,
+        email: targetEmail,
         password: targetStaff.password || password || 'wasd@121',
         designation: targetStaff.department || targetStaff.designation || designation
       });
 
-      const receipt = await sendDirectSMS({
-        recipientPhone: targetPhone,
-        message: smsText,
-        patientName: targetStaff.name,
+      const receipt = await sendDirectEmail({
+        recipientEmail: targetEmail,
+        subject: '🔐 Apna Clinic Staff Access & Login Credentials',
+        html: emailHtml,
         type: 'staff_credentials'
       });
 
-      setSmsDeliveryReceipt(receipt);
-      showToast(`Credentials SMS sent to ${targetStaff.name}!`, 'success');
+      setEmailDeliveryReceipt(receipt);
+      showToast(`Credentials email sent to ${targetStaff.name} (${targetEmail})!`, 'success');
     } catch (err) {
-      setSmsError(err.message || 'Failed to dispatch credentials SMS');
+      setEmailError(err.message || 'Failed to dispatch credentials email');
     } finally {
-      setIsSendingSMS(false);
+      setIsSendingEmail(false);
     }
   };
 
@@ -117,7 +116,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
       setLoading(true);
       setError('');
       setSuccessData(null);
-      setSmsDeliveryReceipt(null);
+      setEmailDeliveryReceipt(null);
 
       // 1. Provision account in Auth / Firestore
       const newStaff = await provisionStaffAccount({
@@ -291,11 +290,11 @@ export default function StaffManagementModal({ isOpen, onClose }) {
 
                       <div className="flex items-center gap-1.5">
                         <button
-                          onClick={() => handleSendCredentialsSMS(staff)}
-                          title="Send login credentials on SMS"
+                          onClick={() => handleSendCredentialsEmail(staff)}
+                          title="Email login credentials"
                           className="p-1.5 rounded-lg bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#445644] text-[#2D6A4F] dark:text-[#52B788] hover:bg-[#2D6A4F]/10 transition-colors cursor-pointer"
                         >
-                          <Send className="w-3.5 h-3.5" />
+                          <Mail className="w-3.5 h-3.5" />
                         </button>
                         {!staff.isSuperAdmin && staff.email !== currentUser?.email && (
                           <button
@@ -316,14 +315,27 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                 ))}
               </div>
 
-              {/* In-Modal SMS Delivery Alert */}
-              {smsDeliveryReceipt && (
+              {/* In-Modal Email Error Alert */}
+              {emailError && (
+                <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 rounded-xl text-xs flex items-center justify-between text-rose-800 dark:text-rose-200">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                    <span>{emailError}</span>
+                  </div>
+                  <button onClick={() => setEmailError('')} className="text-xs text-rose-600 hover:underline cursor-pointer">
+                    Dismiss
+                  </button>
+                </div>
+              )}
+
+              {/* In-Modal Email Delivery Alert */}
+              {emailDeliveryReceipt && (
                 <div className="p-3 bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 border border-[#2D6A4F]/25 dark:border-[#52B788]/30 rounded-xl text-xs flex items-center justify-between">
                   <div className="flex items-center gap-2 text-[#2D6A4F] dark:text-[#52B788]">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    <span>Credentials SMS dispatched directly to recipient mobile (Ref: {smsDeliveryReceipt.messageId})</span>
+                    <span>Credentials email dispatched directly to recipient inbox ({emailDeliveryReceipt.recipientEmail})</span>
                   </div>
-                  <button onClick={() => setSmsDeliveryReceipt(null)} className="text-xs text-[#2D6A4F] hover:underline cursor-pointer">
+                  <button onClick={() => setEmailDeliveryReceipt(null)} className="text-xs text-[#2D6A4F] hover:underline cursor-pointer">
                     Dismiss
                   </button>
                 </div>
@@ -373,7 +385,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     </div>
                   </div>
 
-                  {/* Action Buttons: Copy & Send SMS */}
+                  {/* Action Buttons: Copy & Send Email */}
                   <div className="flex flex-wrap items-center gap-3">
                     <button
                       onClick={() => handleCopyCredentials(
@@ -386,12 +398,12 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     </button>
 
                     <button
-                      onClick={() => handleSendCredentialsSMS(successData)}
-                      disabled={isSendingSMS}
+                      onClick={() => handleSendCredentialsEmail(successData)}
+                      disabled={isSendingEmail}
                       className="flex-1 min-w-[160px] flex items-center justify-center gap-1.5 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs disabled:opacity-50"
                     >
-                      <MessageSquare className="w-3.5 h-3.5" />
-                      <span>{isSendingSMS ? 'Dispatching SMS...' : 'Send Details on SMS'}</span>
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>{isSendingEmail ? 'Dispatching Email...' : 'Send Details on Email'}</span>
                     </button>
 
                     <button
@@ -402,11 +414,23 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     </button>
                   </div>
 
-                  {/* SMS Delivery Notice */}
-                  {smsDeliveryReceipt && (
+                  {/* Email Delivery Error or Notice */}
+                  {emailError && (
+                    <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 rounded-xl text-xs flex items-center justify-between text-rose-800 dark:text-rose-200">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                        <span>{emailError}</span>
+                      </div>
+                      <button onClick={() => setEmailError('')} className="text-xs text-rose-600 hover:underline cursor-pointer">
+                        Dismiss
+                      </button>
+                    </div>
+                  )}
+
+                  {emailDeliveryReceipt && (
                     <div className="p-3 bg-white/80 dark:bg-[#1C221C]/80 rounded-xl border border-emerald-300 dark:border-emerald-700/60 text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span>SMS dispatched directly to {smsDeliveryReceipt.recipientPhone} (Carrier Ref: {smsDeliveryReceipt.messageId}).</span>
+                      <span>Credentials email dispatched directly to {emailDeliveryReceipt.recipientEmail}.</span>
                     </div>
                   )}
                 </div>
@@ -492,7 +516,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
-                        Mobile Phone (For Direct SMS)
+                        Mobile Phone (For Records)
                       </label>
                       <div className="relative">
                         <Phone className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />

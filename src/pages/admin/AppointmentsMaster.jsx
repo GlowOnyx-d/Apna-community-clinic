@@ -404,7 +404,7 @@ export default function AppointmentsMaster() {
         onClose={() => setVitalsModalApt(null)}
       />
 
-      {/* Token Slip with SMS sharing Modal */}
+      {/* Token Slip & Email Modal */}
       <TokenSlipModal
         isOpen={Boolean(slipModalApt)}
         appointment={slipModalApt}

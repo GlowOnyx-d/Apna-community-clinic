@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Megaphone, Award, Calendar, MapPin, Users, CheckCircle2, HeartHandshake } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { Megaphone, Award } from 'lucide-react';
+import HealthCampCard from '../../components/common/HealthCampCard';
 
 export default function CommunityAnnouncements() {
   const { announcements, rsvpAnnouncement } = useData();
+  const { role } = useAuth();
+  const [rsvpSync, setRsvpSync] = useState(0);
+
+  const handleRsvp = async (annId) => {
+    await rsvpAnnouncement(annId);
+    setRsvpSync(prev => prev + 1);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-in fade-in duration-300">
@@ -40,76 +49,13 @@ export default function CommunityAnnouncements() {
             const isRsvpd = typeof window !== 'undefined' && localStorage.getItem(`Apna_rsvp_${ann.id}`) === 'true';
 
             return (
-              <div
-                key={ann.id}
-                className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#445644] p-6 shadow-sm space-y-4 flex flex-col justify-between transition-colors"
-              >
-                <div className="space-y-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {ann.sdgTags?.map(tag => (
-                      <span key={tag} className="px-2.5 py-0.5 rounded-md bg-[#2D6A4F]/12 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] text-[10px] font-bold border border-[#2D6A4F]/25 dark:border-[#52B788]/30">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <h3 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading leading-snug">
-                    {ann.title}
-                  </h3>
-
-                  <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">
-                    {ann.description}
-                  </p>
-
-                  <div className="p-3 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-2 text-xs">
-                    <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
-                      <Calendar className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
-                      <span className="font-semibold">{ann.date}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-[#6B6B63] dark:text-[#C4CFC3]">
-                      <MapPin className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
-                      <span className="truncate">{ann.location}</span>
-                    </div>
-
-                    {ann.targetGroup && (
-                      <div className="flex items-center gap-2 text-[#6B6B63] dark:text-[#C4CFC3]">
-                        <Users className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54] shrink-0" />
-                        <span className="truncate">For: {ann.targetGroup}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between gap-3">
-                  <div className="text-[11px] font-semibold text-[#8E8E84] dark:text-[#94A493]">
-                    <span className="text-[#2D6A4F] dark:text-[#52B788] font-bold text-sm">
-                      {ann.registeredCount || 0}
-                    </span> Registered Attendees
-                  </div>
-
-                  <button
-                    onClick={() => rsvpAnnouncement(ann.id)}
-                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs cursor-pointer ${isRsvpd
-                      ? 'bg-[#2D6A4F]/15 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/30 dark:border-[#52B788]/30'
-                      : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
-                      }`}
-                  >
-                    {isRsvpd ? (
-                      <>
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>Registered ✓</span>
-                      </>
-                    ) : (
-                      <>
-                        <HeartHandshake className="w-3.5 h-3.5" />
-                        <span>Free RSVP</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-              </div>
+              <HealthCampCard
+                key={`${ann.id}_${rsvpSync}`}
+                ann={ann}
+                role={role || 'patient'}
+                onRsvp={role === 'doctor' ? null : handleRsvp}
+                isRsvpd={isRsvpd}
+              />
             );
           })}
         </div>

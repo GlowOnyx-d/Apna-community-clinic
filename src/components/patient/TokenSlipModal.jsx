@@ -7,19 +7,21 @@ import {
   CheckCircle2,
   HeartHandshake,
   QrCode,
-  MessageSquare,
-  Smartphone
+  AlertCircle,
+  Mail,
+  Loader2
 } from 'lucide-react';
 import QRCodeImage from '../common/QRCodeImage';
-import { sendDirectSMS, formatAppointmentSMS } from '../../services/smsService';
+import { sendDirectEmail, generateAppointmentEmailHtml } from '../../services/emailService';
 
 export default function TokenSlipModal({ appointment, onClose }) {
   const slipRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
-  const [recipientPhone, setRecipientPhone] = useState(appointment?.patientPhone || '');
-  const [smsSent, setSmsSent] = useState(false);
-  const [smsLoading, setSmsLoading] = useState(false);
-  const [smsDeliveryInfo, setSmsDeliveryInfo] = useState(null);
+  const [recipientEmail, setRecipientEmail] = useState(appointment?.patientEmail || '');
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [emailInfo, setEmailInfo] = useState(null);
 
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
 
@@ -170,32 +172,35 @@ export default function TokenSlipModal({ appointment, onClose }) {
     }
   };
 
-  const handleSendSMS = async () => {
-    const phone = (recipientPhone || appointment.patientPhone || '').trim();
-    if (!phone) {
-      alert('Please enter a recipient mobile number to send the SMS.');
+  const handleSendEmail = async () => {
+    const email = (recipientEmail || appointment.patientEmail || '').trim();
+    if (!email) {
+      setEmailError('Please enter a recipient email address.');
       return;
     }
 
-    setSmsLoading(true);
+    setEmailLoading(true);
+    setEmailError('');
 
     try {
-      const smsBody = formatAppointmentSMS({ ...appointment, patientPhone: phone });
-      const result = await sendDirectSMS({
-        recipientPhone: phone,
-        message: smsBody,
-        tokenNumber: appointment.tokenNumber,
-        patientName: appointment.patientName,
-        doctorName: appointment.doctorName,
+      const emailHtml = generateAppointmentEmailHtml(appointment);
+      const subject = `🏥 Apna Clinic Token Confirmation: ${appointment.tokenNumber || 'TK'} (${appointment.patientName || 'Patient'})`;
+      const result = await sendDirectEmail({
+        recipientEmail: email,
+        subject,
+        html: emailHtml,
         type: 'token_booking'
       });
 
-      setSmsDeliveryInfo(result);
-      setSmsSent(true);
+      setEmailInfo(result);
+      setEmailSent(true);
+      setEmailError('');
     } catch (err) {
-      alert(err.message || 'Failed to dispatch SMS.');
+      console.error('Email dispatch failure:', err);
+      setEmailSent(false);
+      setEmailError(err.message || 'Failed to dispatch email.');
     } finally {
-      setSmsLoading(false);
+      setEmailLoading(false);
     }
   };
 
@@ -296,38 +301,52 @@ export default function TokenSlipModal({ appointment, onClose }) {
           </div>
         </div>
 
-        {/* Recipient Phone Input Row */}
+        {/* Recipient Email Input Row */}
         <div className="px-5 py-2.5 bg-[#FAF7F2] dark:bg-[#151915] border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between gap-3 text-xs">
-          <span className="text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1.5 font-medium">
-            <Smartphone className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
-            <span>SMS Phone:</span>
+          <span className="text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1.5 font-medium shrink-0">
+            <Mail className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+            <span>Send to Email:</span>
           </span>
           <input
-            type="tel"
-            value={recipientPhone}
+            type="email"
+            value={recipientEmail}
             onChange={(e) => {
-              setRecipientPhone(e.target.value);
-              setSmsSent(false);
+              setRecipientEmail(e.target.value);
+              setEmailSent(false);
+              setEmailError('');
             }}
-            placeholder="+91 98765 43210"
-            className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] text-xs font-mono font-bold text-[#22291F] dark:text-[#FAF7F2] max-w-[170px] text-right focus:outline-none focus:border-[#2D6A4F]"
+            placeholder="patient@gmail.com"
+            className="flex-1 px-2.5 py-1 rounded-lg bg-white dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] text-xs font-medium text-[#22291F] dark:text-[#FAF7F2] max-w-[220px] text-right focus:outline-none focus:border-[#2D6A4F]"
           />
         </div>
 
-        {/* In-Website Direct SMS Delivery Confirmation Banner */}
-        {smsSent && (
+        {/* Email Error Banner */}
+        {emailError && (
+          <div className="mx-5 my-2 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-xs text-rose-900 dark:text-rose-200 animate-in fade-in space-y-1">
+            <div className="flex items-center gap-1.5 font-bold text-rose-700 dark:text-rose-300">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>Email Delivery Notice</span>
+            </div>
+            <p className="text-[11px] text-rose-800 dark:text-rose-300/90 leading-tight">
+              {emailError}
+            </p>
+          </div>
+        )}
+
+        {/* Email Delivery Confirmation Banner */}
+        {emailSent && (
           <div className="mx-5 my-2 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200 animate-in fade-in space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="font-bold flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>SMS Dispatched Directly to {recipientPhone || appointment.patientPhone}</span>
+                <span>Token Slip Emailed to {recipientEmail || appointment.patientEmail}</span>
               </span>
               <span className="text-[10px] font-mono text-emerald-700/80 dark:text-emerald-400">
-                {smsDeliveryInfo?.messageId || 'GATEWAY-OK'}
+                SENT ✓
               </span>
             </div>
             <p className="text-[11px] text-emerald-800 dark:text-emerald-300/90 leading-tight">
-              ✓ Sent directly from Apna Clinic Gateway . Please show the SMS message at the reception counter.
+              ✓ Full digital token slip with QR triage code, appointment time, and arrival directions dispatched.
             </p>
           </div>
         )}
@@ -336,20 +355,33 @@ export default function TokenSlipModal({ appointment, onClose }) {
         <div className="p-4 bg-[#FAF7F2] dark:bg-[#151915] border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex flex-wrap gap-2.5">
           <button
             type="button"
-            onClick={handleSendSMS}
-            disabled={smsLoading}
-            className={`flex-1 min-w-[130px] flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer ${smsSent
+            onClick={handleSendEmail}
+            disabled={emailLoading}
+            className={`flex-1 min-w-[130px] flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer ${
+              emailSent
                 ? 'bg-emerald-600 text-white'
                 : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
-              }`}
+            } disabled:opacity-60`}
           >
-            {smsSent ? <CheckCircle2 className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
-            <span>{smsSent ? 'SMS Dispatched ✓' : (smsLoading ? 'Sending SMS...' : 'Send SMS Details')}</span>
+            {emailLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : emailSent ? (
+              <CheckCircle2 className="w-4 h-4" />
+            ) : (
+              <Mail className="w-4 h-4" />
+            )}
+            <span>
+              {emailSent
+                ? 'Email Sent ✓'
+                : emailLoading
+                ? 'Sending Email...'
+                : 'Send to Email'}
+            </span>
           </button>
           <button
             type="button"
             onClick={handlePrint}
-            className="flex-1 min-w-[90px] flex items-center justify-center gap-2 py-2.5 px-3 bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] text-xs font-semibold rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] transition-colors shadow-xs cursor-pointer"
+            className="flex-1 min-w-[75px] flex items-center justify-center gap-2 py-2.5 px-3 bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] text-xs font-semibold rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] transition-colors shadow-xs cursor-pointer"
           >
             <Printer className="w-4 h-4 text-[#6B6B63] dark:text-[#C4CFC3]" />
             <span>Print</span>
@@ -358,7 +390,7 @@ export default function TokenSlipModal({ appointment, onClose }) {
             type="button"
             onClick={handleDownloadPDF}
             disabled={downloading}
-            className={`flex-1 min-w-[110px] flex items-center justify-center gap-2 py-2.5 px-3 border text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer ${
+            className={`flex-1 min-w-[95px] flex items-center justify-center gap-2 py-2.5 px-3 border text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer ${
               pdfDownloaded
                 ? 'bg-emerald-600 text-white border-emerald-600'
                 : 'bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2]'

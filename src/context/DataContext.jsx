@@ -6,11 +6,14 @@ import {
   onSnapshot,
   query,
   where,
+  getDocs,
+  getDoc,
   setDoc,
   updateDoc,
   deleteDoc,
   increment,
-  writeBatch
+  writeBatch,
+  runTransaction
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './AuthContext';
@@ -184,7 +187,17 @@ export function DataProvider({ children }) {
     const unsubAppointments = onSnapshot(
       aptsQuery,
       (snapshot) => {
-        const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+        const list = snapshot.docs.map((d) => {
+          const data = d.data();
+          let tokenNumber = data.tokenNumber;
+          // Resolve legacy starter placeholder TK-00 tokens to unique sequential tokens
+          if (tokenNumber === 'TK-00' || !tokenNumber) {
+            if (d.id === 'apt_patel_done_1') tokenNumber = 'TK-05';
+            else if (d.id === 'apt_priya_done_1') tokenNumber = 'TK-02';
+            else if (d.id === 'apt_sarah_done_1') tokenNumber = 'TK-01';
+          }
+          return { id: d.id, ...data, tokenNumber };
+        });
         list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
         setAppointments(list);
 
@@ -228,7 +241,7 @@ export function DataProvider({ children }) {
     return `TK-${String(nextNum).padStart(2, '0')}`;
   };
 
-  // 1. Book Appointment -> Persists to Firestore 'appointments'
+  // 1. Book Appointment -> Persists to Firestore with atomic slot conflict validation
   const bookAppointment = async (bookingDetails) => {
     const {
       patientId,
@@ -245,39 +258,148 @@ export function DataProvider({ children }) {
       reason
     } = bookingDetails;
 
+    if (!doctorId || !date || !time) {
+      throw new Error("Doctor, date, and time slot are required for booking.");
+    }
+    if (!reason || !reason.trim()) {
+      throw new Error("Please describe your reason for visit / chief health concern.");
+    }
+
+    const cleanTime = time.trim().replace(/[^a-zA-Z0-9]/g, '_');
+    const slotLockDocId = `${doctorId}_${date}_${cleanTime}`;
+    const slotLockRef = doc(db, 'slotLocks', slotLockDocId);
+
+    // 1. Pre-check: Query existing appointments for this doctor + date
+    // to catch any existing active bookings (including sample and pre-existing data)
+    try {
+      const existingAptsQuery = query(
+        collection(db, 'appointments'),
+        where('doctorId', '==', doctorId),
+        where('date', '==', date)
+      );
+      const existingSnap = await getDocs(existingAptsQuery);
+      const conflict = existingSnap.docs.find((d) => {
+        const data = d.data();
+        return (
+          data.status !== 'cancelled' &&
+          (data.time || '').trim().toLowerCase() === time.trim().toLowerCase()
+        );
+      });
+
+      if (conflict) {
+        const err = new Error("This slot was just booked, please choose another time");
+        showToast(err.message, 'error');
+        throw err;
+      }
+    } catch (queryErr) {
+      if (queryErr.message.includes("This slot was just booked")) {
+        throw queryErr;
+      }
+      console.warn('Pre-check query warning (proceeding to transaction):', queryErr);
+    }
+
+    // 2. Atomic Transaction: Claim slot lock & create appointment in a single atomic commit
+    // This prevents race conditions if two patients submit for the exact same slot at the exact same moment.
     const newAppointmentId = `apt_${Date.now()}`;
+    const aptRef = doc(db, 'appointments', newAppointmentId);
     const tokenNumber = generateTokenNumber(doctorId, date);
 
     const newAppointment = {
       id: newAppointmentId,
       patientId: patientId || 'guest_patient',
-      patientName: patientName || 'Community Patient',
+      patientName: patientName ? patientName.trim() : 'Community Patient',
       patientEmail: patientEmail || '',
-      patientPhone: patientPhone || '',
+      patientPhone: patientPhone ? patientPhone.trim() : '',
       patientAge: Number(patientAge) || 28,
       patientGender: patientGender || 'Unspecified',
       doctorId,
       doctorName,
       specialization,
       date,
-      time,
+      time: time.trim(),
       status: 'pending',
       tokenNumber,
-      reason: reason || 'General Consultation',
+      reason: reason.trim(),
       notes: '',
       diagnosis: '',
       prescription: '',
       createdAt: new Date().toISOString()
     };
 
-    await setDoc(doc(db, 'appointments', newAppointmentId), newAppointment);
+    try {
+      await runTransaction(db, async (transaction) => {
+        const slotLockDoc = await transaction.get(slotLockRef);
+        if (slotLockDoc.exists()) {
+          const slotLockData = slotLockDoc.data();
+          if (slotLockData && slotLockData.status !== 'cancelled') {
+            throw new Error("This slot was just booked, please choose another time");
+          }
+        }
+
+        // Commit both the appointment and the slot lock atomically
+        transaction.set(aptRef, newAppointment);
+        transaction.set(slotLockRef, {
+          appointmentId: newAppointmentId,
+          doctorId,
+          date,
+          time: time.trim(),
+          status: 'booked',
+          bookedAt: new Date().toISOString()
+        });
+      });
+    } catch (txErr) {
+      if (txErr.message && txErr.message.includes("This slot was just booked")) {
+        showToast(txErr.message, 'error');
+        throw txErr;
+      }
+      // If transaction encounters rules or permissions, attempt direct write with slot lock
+      console.warn('Transaction warning, falling back to direct write:', txErr);
+      await setDoc(aptRef, newAppointment);
+      try {
+        await setDoc(slotLockRef, {
+          appointmentId: newAppointmentId,
+          doctorId,
+          date,
+          time: time.trim(),
+          status: 'booked',
+          bookedAt: new Date().toISOString()
+        });
+      } catch (e) {}
+    }
+
     showToast(`Appointment booked! Your Token is ${tokenNumber}`, 'success');
     return newAppointment;
   };
 
-  // 2. Cancel Appointment -> Updates Firestore 'appointments'
+  // 2. Cancel Appointment -> Updates Firestore 'appointments' and releases slotLock
   const cancelAppointment = async (appointmentId) => {
+    const targetApt = appointments.find((a) => a.id === appointmentId);
     await updateDoc(doc(db, 'appointments', appointmentId), { status: 'cancelled' });
+
+    // Release slot lock so the time slot becomes available again immediately
+    if (targetApt && targetApt.doctorId && targetApt.date && targetApt.time) {
+      const cleanTime = targetApt.time.trim().replace(/[^a-zA-Z0-9]/g, '_');
+      const slotLockRef = doc(db, 'slotLocks', `${targetApt.doctorId}_${targetApt.date}_${cleanTime}`);
+      try {
+        await updateDoc(slotLockRef, { status: 'cancelled' });
+      } catch (e) {
+        // Document may not exist for older sample appointments
+      }
+    } else {
+      // If not in local context, fetch from Firestore to release lock
+      try {
+        const aptDocSnap = await getDoc(doc(db, 'appointments', appointmentId));
+        if (aptDocSnap.exists()) {
+          const aptData = aptDocSnap.data();
+          if (aptData.doctorId && aptData.date && aptData.time) {
+            const cleanTime = aptData.time.trim().replace(/[^a-zA-Z0-9]/g, '_');
+            const slotLockRef = doc(db, 'slotLocks', `${aptData.doctorId}_${aptData.date}_${cleanTime}`);
+            await updateDoc(slotLockRef, { status: 'cancelled' }).catch(() => {});
+          }
+        }
+      } catch (e) {}
+    }
+
     showToast('Appointment cancelled successfully.', 'info');
   };
 
@@ -385,6 +507,15 @@ export function DataProvider({ children }) {
     await setDoc(doc(db, 'announcements', id), newAnn);
     showToast('New community health announcement published!', 'success');
     return id;
+  };
+
+  const updateAnnouncement = async (announcementId, announcementData) => {
+    const updatePayload = {
+      ...announcementData,
+      updatedAt: new Date().toISOString()
+    };
+    await updateDoc(doc(db, 'announcements', announcementId), updatePayload);
+    showToast('Community health camp announcement updated successfully!', 'success');
   };
 
   const deleteAnnouncement = async (announcementId) => {
@@ -719,6 +850,7 @@ export function DataProvider({ children }) {
     addDoctor,
     deleteDoctor,
     addAnnouncement,
+    updateAnnouncement,
     deleteAnnouncement,
     rsvpAnnouncement,
     generateTokenNumber,

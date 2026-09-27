@@ -867,7 +867,7 @@ export default function LandingPage() {
                 {t('signInRequiredTitle', 'Please Sign In to Book Your Token')}
               </h3>
               <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">
-                {t('signInRequiredDesc', 'To allocate your sequential queue token, display your wait time on the OPD TV, and send direct SMS appointment alerts, please sign in or register your free patient account.')}
+                {t('signInRequiredDesc', 'To allocate your sequential queue token, display your wait time on the OPD TV, and receive direct email appointment receipts with QR triage verification, please sign in or register your free patient account.')}
               </p>
             </div>
 
@@ -879,7 +879,7 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
                 <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
-                <span>Direct SMS confirmation sent to your mobile</span>
+                <span>Direct email confirmation with digital token slip</span>
               </div>
               <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
                 <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />

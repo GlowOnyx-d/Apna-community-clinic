@@ -234,7 +234,7 @@ export default function Register() {
           <div className="relative z-10 mt-8 pt-6 border-t border-white/15 space-y-2.5">
             <div className="flex items-center gap-2.5 text-xs text-[#FAF7F2]/90">
               <CheckCircle2 className="w-4 h-4 text-[#52B788] shrink-0" />
-              <span>Smart Token Queue with live SMS alerts &amp; OPD TV</span>
+              <span>Smart Token Queue with direct email receipts &amp; OPD TV</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-[#FAF7F2]/90">
               <CheckCircle2 className="w-4 h-4 text-[#52B788] shrink-0" />

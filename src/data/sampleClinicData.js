@@ -310,7 +310,7 @@ export const getSampleAppointments = () => {
       date: todayStr,
       time: "08:30 AM",
       status: "done",
-      tokenNumber: "TK-00",
+      tokenNumber: "TK-05",
       reason: "Bilateral knee joint stiffness and chronic osteoarthritic ache",
       notes: "Joint effusion minimal. Normal active range of motion. Advised low-impact daily walks.",
       diagnosis: "Bilateral Knee Primary Osteoarthritis (Grade II)",
@@ -485,7 +485,7 @@ export const getSampleAppointments = () => {
       date: todayStr,
       time: "08:30 AM",
       status: "done",
-      tokenNumber: "TK-00",
+      tokenNumber: "TK-01",
       reason: "Occipital tension headache and neck stiffness from desk ergonomics",
       notes: "Full neurological screening unremarkable. Advised periodic display pauses.",
       diagnosis: "Postural Cervical Muscle Strain & Episodic Tension Headache",
@@ -554,7 +554,7 @@ export const getSampleAppointments = () => {
       date: todayStr,
       time: "08:45 AM",
       status: "done",
-      tokenNumber: "TK-00",
+      tokenNumber: "TK-02",
       reason: "Nighttime dry cough and itchy watery eyes",
       notes: "Bilateral chest sounds clear. No wheeze. Throat mildly injected.",
       diagnosis: "Pediatric Allergic Rhinitis & Seasonal Cough",
@@ -749,15 +749,17 @@ export const SAMPLE_LAB_REPORTS = [
 ];
 
 export const SAMPLE_PHARMACY_STOCK = [
-  { id: "med_1", name: "Paracetamol 500mg", generic: "Acetaminophen", form: "Tablets", category: "Antipyretic / Analgesic", stock: 1250, unit: "tabs", minAlert: 200, status: "Good", batch: "PCT-2026-08", expiry: "2028-06" },
+  { id: "med_1", name: "Paracetamol 650mg / 500mg", generic: "Acetaminophen", form: "Tablets", category: "Antipyretic / Analgesic", stock: 1250, unit: "tabs", minAlert: 200, status: "Good", batch: "PCT-2026-08", expiry: "2028-06" },
   { id: "med_2", name: "Amoxicillin 500mg", generic: "Amoxicillin Trihydrate", form: "Capsules", category: "Broad-Spectrum Antibiotic", stock: 680, unit: "caps", minAlert: 150, status: "Good", batch: "AMX-2026-05", expiry: "2027-11" },
   { id: "med_3", name: "Metformin 500mg", generic: "Metformin Hydrochloride", form: "Tablets", category: "Antidiabetic (Type 2)", stock: 890, unit: "tabs", minAlert: 200, status: "Good", batch: "MET-2026-09", expiry: "2028-04" },
   { id: "med_4", name: "ORS WHO Formula", generic: "Oral Rehydration Salts", form: "Sachets", category: "Hydration Therapy", stock: 450, unit: "sachets", minAlert: 100, status: "Good", batch: "ORS-2026-03", expiry: "2028-01" },
-  { id: "med_5", name: "Cetirizine 10mg", generic: "Cetirizine Dihydrochloride", form: "Tablets", category: "Antihistamine / Antiallergic", stock: 720, unit: "tabs", minAlert: 100, status: "Good", batch: "CET-2026-07", expiry: "2027-09" },
+  { id: "med_5", name: "Syrup Levocetirizine 2.5ml", generic: "Levocetirizine Dihydrochloride", form: "Syrup 60ml", category: "Pediatric Antihistamine", stock: 12, unit: "bottles", minAlert: 30, status: "Low Stock", batch: "LCT-2026-07", expiry: "2027-09" },
   { id: "med_6", name: "Pantoprazole 40mg", generic: "Pantoprazole Sodium", form: "Tablets", category: "Proton Pump Inhibitor / Antacid", stock: 540, unit: "tabs", minAlert: 100, status: "Good", batch: "PAN-2026-10", expiry: "2028-08" },
-  { id: "med_7", name: "Iron & Folic Acid", generic: "Ferrous Ascorbate + Folic Acid", form: "Tablets", category: "Maternal & Anemia Care", stock: 950, unit: "tabs", minAlert: 150, status: "Good", batch: "IFA-2026-04", expiry: "2027-12" },
-  { id: "med_8", name: "Vitamin C 500mg + Zinc", generic: "Ascorbic Acid + Zinc Sulphate", form: "Chewable", category: "Immune Support", stock: 620, unit: "tabs", minAlert: 100, status: "Good", batch: "VCZ-2026-02", expiry: "2028-05" },
-  { id: "med_9", name: "Salbutamol 100mcg Inhaler", generic: "Albuterol / Salbutamol", form: "MDI Inhaler", category: "Bronchodilator (Asthma/COPD)", stock: 38, unit: "canisters", minAlert: 20, status: "Low Stock", batch: "SLB-2026-01", expiry: "2027-08" },
-  { id: "med_10", name: "Cough Relief Expectorant", generic: "Guaifenesin + Ambroxol Syrup", form: "Syrup 100ml", category: "Respiratory Relief", stock: 110, unit: "bottles", minAlert: 30, status: "Good", batch: "CGH-2026-06", expiry: "2027-10" }
+  { id: "med_7", name: "Normal Saline Nasal Drops", generic: "0.9% Sodium Chloride", form: "Drops 15ml", category: "Pediatric Decongestant", stock: 8, unit: "bottles", minAlert: 20, status: "Low Stock", batch: "NSD-2026-03", expiry: "2027-12" },
+  { id: "med_8", name: "Tab Glucosamine Sulfate 500mg", generic: "Glucosamine Sulfate Potassium Chloride", form: "Tablets", category: "Joint Care / Osteoarthritis", stock: 140, unit: "tabs", minAlert: 50, status: "Good", batch: "GLU-2026-04", expiry: "2028-02" },
+  { id: "med_9", name: "Tab Ibuprofen 400mg", generic: "Ibuprofen NSAID", form: "Tablets", category: "Anti-Inflammatory Analgesic", stock: 320, unit: "tabs", minAlert: 80, status: "Good", batch: "IBU-2026-09", expiry: "2028-01" },
+  { id: "med_10", name: "Salbutamol 100mcg Inhaler", generic: "Albuterol / Salbutamol", form: "MDI Inhaler", category: "Bronchodilator (Asthma/COPD)", stock: 18, unit: "canisters", minAlert: 20, status: "Low Stock", batch: "SLB-2026-01", expiry: "2027-08" },
+  { id: "med_11", name: "Iron & Folic Acid", generic: "Ferrous Ascorbate + Folic Acid", form: "Tablets", category: "Maternal & Anemia Care", stock: 950, unit: "tabs", minAlert: 150, status: "Good", batch: "IFA-2026-04", expiry: "2027-12" },
+  { id: "med_12", name: "Cough Relief Expectorant", generic: "Guaifenesin + Ambroxol Syrup", form: "Syrup 100ml", category: "Respiratory Relief", stock: 110, unit: "bottles", minAlert: 30, status: "Good", batch: "CGH-2026-06", expiry: "2027-10" }
 ];
 

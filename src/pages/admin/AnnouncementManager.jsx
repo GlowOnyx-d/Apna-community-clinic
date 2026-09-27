@@ -7,8 +7,11 @@ import {
   MapPin,
   Trash2,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Edit3,
+  X
 } from 'lucide-react';
+import HealthCampCard from '../../components/common/HealthCampCard';
 
 const COMMON_SDG_TAGS = [
   "SDG 3: Good Health & Well-being",
@@ -19,9 +22,10 @@ const COMMON_SDG_TAGS = [
 ];
 
 export default function AnnouncementManager() {
-  const { announcements, addAnnouncement, deleteAnnouncement } = useData();
+  const { announcements, addAnnouncement, updateAnnouncement, deleteAnnouncement } = useData();
 
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingCamp, setEditingCamp] = useState(null);
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('health_camp');
   const [description, setDescription] = useState('');
@@ -42,6 +46,33 @@ export default function AnnouncementManager() {
     }
   };
 
+  const handleStartEdit = (camp) => {
+    setEditingCamp(camp);
+    setTitle(camp.title || '');
+    setCategory(camp.category || 'health_camp');
+    setDescription(camp.description || '');
+    setDate(camp.date || '');
+    setLocation(camp.location || '');
+    setTargetGroup(camp.targetGroup || 'Open to All');
+    setOrganizer(camp.organizer || 'Apna Community Health Team');
+    setSelectedTags(camp.sdgTags && camp.sdgTags.length > 0 ? camp.sdgTags : ["SDG 3: Good Health & Well-being"]);
+    setError('');
+    setShowAddForm(true);
+
+    // Smooth scroll to form
+    window.scrollTo({ top: 80, behavior: 'smooth' });
+  };
+
+  const handleCancelForm = () => {
+    setShowAddForm(false);
+    setEditingCamp(null);
+    setTitle('');
+    setDescription('');
+    setDate('');
+    setLocation('');
+    setError('');
+  };
+
   const handleCreateAnnouncement = async (e) => {
     e.preventDefault();
     if (!title || !description || !date || !location) {
@@ -52,28 +83,38 @@ export default function AnnouncementManager() {
     try {
       setError('');
       setLoading(true);
-      await addAnnouncement({
-        title,
+
+      const payload = {
+        title: title.trim(),
         category,
-        description,
+        description: description.trim(),
         sdgTags: selectedTags.length > 0 ? selectedTags : ["SDG 3: Good Health & Well-being"],
         date,
-        location,
-        targetGroup,
-        organizer
-      });
+        location: location.trim(),
+        targetGroup: targetGroup.trim(),
+        organizer: organizer.trim()
+      };
 
-      setSuccess('Community health camp announcement published successfully!');
-      setTitle('');
-      setDescription('');
-      setDate('');
-      setLocation('');
-      setShowAddForm(false);
-      setTimeout(() => setSuccess(''), 4000);
+      if (editingCamp) {
+        await updateAnnouncement(editingCamp.id, payload);
+        setSuccess(`Health camp "${title}" updated successfully!`);
+      } else {
+        await addAnnouncement(payload);
+        setSuccess('Community health camp announcement published successfully!');
+      }
+
+      handleCancelForm();
+      setTimeout(() => setSuccess(''), 4500);
     } catch (err) {
-      setError(err.message || 'Failed to publish announcement');
+      setError(err.message || 'Failed to save health camp announcement');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteCamp = (camp) => {
+    if (window.confirm(`Are you sure you want to delete the health camp "${camp.title}"?`)) {
+      deleteAnnouncement(camp.id);
     }
   };
 
@@ -90,38 +131,71 @@ export default function AnnouncementManager() {
             Community Health Camps &amp; SDG Initiatives
           </h1>
           <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-1">
-            Publish free health screenings, immunization campaigns, and community awareness drives under UN SDG 3.
+            Publish, edit, and track free community screenings, immunization campaigns, and health drives under UN SDG 3.
           </p>
         </div>
 
         <button
-          onClick={() => { setShowAddForm(!showAddForm); setError(''); }}
+          onClick={() => {
+            if (showAddForm && !editingCamp) {
+              handleCancelForm();
+            } else {
+              setEditingCamp(null);
+              setTitle('');
+              setDescription('');
+              setDate('');
+              setLocation('');
+              setError('');
+              setShowAddForm(true);
+            }
+          }}
           className="flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
-          <span>{showAddForm ? 'Close Form' : 'New Health Camp'}</span>
+          {showAddForm && !editingCamp ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          <span>{showAddForm && !editingCamp ? 'Close Form' : '+ New Health Camp'}</span>
         </button>
       </div>
 
       {/* Success Notification */}
       {success && (
-        <div className="flex items-center gap-2 p-3 bg-[#2D6A4F]/15 border border-[#2D6A4F]/30 dark:border-[#52B788]/30 rounded-xl text-xs font-medium text-[#2D6A4F] dark:text-[#52B788]">
+        <div className="flex items-center gap-2 p-3 bg-[#2D6A4F]/15 border border-[#2D6A4F]/30 dark:border-[#52B788]/30 rounded-xl text-xs font-medium text-[#2D6A4F] dark:text-[#52B788] animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
           <span>{success}</span>
         </div>
       )}
 
-      {/* Add Announcement Form */}
+      {/* Add / Edit Announcement Form */}
       {showAddForm && (
         <div className="bg-white dark:bg-[#1C221C] rounded-3xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-top-4">
-          <div className="flex items-center gap-3 pb-4 mb-6 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
-            <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center font-bold">
-              <Megaphone className="w-5 h-5" />
+          <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl ${editingCamp ? 'bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] border border-[#C97B4A]/30' : 'bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788]'} flex items-center justify-center font-bold`}>
+                {editingCamp ? <Edit3 className="w-5 h-5" /> : <Megaphone className="w-5 h-5" />}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+                    {editingCamp ? 'Edit Community Health Camp' : 'Publish Health Camp Announcement'}
+                  </h2>
+                  {editingCamp && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] border border-[#C97B4A]/30">
+                      Editing Mode
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+                  {editingCamp ? `Updating existing details for "${editingCamp.title}"` : 'Visible to patients, doctors, and the community'}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">Publish Health Camp Announcement</h2>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">Visible to patients and the community</p>
-            </div>
+
+            <button
+              type="button"
+              onClick={handleCancelForm}
+              className="p-1.5 rounded-lg text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#242C24] cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
 
           <form onSubmit={handleCreateAnnouncement} className="space-y-4">
@@ -260,7 +334,7 @@ export default function AnnouncementManager() {
             <div className="flex justify-end gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setShowAddForm(false)}
+                onClick={handleCancelForm}
                 className="px-4 py-2 text-xs font-semibold text-[#6B6B63] hover:text-[#22291F] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] dark:hover:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
@@ -270,7 +344,9 @@ export default function AnnouncementManager() {
                 disabled={loading}
                 className="px-5 py-2 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
               >
-                {loading ? 'Publishing...' : 'Publish Camp Announcement'}
+                {loading 
+                  ? (editingCamp ? 'Updating Camp...' : 'Publishing...') 
+                  : (editingCamp ? 'Save Changes' : 'Publish Camp Announcement')}
               </button>
             </div>
           </form>
@@ -279,7 +355,14 @@ export default function AnnouncementManager() {
 
       {/* Announcements List */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">Active Health Camps ({announcements.length})</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+            Active Health Camps ({announcements.length})
+          </h2>
+          <span className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+            Click <Edit3 className="w-3.5 h-3.5 inline mx-0.5 text-[#2D6A4F] dark:text-[#52B788]" /> to modify camp details anytime
+          </span>
+        </div>
 
         {announcements.length === 0 ? (
           <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-3xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-4">
@@ -293,7 +376,10 @@ export default function AnnouncementManager() {
               </p>
             </div>
             <button
-              onClick={() => setShowAddForm(true)}
+              onClick={() => {
+                setEditingCamp(null);
+                setShowAddForm(true);
+              }}
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4" />
@@ -301,40 +387,15 @@ export default function AnnouncementManager() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {announcements.map((ann) => (
-              <div key={ann.id} className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 transition-colors">
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex flex-wrap gap-1.5">
-                      {ann.sdgTags?.map(tag => (
-                        <span key={tag} className="px-2.5 py-0.5 bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 rounded-md text-[10px] font-bold">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => {
-                        if (window.confirm(`Delete announcement "${ann.title}"?`)) {
-                          deleteAnnouncement(ann.id);
-                        }
-                      }}
-                      title="Delete Announcement"
-                      className="p-1.5 text-[#8E8E84] dark:text-[#94A493] hover:text-[#C97B4A] dark:hover:text-[#E58A54] hover:bg-[#C97B4A]/10 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{ann.title}</h3>
-                  <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">{ann.description}</p>
-
-                  <div className="pt-2 border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex flex-wrap gap-4 text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
-                    <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" /> {ann.date}</span>
-                    <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" /> {ann.location}</span>
-                  </div>
-                </div>
-              </div>
+              <HealthCampCard
+                key={ann.id}
+                ann={ann}
+                role="admin"
+                onEdit={handleStartEdit}
+                onDelete={handleDeleteCamp}
+              />
             ))}
           </div>
         )}

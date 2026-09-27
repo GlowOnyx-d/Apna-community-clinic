@@ -28,11 +28,20 @@ import {
   getDoctorFallbackAvatar, 
   getSpecialtyConfig 
 } from '../../utils/doctorVisuals';
+import HealthCampCard from '../../components/common/HealthCampCard';
 
 export default function PatientDashboard() {
   const { userProfile } = useAuth();
-  const { doctors, appointments, announcements } = useData();
+  const { doctors, appointments, announcements, rsvpAnnouncement } = useData();
   const { t, language } = useLanguage();
+  const [rsvpSync, setRsvpSync] = useState(0);
+
+  const handleRsvp = async (annId) => {
+    if (rsvpAnnouncement) {
+      await rsvpAnnouncement(annId);
+      setRsvpSync(prev => prev + 1);
+    }
+  };
   
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedDoctorForBooking, setSelectedDoctorForBooking] = useState(null);
@@ -517,32 +526,19 @@ export default function PatientDashboard() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {announcements.slice(0, 3).map((ann) => (
-            <div 
-              key={ann.id} 
-              className="bg-white dark:bg-[#242C24] p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-xs flex flex-col justify-between hover:-translate-y-0.5 transition-transform"
-            >
-              <div className="space-y-2">
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#C97B4A]/10 text-[#C97B4A] dark:text-[#E58A54] border border-[#C97B4A]/20">
-                  {ann.category || 'Health Camp'}
-                </span>
-                <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm line-clamp-2 font-heading">{ann.title}</h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] line-clamp-3 leading-relaxed">{ann.description}</p>
-              </div>
-
-              <div className="pt-3 mt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
-                  {ann.date}
-                </span>
-                <span className="flex items-center gap-1 truncate max-w-[130px]">
-                  <MapPin className="w-3.5 h-3.5 text-[#C97B4A]" />
-                  {ann.location}
-                </span>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {announcements.slice(0, 3).map((ann) => {
+            const isRsvpd = typeof window !== 'undefined' && localStorage.getItem(`Apna_rsvp_${ann.id}`) === 'true';
+            return (
+              <HealthCampCard
+                key={`${ann.id}_${rsvpSync}`}
+                ann={ann}
+                role="patient"
+                onRsvp={handleRsvp}
+                isRsvpd={isRsvpd}
+              />
+            );
+          })}
         </div>
       </div>
 
