@@ -94,29 +94,29 @@ export default function Navbar() {
   const navLinks = getNavLinks();
 
   const roleColors = {
-    patient: 'bg-[#2D6A4F]/10 text-[#2D6A4F] border-[#2D6A4F]/25 dark:bg-[#2D6A4F]/20 dark:text-[#52B788] dark:border-[#2D6A4F]/30',
-    doctor: 'bg-[#2D6A4F]/15 text-[#2D6A4F] border-[#2D6A4F]/30 dark:bg-[#2D6A4F]/25 dark:text-[#52B788] dark:border-[#2D6A4F]/40',
-    admin: 'bg-[#C97B4A]/12 text-[#B35F2B] border-[#C97B4A]/25 dark:bg-[#E58A54]/20 dark:text-[#E58A54] dark:border-[#E58A54]/40'
+    patient: 'bg-[#0F766E]/10 text-[#0F766E] border-[#0F766E]/25 dark:bg-[#0F766E]/20 dark:text-[#2DD4BF] dark:border-[#0F766E]/30',
+    doctor: 'bg-[#0F766E]/15 text-[#0F766E] border-[#0F766E]/30 dark:bg-[#0F766E]/25 dark:text-[#2DD4BF] dark:border-[#0F766E]/40',
+    admin: 'bg-[#F97316]/12 text-[#EA580C] border-[#F97316]/25 dark:bg-[#FB923C]/20 dark:text-[#FB923C] dark:border-[#FB923C]/40'
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#F8F6F1]/85 dark:bg-[#131713]/90 backdrop-blur-md border-b border-[#E6DFC6] dark:border-[#2F3B2F] transition-colors duration-200">
+    <header className="sticky top-0 z-40 bg-[#F4F7F6]/85 dark:bg-[#0B1114]/90 backdrop-blur-md border-b border-[#E0E7E5] dark:border-[#21333A] transition-colors duration-200">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3 lg:gap-6">
 
           {/* Left: Logo + Brand Block pinned firmly to far left edge */}
           <div className="flex items-center shrink-0">
             <Link to="/" className="flex items-center gap-3 shrink-0 group">
-              <div className="w-9 h-9 rounded-xl bg-[#2D6A4F] flex items-center justify-center text-[#FAF7F2] shadow-sm group-hover:bg-[#23543E] transition-colors">
-                <HeartHandshake className="w-5 h-5 text-[#FAF7F2]" />
+              <div className="w-9 h-9 rounded-xl bg-[#0F766E] flex items-center justify-center text-[#F4F7F6] shadow-sm group-hover:bg-[#115E59] transition-colors">
+                <HeartHandshake className="w-5 h-5 text-[#F4F7F6]" />
               </div>
               <div>
-                <span className="text-lg font-extrabold tracking-tight text-[#22291F] dark:text-[#FAF7F2] block leading-tight font-heading">
+                <span className="text-lg font-extrabold tracking-tight text-[#132226] dark:text-[#F4F7F6] block leading-tight font-heading">
                   {t('clinicTitle', 'Apna Clinic')}
                 </span>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C97B4A] dark:bg-[#E58A54]"></span>
-                  <span className="text-[10px] font-semibold text-[#6B6B63] dark:text-[#C4CFC3] tracking-wider uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] dark:bg-[#FB923C]"></span>
+                  <span className="text-[10px] font-semibold text-[#5A7178] dark:text-[#9DB4BA] tracking-wider uppercase">
                     {t('tagline', 'Community Health')}
                   </span>
                 </div>
@@ -134,11 +134,11 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={`flex items-center gap-2 px-3 py-1.5 lg:px-3.5 lg:py-2 rounded-xl text-xs lg:text-sm font-medium transition-colors whitespace-nowrap ${isActive
-                    ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] font-semibold border border-[#2D6A4F]/20 dark:bg-[#2D6A4F]/20 dark:text-[#52B788] dark:border-[#2D6A4F]/40'
-                    : 'text-[#6B6B63] hover:text-[#22291F] hover:bg-[#2D6A4F]/5 dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] dark:hover:bg-[#2D6A4F]/10'
+                    ? 'bg-[#0F766E]/10 text-[#0F766E] font-semibold border border-[#0F766E]/20 dark:bg-[#0F766E]/20 dark:text-[#2DD4BF] dark:border-[#0F766E]/40'
+                    : 'text-[#5A7178] hover:text-[#132226] hover:bg-[#0F766E]/5 dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] dark:hover:bg-[#0F766E]/10'
                     }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#2D6A4F] dark:text-[#52B788]' : 'text-[#6B6B63] dark:text-[#94A493]'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#0F766E] dark:text-[#2DD4BF]' : 'text-[#5A7178] dark:text-[#79949B]'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
@@ -153,9 +153,9 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               title="Open OPD Live TV Waiting Hall Call Board"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#2D6A4F]/25 bg-[#2D6A4F]/10 dark:border-[#52B788]/30 dark:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] hover:bg-[#2D6A4F]/15 text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#0F766E]/25 bg-[#0F766E]/10 dark:border-[#2DD4BF]/30 dark:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] hover:bg-[#0F766E]/15 text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
             >
-              <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
               <Tv className="w-3.5 h-3.5" />
               <span>{t('navOpdTv', 'OPD TV')}</span>
             </Link>
@@ -163,10 +163,10 @@ export default function Navbar() {
             {/* Cloud Firestore Status Badge */}
             <div
               title="Connected to Cloud Firestore (Real-time Live Sync Active)"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#2D6A4F]/20 dark:border-[#52B788]/20 bg-[#2D6A4F]/5 dark:bg-[#2D6A4F]/10 text-xs font-medium text-[#2D6A4F] dark:text-[#52B788] transition-colors whitespace-nowrap"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#0F766E]/20 dark:border-[#2DD4BF]/20 bg-[#0F766E]/5 dark:bg-[#0F766E]/10 text-xs font-medium text-[#0F766E] dark:text-[#2DD4BF] transition-colors whitespace-nowrap"
             >
-              <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
-              <Cloud className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+              <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
+              <Cloud className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
               <span className="text-[11px] hidden xl:inline font-semibold">
                 {t('navCloudSync', 'Cloud Sync')}
               </span>
@@ -176,7 +176,7 @@ export default function Navbar() {
             <button
               onClick={() => setShowQrModal(true)}
               title="Scan QR to open clinic portal on mobile"
-              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#52B788] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer"
+              className="p-2 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
             >
               <QrCode className="w-4 h-4" />
             </button>
@@ -185,9 +185,9 @@ export default function Navbar() {
             <button
               onClick={toggleLanguage}
               title={language === 'en' ? "हिंदी में बदलें (Switch to Hindi)" : "Switch to English"}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#52B788] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer text-xs font-semibold"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer text-xs font-semibold"
             >
-              <Languages className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+              <Languages className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
               <span className="font-bold">{language === 'en' ? 'हिं' : 'EN'}</span>
             </button>
 
@@ -196,39 +196,39 @@ export default function Navbar() {
               onClick={toggleTheme}
               title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
               aria-label="Toggle visual theme"
-              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#FAF7F2] hover:bg-[#2D6A4F]/8 dark:hover:bg-[#2D6A4F]/20 transition-all cursor-pointer"
+              className="p-2 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#F4F7F6] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
             >
-              {isDark ? <Sun className="w-4 h-4 text-[#E58A54]" /> : <Moon className="w-4 h-4 text-[#2D6A4F]" />}
+              {isDark ? <Sun className="w-4 h-4 text-[#FB923C]" /> : <Moon className="w-4 h-4 text-[#0F766E]" />}
             </button>
 
             {/* User Profile / Logout or Sign In / Register */}
             {currentUser ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-[#E6DFC6] dark:border-[#2F3B2F]">
-                <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3] max-w-[140px] truncate" title={userProfile?.name || currentUser.email}>
+              <div className="flex items-center gap-2 pl-2 border-l border-[#E0E7E5] dark:border-[#21333A]">
+                <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA] max-w-[140px] truncate" title={userProfile?.name || currentUser.email}>
                   {userProfile?.name || currentUser.email}
                 </span>
-                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider shrink-0 ${roleColors[role] || 'bg-[#2D6A4F]/10 text-[#2D6A4F]'}`}>
+                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider shrink-0 ${roleColors[role] || 'bg-[#0F766E]/10 text-[#0F766E]'}`}>
                   {role}
                 </span>
                 <button
                   onClick={() => setShowLogoutConfirm(true)}
                   title={t('logout', 'Sign Out')}
-                  className="p-2 text-[#6B6B63] hover:text-[#C97B4A] hover:bg-[#C97B4A]/10 rounded-xl transition-colors dark:text-[#94A493] dark:hover:text-[#FAF7F2] cursor-pointer shrink-0"
+                  className="p-2 text-[#5A7178] hover:text-[#F97316] hover:bg-[#F97316]/10 rounded-xl transition-colors dark:text-[#79949B] dark:hover:text-[#F4F7F6] cursor-pointer shrink-0"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : !isAuthPage ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-[#E6DFC6] dark:border-[#2F3B2F]">
+              <div className="flex items-center gap-2 pl-2 border-l border-[#E0E7E5] dark:border-[#21333A]">
                 <Link
                   to="/login"
-                  className="px-3.5 py-1.5 text-xs font-semibold text-[#2D6A4F] hover:bg-[#2D6A4F]/10 rounded-xl transition-colors dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] whitespace-nowrap"
+                  className="px-3.5 py-1.5 text-xs font-semibold text-[#0F766E] hover:bg-[#0F766E]/10 rounded-xl transition-colors dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] whitespace-nowrap"
                 >
                   {t('login', 'Sign In')}
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-xs font-semibold text-[#FAF7F2] bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] rounded-xl shadow-xs transition-colors whitespace-nowrap"
+                  className="px-4 py-2 text-xs font-semibold text-[#F4F7F6] bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] rounded-xl shadow-xs transition-colors whitespace-nowrap"
                 >
                   {t('register', 'Register')}
                 </Link>
@@ -241,20 +241,20 @@ export default function Navbar() {
             <button
               onClick={toggleLanguage}
               title="Toggle Language"
-              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#2D6A4F] dark:text-[#52B788] text-xs font-bold hover:bg-[#2D6A4F]/10 cursor-pointer"
+              className="p-2 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#0F766E] dark:text-[#2DD4BF] text-xs font-bold hover:bg-[#0F766E]/10 cursor-pointer"
             >
               {language === 'en' ? 'हिं' : 'EN'}
             </button>
             <button
               onClick={toggleTheme}
               title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
-              className="p-2 rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:bg-[#2D6A4F]/10 cursor-pointer shadow-2xs"
+              className="p-2 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:bg-[#0F766E]/10 cursor-pointer shadow-2xs"
             >
-              {isDark ? <Sun className="w-4 h-4 text-[#E58A54]" /> : <Moon className="w-4 h-4 text-[#2D6A4F]" />}
+              {isDark ? <Sun className="w-4 h-4 text-[#FB923C]" /> : <Moon className="w-4 h-4 text-[#0F766E]" />}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-xl hover:bg-[#2D6A4F]/10 cursor-pointer"
+              className="p-2 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-xl hover:bg-[#0F766E]/10 cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -266,20 +266,20 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden border-t border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
           
           {/* Cloud Firestore status inside mobile drawer */}
           <div
-            className="w-full flex items-center justify-between p-3 rounded-xl border border-[#2D6A4F]/20 dark:border-[#52B788]/20 bg-[#2D6A4F]/5 dark:bg-[#2D6A4F]/15 text-xs font-semibold text-[#2D6A4F] dark:text-[#52B788]"
+            className="w-full flex items-center justify-between p-3 rounded-xl border border-[#0F766E]/20 dark:border-[#2DD4BF]/20 bg-[#0F766E]/5 dark:bg-[#0F766E]/15 text-xs font-semibold text-[#0F766E] dark:text-[#2DD4BF]"
           >
             <div className="flex items-center gap-2">
-              <Cloud className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
+              <Cloud className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF]" />
               <span>{language === 'hi' ? 'डेटाबेस:' : 'Database:'}</span>
-              <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">
+              <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">
                 {t('navCloudSync', 'Cloud Sync (Live)')}
               </span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
           </div>
 
           <div className="space-y-1">
@@ -292,11 +292,11 @@ export default function Navbar() {
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${isActive
-                    ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] font-semibold dark:bg-[#2D6A4F]/20 dark:text-[#52B788]'
-                    : 'text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2]'
+                    ? 'bg-[#0F766E]/10 text-[#0F766E] font-semibold dark:bg-[#0F766E]/20 dark:text-[#2DD4BF]'
+                    : 'text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6]'
                     }`}
                 >
-                  <Icon className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
+                  <Icon className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF]" />
                   {link.name}
                 </Link>
               );
@@ -308,23 +308,23 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between p-3 rounded-xl border border-[#2D6A4F]/25 bg-[#2D6A4F]/10 dark:border-[#52B788]/30 dark:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] font-bold text-sm"
+              className="flex items-center justify-between p-3 rounded-xl border border-[#0F766E]/25 bg-[#0F766E]/10 dark:border-[#2DD4BF]/30 dark:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] font-bold text-sm"
             >
               <div className="flex items-center gap-2">
                 <Tv className="w-4 h-4" />
                 <span>{t('navLiveDisplay', 'Live OPD TV Call Board')}</span>
               </div>
-              <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
             </Link>
           </div>
 
           {currentUser ? (
-            <div className="pt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F] space-y-2">
+            <div className="pt-3 border-t border-[#E0E7E5] dark:border-[#21333A] space-y-2">
               <div className="flex items-center justify-between px-1">
-                <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3]">
+                <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA]">
                   {userProfile?.name || currentUser.email}
                 </span>
-                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider ${roleColors[role] || 'bg-[#2D6A4F]/10 text-[#2D6A4F]'}`}>
+                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider ${roleColors[role] || 'bg-[#0F766E]/10 text-[#0F766E]'}`}>
                   {role}
                 </span>
               </div>
@@ -333,7 +333,7 @@ export default function Navbar() {
                   setMobileMenuOpen(false);
                   setShowLogoutConfirm(true);
                 }}
-                className="w-full flex items-center justify-center gap-2 p-2.5 text-sm font-semibold text-[#A85222] dark:text-[#E58A54] bg-[#A85222]/10 dark:bg-[#E58A54]/15 border border-[#A85222]/20 dark:border-[#E58A54]/30 rounded-xl cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 p-2.5 text-sm font-semibold text-[#EA580C] dark:text-[#FB923C] bg-[#EA580C]/10 dark:bg-[#FB923C]/15 border border-[#EA580C]/20 dark:border-[#FB923C]/30 rounded-xl cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
                 {t('logout', 'Sign Out')}
@@ -344,14 +344,14 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center text-sm font-semibold text-[#2D6A4F] dark:text-[#C4CFC3] bg-[#F0EBE1] dark:bg-[#1C221C] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F]"
+                className="flex-1 py-2 text-center text-sm font-semibold text-[#0F766E] dark:text-[#9DB4BA] bg-[#E8F0EE] dark:bg-[#121C21] rounded-xl border border-[#E0E7E5] dark:border-[#21333A]"
               >
                 {t('login', 'Sign In')}
               </Link>
               <Link
                 to="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center text-sm font-semibold text-[#FAF7F2] bg-[#2D6A4F] dark:bg-[#357A5B] rounded-xl"
+                className="flex-1 py-2 text-center text-sm font-semibold text-[#F4F7F6] bg-[#0F766E] dark:bg-[#0D9488] rounded-xl"
               >
                 {t('register', 'Register')}
               </Link>

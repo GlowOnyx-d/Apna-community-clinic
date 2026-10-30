@@ -39,7 +39,7 @@ export default function PatientAvatar({
     lg: 'w-14 h-14 text-sm font-bold'
   }[size] || 'w-11 h-11 text-xs';
 
-  const borderClass = showBorder ? 'border border-[#D8CEB3] dark:border-[#445644]' : '';
+  const borderClass = showBorder ? 'border border-[#CFDAD6] dark:border-[#2C444E]' : '';
 
   // If image errored or no photo is available, render clean initials or icon placeholder badge
   if (imgError || !photoUrl) {
@@ -47,8 +47,8 @@ export default function PatientAvatar({
       <div
         className={`${sizeClasses} rounded-xl shrink-0 flex items-center justify-center font-bold select-none ${borderClass} ${
           isMale
-            ? 'bg-[#2D6A4F]/15 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788]'
-            : 'bg-[#C97B4A]/15 dark:bg-[#E58A54]/20 text-[#B35F2B] dark:text-[#E58A54]'
+            ? 'bg-[#0F766E]/15 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF]'
+            : 'bg-[#F97316]/15 dark:bg-[#FB923C]/20 text-[#EA580C] dark:text-[#FB923C]'
         } ${className}`}
         title={name}
       >
@@ -62,7 +62,7 @@ export default function PatientAvatar({
   }
 
   return (
-    <div className={`${sizeClasses} rounded-xl overflow-hidden shrink-0 shadow-xs relative bg-[#FAF7F2] dark:bg-[#242C24] ${borderClass} ${className}`}>
+    <div className={`${sizeClasses} rounded-xl overflow-hidden shrink-0 shadow-xs relative bg-[#F4F7F6] dark:bg-[#19272D] ${borderClass} ${className}`}>
       <img
         src={photoUrl}
         alt={name}

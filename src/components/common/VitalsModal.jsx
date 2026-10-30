@@ -75,26 +75,26 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-white dark:bg-[#1C221C] w-full max-w-lg rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white dark:bg-[#121C21] w-full max-w-lg rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-5 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915]">
+        <div className="flex items-center justify-between p-5 border-b border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] flex items-center justify-center">
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+              <h2 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
                 Patient Triage &amp; Vitals Recording
               </h2>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
                 Token #{appointment.tokenNumber} • {appointment.patientName} ({appointment.patientAge || 'Adult'})
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-xl hover:bg-[#2D6A4F]/10 cursor-pointer"
+            className="p-2 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-xl hover:bg-[#0F766E]/10 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -116,8 +116,8 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
           {/* Blood Pressure & Pulse */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
-                <Heart className="w-3.5 h-3.5 text-[#C97B4A]" />
+              <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
+                <Heart className="w-3.5 h-3.5 text-[#F97316]" />
                 <span>Blood Pressure (Sys / Dia)</span>
               </label>
               <div className="flex items-center gap-1.5">
@@ -126,22 +126,22 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
                   placeholder="120"
                   value={bpSystolic}
                   onChange={(e) => setBpSystolic(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-center focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                  className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-center focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
                 />
-                <span className="text-[#8E8E84]">/</span>
+                <span className="text-[#758D94]">/</span>
                 <input
                   type="number"
                   placeholder="80"
                   value={bpDiastolic}
                   onChange={(e) => setBpDiastolic(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-center focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                  className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-center focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
-                <Activity className="w-3.5 h-3.5 text-[#2D6A4F]" />
+              <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
+                <Activity className="w-3.5 h-3.5 text-[#0F766E]" />
                 <span>Pulse Rate (bpm)</span>
               </label>
               <input
@@ -149,7 +149,7 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
                 placeholder="72 bpm"
                 value={pulse}
                 onChange={(e) => setPulse(e.target.value)}
-                className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
               />
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
           {/* Temperature & SpO2 */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
+              <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
                 <Thermometer className="w-3.5 h-3.5 text-amber-600" />
                 <span>Body Temperature (°F)</span>
               </label>
@@ -167,12 +167,12 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
                 placeholder="98.6"
                 value={temperature}
                 onChange={(e) => setTemperature(e.target.value)}
-                className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
               />
             </div>
 
             <div>
-              <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
+              <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
                 <Wind className="w-3.5 h-3.5 text-sky-600" />
                 <span>Oxygen SpO2 (%)</span>
               </label>
@@ -181,7 +181,7 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
                 placeholder="98"
                 value={spo2}
                 onChange={(e) => setSpo2(e.target.value)}
-                className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
               />
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
           {/* Blood Sugar & Weight */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
+              <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
                 <Droplet className="w-3.5 h-3.5 text-purple-600" />
                 <span>Random Blood Sugar (mg/dL)</span>
               </label>
@@ -198,12 +198,12 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
                 placeholder="110"
                 value={bloodSugar}
                 onChange={(e) => setBloodSugar(e.target.value)}
-                className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
               />
             </div>
 
             <div>
-              <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
+              <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
                 <Scale className="w-3.5 h-3.5 text-teal-600" />
                 <span>Patient Weight (kg)</span>
               </label>
@@ -213,15 +213,15 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
                 placeholder="65"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
-                className="w-full px-3 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+                className="w-full px-3 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
               />
             </div>
           </div>
 
           {/* Triage Observations */}
           <div>
-            <label className="font-semibold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-1.5 mb-1">
-              <FileText className="w-3.5 h-3.5 text-[#6B6B63]" />
+            <label className="font-semibold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-1.5 mb-1">
+              <FileText className="w-3.5 h-3.5 text-[#5A7178]" />
               <span>Nurse / Receptionist Triage Observations</span>
             </label>
             <textarea
@@ -229,22 +229,22 @@ export default function VitalsModal({ appointment, isOpen, onClose }) {
               placeholder="e.g. Patient feels dizzy, mild breathlessness since morning..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full p-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl focus:outline-none focus:border-[#2D6A4F] dark:text-[#FAF7F2]"
+              className="w-full p-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl focus:outline-none focus:border-[#0F766E] dark:text-[#F4F7F6]"
             />
           </div>
 
-          <div className="pt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-end gap-2.5">
+          <div className="pt-3 border-t border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-[#FAF7F2] dark:bg-[#242C24] hover:bg-[#E6DFC6]/50 dark:hover:bg-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] font-semibold rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] cursor-pointer"
+              className="px-4 py-2 bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/50 dark:hover:bg-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] font-semibold rounded-xl border border-[#CFDAD6] dark:border-[#21333A] cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-5 py-2 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-semibold rounded-xl shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] font-semibold rounded-xl shadow-xs transition-colors cursor-pointer disabled:opacity-50"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>{saving ? 'Saving Vitals...' : 'Attach Vitals to Consultation'}</span>

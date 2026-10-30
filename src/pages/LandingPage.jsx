@@ -152,16 +152,16 @@ export default function LandingPage() {
       {/* 2. Hero Section with Floating Live Token Mockup */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 overflow-hidden">
         {/* Layered Ambient Radiant Glow Orbs */}
-        <div className="absolute top-1/4 -left-20 w-[450px] h-[450px] bg-gradient-to-tr from-[#2D6A4F]/15 via-[#52B788]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" style={{ animationDuration: '8s' }}></div>
-        <div className="absolute top-1/3 -right-20 w-[500px] h-[500px] bg-gradient-to-bl from-[#C97B4A]/15 via-[#E58A54]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" style={{ animationDuration: '10s' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-r from-[#2D6A4F]/5 via-amber-500/5 to-[#E58A54]/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+        <div className="absolute top-1/4 -left-20 w-[450px] h-[450px] bg-gradient-to-tr from-[#0F766E]/15 via-[#2DD4BF]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" style={{ animationDuration: '8s' }}></div>
+        <div className="absolute top-1/3 -right-20 w-[500px] h-[500px] bg-gradient-to-bl from-[#F97316]/15 via-[#FB923C]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" style={{ animationDuration: '10s' }}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-r from-[#0F766E]/5 via-amber-500/5 to-[#FB923C]/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
         {/* Subtle Botanical Motif Watermark - Hidden on mobile to avoid slicing through text */}
         <div className="hidden md:block absolute -top-6 right-0 lg:right-12 w-72 sm:w-96 h-72 sm:h-96 pointer-events-none opacity-20 dark:opacity-10 select-none">
-          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-[#2D6A4F] dark:text-[#52B788]">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-[#0F766E] dark:text-[#2DD4BF]">
             <path d="M50 160 C 50 120, 80 80, 140 40 C 140 80, 120 130, 70 160 Z" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeWidth="1.5" />
             <path d="M140 40 C 120 90, 80 130, 50 160" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 3" />
-            <circle cx="140" cy="40" r="3" fill="#C97B4A" />
+            <circle cx="140" cy="40" r="3" fill="#F97316" />
           </svg>
         </div>
 
@@ -172,31 +172,31 @@ export default function LandingPage() {
 
             {/* SDG 3 & Live Community Impact Ticker Row */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#C97B4A]/12 border border-[#C97B4A]/30 dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15 text-[#B35F2B] dark:text-[#E58A54] text-[11px] sm:text-xs font-bold shadow-2xs">
-                <Sparkles className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54] shrink-0" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#F97316]/12 border border-[#F97316]/30 dark:border-[#FB923C]/40 dark:bg-[#FB923C]/15 text-[#EA580C] dark:text-[#FB923C] text-[11px] sm:text-xs font-bold shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-[#F97316] dark:text-[#FB923C] shrink-0" />
                 <span>{t('heroBadge', 'UN SDG 3 • Good Health & Well-Being')}</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 border border-[#2D6A4F]/25 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] text-[11px] sm:text-xs font-bold shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-ping" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#0F766E]/10 dark:bg-[#2DD4BF]/15 border border-[#0F766E]/25 dark:border-[#2DD4BF]/30 text-[#0F766E] dark:text-[#2DD4BF] text-[11px] sm:text-xs font-bold shadow-2xs">
+                <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-ping" />
                 <span>Over ₹1,80,000+ saved across 1,400+ consultations</span>
               </div>
             </div>
 
             {/* Headline - beautifully proportioned on mobile and desktop */}
-            <h1 className="text-2xl sm:text-4xl lg:text-[50px] font-extrabold text-[#22291F] dark:text-[#FAF7F2] tracking-tight leading-[1.2] font-heading">
+            <h1 className="text-2xl sm:text-4xl lg:text-[50px] font-extrabold text-[#132226] dark:text-[#F4F7F6] tracking-tight leading-[1.2] font-heading">
               {language === 'hi' ? (
                 <>
-                  सार्वजनिक सामुदायिक स्वास्थ्य सेवा एवं <span className="text-[#2D6A4F] dark:text-[#52B788]">डिजिटल टोकन कतार</span>
+                  सार्वजनिक सामुदायिक स्वास्थ्य सेवा एवं <span className="text-[#0F766E] dark:text-[#2DD4BF]">डिजिटल टोकन कतार</span>
                 </>
               ) : (
                 <>
-                  Universal Community Care &amp; <span className="text-[#2D6A4F] dark:text-[#52B788]">Digital Queue Scheduling</span>
+                  Universal Community Care &amp; <span className="text-[#0F766E] dark:text-[#2DD4BF]">Digital Queue Scheduling</span>
                 </>
               )}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-base lg:text-lg text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans">
+            <p className="text-xs sm:text-base lg:text-lg text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans">
               {t('heroSubtitle', 'A trusted primary healthcare portal that replaces crowded clinic waiting rooms with real-time digital token allocation, specialist queues, and free community health camps.')}
             </p>
 
@@ -204,9 +204,9 @@ export default function LandingPage() {
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 w-full max-w-lg mx-auto lg:mx-0">
               <button
                 onClick={() => openBookingModal(null)}
-                className="flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-2xl bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] text-[#FAF7F2] font-bold text-sm shadow-md shadow-[#2D6A4F]/25 dark:border dark:border-[#52B788]/40 hover:shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto"
+                className="flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-2xl bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] text-[#F4F7F6] font-bold text-sm shadow-md shadow-[#0F766E]/25 dark:border dark:border-[#2DD4BF]/40 hover:shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto"
               >
-                <Ticket className="w-4 h-4 text-[#FAF7F2]" />
+                <Ticket className="w-4 h-4 text-[#F4F7F6]" />
                 <span>{t('bookFreeToken', 'Book Free Queue Token')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -214,42 +214,42 @@ export default function LandingPage() {
               {currentUser ? (
                 <Link
                   to={getDashboardPath()}
-                  className="flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#2F3B2F] hover:border-[#2D6A4F] dark:hover:border-[#52B788] text-[#22291F] dark:text-[#FAF7F2] font-bold text-sm shadow-xs hover:shadow-md transition-all transform hover:-translate-y-0.5 text-center group cursor-pointer w-full sm:w-auto"
+                  className="flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-white dark:bg-[#121C21] border border-[#CFDAD6] dark:border-[#21333A] hover:border-[#0F766E] dark:hover:border-[#2DD4BF] text-[#132226] dark:text-[#F4F7F6] font-bold text-sm shadow-xs hover:shadow-md transition-all transform hover:-translate-y-0.5 text-center group cursor-pointer w-full sm:w-auto"
                 >
                   <span>{t('goToDashboard', 'Go to Dashboard')}</span>
-                  <ArrowRight className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] group-hover:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               ) : (
                 <Link
                   to="/login"
-                  className="flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-2xl bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#2F3B2F] hover:border-[#2D6A4F] dark:hover:border-[#52B788] text-[#22291F] dark:text-[#FAF7F2] hover:text-[#2D6A4F] dark:hover:text-[#52B788] font-bold text-sm shadow-xs hover:shadow-md hover:bg-[#FAF7F2] dark:hover:bg-[#242C24] transition-all transform hover:-translate-y-0.5 text-center cursor-pointer group w-full sm:w-auto"
+                  className="flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-2xl bg-white dark:bg-[#121C21] border border-[#CFDAD6] dark:border-[#21333A] hover:border-[#0F766E] dark:hover:border-[#2DD4BF] text-[#132226] dark:text-[#F4F7F6] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] font-bold text-sm shadow-xs hover:shadow-md hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] transition-all transform hover:-translate-y-0.5 text-center cursor-pointer group w-full sm:w-auto"
                 >
-                  <LogIn className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] group-hover:scale-110 transition-transform" />
+                  <LogIn className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] group-hover:scale-110 transition-transform" />
                   <span>{t('login', 'Sign In')}</span>
                 </Link>
               )}
 
               <Link
                 to="/announcements"
-                className="flex items-center justify-center gap-1.5 py-3.5 px-4 rounded-2xl border border-transparent hover:border-[#D8CEB3] dark:hover:border-[#2F3B2F] text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] font-semibold text-xs sm:text-sm transition-all text-center hover:bg-white/70 dark:hover:bg-[#1C221C]/70 w-full sm:w-auto"
+                className="flex items-center justify-center gap-1.5 py-3.5 px-4 rounded-2xl border border-transparent hover:border-[#CFDAD6] dark:hover:border-[#21333A] text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] font-semibold text-xs sm:text-sm transition-all text-center hover:bg-white/70 dark:hover:bg-[#121C21]/70 w-full sm:w-auto"
               >
-                <Calendar className="w-4 h-4 text-[#C97B4A] dark:text-[#E58A54]" />
+                <Calendar className="w-4 h-4 text-[#F97316] dark:text-[#FB923C]" />
                 <span>{t('healthDrives', 'Health Drives')}</span>
               </Link>
             </div>
 
             {/* Trust Badges - Balanced Compact Flow */}
-            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 text-[11px] sm:text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1.5 text-[11px] sm:text-xs text-[#5A7178] dark:text-[#9DB4BA]">
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                 <span>{t('secureCloudSync', 'Secure Cloud Sync')}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                 <span>{t('encryptedFirestore', 'Encrypted Firestore Storage')}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                 <span>{t('instantDigitalSlips', 'Instant Digital Token Slips')}</span>
               </div>
             </div>
@@ -261,93 +261,93 @@ export default function LandingPage() {
             <div className="w-full max-w-sm sm:max-w-md animate-gentle-float">
 
               {/* Ticket Container with Perforated Cutouts */}
-              <div className="relative bg-white dark:bg-[#1C221C] rounded-3xl border-2 border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 sm:p-7 overflow-hidden text-[#22291F] dark:text-[#FAF7F2]">
+              <div className="relative bg-white dark:bg-[#121C21] rounded-3xl border-2 border-[#E0E7E5] dark:border-[#21333A] shadow-2xl p-6 sm:p-7 overflow-hidden text-[#132226] dark:text-[#F4F7F6]">
 
                 {/* Left & Right Perforated Notches */}
-                <div className="absolute top-1/2 -left-3.5 w-7 h-7 rounded-full bg-[#FAF7F2] dark:bg-[#151915] border border-[#E6DFC6] dark:border-[#2F3B2F]"></div>
-                <div className="absolute top-1/2 -right-3.5 w-7 h-7 rounded-full bg-[#FAF7F2] dark:bg-[#151915] border border-[#E6DFC6] dark:border-[#2F3B2F]"></div>
+                <div className="absolute top-1/2 -left-3.5 w-7 h-7 rounded-full bg-[#F4F7F6] dark:bg-[#0B1114] border border-[#E0E7E5] dark:border-[#21333A]"></div>
+                <div className="absolute top-1/2 -right-3.5 w-7 h-7 rounded-full bg-[#F4F7F6] dark:bg-[#0B1114] border border-[#E0E7E5] dark:border-[#21333A]"></div>
 
                 {/* Ticket Top Header */}
-                <div className="flex items-center justify-between pb-4 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+                <div className="flex items-center justify-between pb-4 border-b border-[#E0E7E5] dark:border-[#21333A]">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-[#2D6A4F] text-[#FAF7F2] flex items-center justify-center shadow-xs">
+                    <div className="w-9 h-9 rounded-xl bg-[#0F766E] text-[#F4F7F6] flex items-center justify-center shadow-xs">
                       <HeartHandshake className="w-5 h-5" />
                     </div>
                     <div>
                       <h3 className="font-bold text-sm font-heading">{t('clinicTitle', 'Apna Community Clinic')}</h3>
-                      <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">{t('tagline', 'Digital Queue Allocation')}</p>
+                      <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">{t('tagline', 'Digital Queue Allocation')}</p>
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#2D6A4F]/15 text-[#2D6A4F] dark:bg-[#2D6A4F]/25 dark:text-[#52B788] border border-[#2D6A4F]/30">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse"></span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#0F766E]/15 text-[#0F766E] dark:bg-[#0F766E]/25 dark:text-[#2DD4BF] border border-[#0F766E]/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
                     {t('nowServing', 'Now Serving')}
                   </span>
                 </div>
 
                 {/* Main Queue Numbers Badge */}
-                <div className="my-5 p-4 rounded-2xl bg-[#FAF7F2] dark:bg-[#151915] border border-[#E6DFC6] dark:border-[#2F3B2F] text-center relative">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B63] dark:text-[#C4CFC3]">
+                <div className="my-5 p-4 rounded-2xl bg-[#F4F7F6] dark:bg-[#0B1114] border border-[#E0E7E5] dark:border-[#21333A] text-center relative">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA]">
                     {t('currentlyInCabin', 'Currently In Cabin 101')}
                   </span>
-                  <div className="text-4xl sm:text-5xl font-black text-[#2D6A4F] dark:text-[#52B788] font-heading my-1 tracking-tight">
+                  <div className="text-4xl sm:text-5xl font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading my-1 tracking-tight">
                     TK-14
                   </div>
-                  <p className="text-xs font-semibold text-[#22291F] dark:text-[#FAF7F2]">
+                  <p className="text-xs font-semibold text-[#132226] dark:text-[#F4F7F6]">
                     General Medicine • Dr. Sarah Jenkins
                   </p>
                 </div>
 
                 {/* Live Estimator Preview Row */}
-                <div className="space-y-2.5 text-xs py-2 border-t border-dashed border-[#E6DFC6] dark:border-[#2F3B2F]">
+                <div className="space-y-2.5 text-xs py-2 border-t border-dashed border-[#E0E7E5] dark:border-[#21333A]">
                   <div className="flex justify-between items-center">
-                    <span className="text-[#6B6B63] dark:text-[#C4CFC3]">{t('nextTokenInLine', 'Next Token in Line:')}</span>
-                    <span className="font-bold text-sm text-[#C97B4A] dark:text-[#E58A54]">TK-15</span>
+                    <span className="text-[#5A7178] dark:text-[#9DB4BA]">{t('nextTokenInLine', 'Next Token in Line:')}</span>
+                    <span className="font-bold text-sm text-[#F97316] dark:text-[#FB923C]">TK-15</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#6B6B63] dark:text-[#C4CFC3]">{t('estimatedQueueWait', 'Estimated Queue Wait:')}</span>
-                    <span className="font-bold text-[#22291F] dark:text-[#FAF7F2]">~8 {language === 'hi' ? 'मिनट' : 'minutes'}</span>
+                    <span className="text-[#5A7178] dark:text-[#9DB4BA]">{t('estimatedQueueWait', 'Estimated Queue Wait:')}</span>
+                    <span className="font-bold text-[#132226] dark:text-[#F4F7F6]">~8 {language === 'hi' ? 'मिनट' : 'minutes'}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#6B6B63] dark:text-[#C4CFC3]">{t('consultationFee', 'Consultation Fee:')}</span>
-                    <span className="font-bold text-[#2D6A4F] dark:text-[#52B788]">{t('freeCommunityCare', '100% Free (Community Care)')}</span>
+                    <span className="text-[#5A7178] dark:text-[#9DB4BA]">{t('consultationFee', 'Consultation Fee:')}</span>
+                    <span className="font-bold text-[#0F766E] dark:text-[#2DD4BF]">{t('freeCommunityCare', '100% Free (Community Care)')}</span>
                   </div>
                 </div>
 
                 {/* Queue Progress Bar */}
-                <div className="mt-4 pt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
+                <div className="mt-4 pt-3 border-t border-[#E0E7E5] dark:border-[#21333A]">
                   <div className="flex justify-between text-[11px] mb-1.5 font-medium">
-                    <span className="text-[#6B6B63] dark:text-[#C4CFC3]">{t('todaysConsultations', "Today's Consultations")}</span>
-                    <span className="text-[#2D6A4F] dark:text-[#52B788] font-bold">14 / 20 {language === 'hi' ? 'सम्पन्न' : 'Completed'}</span>
+                    <span className="text-[#5A7178] dark:text-[#9DB4BA]">{t('todaysConsultations', "Today's Consultations")}</span>
+                    <span className="text-[#0F766E] dark:text-[#2DD4BF] font-bold">14 / 20 {language === 'hi' ? 'सम्पन्न' : 'Completed'}</span>
                   </div>
-                  <div className="w-full h-2 bg-[#FAF7F2] dark:bg-[#151915] rounded-full overflow-hidden border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                    <div className="h-full bg-[#2D6A4F] dark:bg-[#52B788] rounded-full transition-all duration-500" style={{ width: '70%' }}></div>
+                  <div className="w-full h-2 bg-[#F4F7F6] dark:bg-[#0B1114] rounded-full overflow-hidden border border-[#E0E7E5] dark:border-[#21333A]">
+                    <div className="h-full bg-[#0F766E] dark:bg-[#2DD4BF] rounded-full transition-all duration-500" style={{ width: '70%' }}></div>
                   </div>
                 </div>
 
                 {/* Quick Link Button */}
                 <button
                   onClick={() => openBookingModal(null)}
-                  className="mt-5 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] dark:border dark:border-[#52B788]/40 text-[#FAF7F2] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                  className="mt-5 w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] dark:border dark:border-[#2DD4BF]/40 text-[#F4F7F6] text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
                   <Ticket className="w-3.5 h-3.5" />
                   <span>{t('reserveYourTokenSlip', 'Reserve Your Token Slip Now')}</span>
                 </button>
 
                 {/* Mobile Express QR Scan */}
-                <div className="mt-3.5 pt-3 border-t border-dashed border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center gap-3">
-                  <div className="p-1 bg-white rounded-lg border border-[#E6DFC6] shrink-0 shadow-2xs">
+                <div className="mt-3.5 pt-3 border-t border-dashed border-[#E0E7E5] dark:border-[#21333A] flex items-center gap-3">
+                  <div className="p-1 bg-white rounded-lg border border-[#E0E7E5] shrink-0 shadow-2xs">
                     <QRCodeImage 
                       value={getMobileReachableUrl()} 
                       size={44} 
-                      darkColor="#2D6A4F" 
+                      darkColor="#0F766E" 
                       alt="Mobile Check-in QR"
                     />
                   </div>
                   <div className="text-left min-w-0">
-                    <p className="text-[10px] font-bold text-[#22291F] dark:text-[#FAF7F2] uppercase tracking-wider flex items-center gap-1">
-                      <QrCode className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" /> {t('mobileExpressToken', 'Mobile Express Token')}
+                    <p className="text-[10px] font-bold text-[#132226] dark:text-[#F4F7F6] uppercase tracking-wider flex items-center gap-1">
+                      <QrCode className="w-3 h-3 text-[#0F766E] dark:text-[#2DD4BF]" /> {t('mobileExpressToken', 'Mobile Express Token')}
                     </p>
-                    <p className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3]">{t('mobileExpressDesc', 'Scan with smartphone camera to book and track from your phone')}</p>
+                    <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">{t('mobileExpressDesc', 'Scan with smartphone camera to book and track from your phone')}</p>
                   </div>
                 </div>
 
@@ -360,17 +360,17 @@ export default function LandingPage() {
 
       {/* 3. Interactive Instant Queue Estimator Live Demo Widget */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-lg p-6 sm:p-10">
+        <div className="rounded-3xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-lg p-6 sm:p-10">
 
           <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2D6A4F]/12 text-[#2D6A4F] dark:bg-[#2D6A4F]/20 dark:text-[#52B788] text-xs font-bold border border-[#2D6A4F]/25">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0F766E]/12 text-[#0F766E] dark:bg-[#0F766E]/20 dark:text-[#2DD4BF] text-xs font-bold border border-[#0F766E]/25">
               <Clock className="w-3.5 h-3.5" />
               <span>{t('interactiveQueueDemo', 'Interactive Queue Demo')}</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold font-heading text-[#22291F] dark:text-[#FAF7F2]">
+            <h2 className="text-2xl sm:text-3xl font-bold font-heading text-[#132226] dark:text-[#F4F7F6]">
               {t('checkWaitTime', 'Check Wait Time & Reserve Live Token')}
             </h2>
-            <p className="text-xs sm:text-sm text-[#6B6B63] dark:text-[#C4CFC3]">
+            <p className="text-xs sm:text-sm text-[#5A7178] dark:text-[#9DB4BA]">
               {t('checkWaitTimeDesc', 'Choose a medical department below to check real-time queue capacity, available slots, and estimated consultation wait times.')}
             </p>
           </div>
@@ -384,12 +384,12 @@ export default function LandingPage() {
                   key={dept.id}
                   onClick={() => setSelectedDeptId(dept.id)}
                   className={`p-3 sm:p-4 rounded-2xl border text-left transition-all ${isSelected
-                    ? 'bg-[#2D6A4F] text-[#FAF7F2] border-[#2D6A4F] dark:bg-[#357A5B] dark:border-[#52B788]/60 shadow-md -translate-y-0.5'
-                    : 'bg-[#FAF7F2] dark:bg-[#151915] border-[#E6DFC6] dark:border-[#2F3B2F] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] hover:border-[#D8CEB3]'
+                    ? 'bg-[#0F766E] text-[#F4F7F6] border-[#0F766E] dark:bg-[#0D9488] dark:border-[#2DD4BF]/60 shadow-md -translate-y-0.5'
+                    : 'bg-[#F4F7F6] dark:bg-[#0B1114] border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6] hover:border-[#CFDAD6]'
                     }`}
                 >
                   <p className="text-xs font-bold truncate">{dept.name}</p>
-                  <span className={`text-[11px] font-semibold mt-1 block ${isSelected ? 'text-[#FAF7F2]/90' : 'text-[#2D6A4F] dark:text-[#52B788]'}`}>
+                  <span className={`text-[11px] font-semibold mt-1 block ${isSelected ? 'text-[#F4F7F6]/90' : 'text-[#0F766E] dark:text-[#2DD4BF]'}`}>
                     {dept.cabin}
                   </span>
                 </button>
@@ -398,7 +398,7 @@ export default function LandingPage() {
           </div>
 
           {/* Dynamic Queue Output Box */}
-          <div className="bg-[#FAF7F2] dark:bg-[#151915] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-6 sm:p-8">
+          <div className="bg-[#F4F7F6] dark:bg-[#0B1114] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
 
               {/* Doctor on Duty */}
@@ -410,31 +410,31 @@ export default function LandingPage() {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = getDoctorFallbackAvatar(activeDept.doctor);
                   }}
-                  className="w-13 h-13 rounded-2xl object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] shrink-0"
+                  className="w-13 h-13 rounded-2xl object-cover border border-[#E0E7E5] dark:border-[#21333A] shrink-0"
                 />
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B63] dark:text-[#C4CFC3]">{t('specialistOnDuty', 'Specialist on Duty')}</span>
-                  <h4 className="font-bold text-sm text-[#22291F] dark:text-[#FAF7F2] font-heading">{activeDept.doctor}</h4>
-                  <p className="text-xs text-[#2D6A4F] dark:text-[#52B788] font-medium">{activeDept.cabin}</p>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA]">{t('specialistOnDuty', 'Specialist on Duty')}</span>
+                  <h4 className="font-bold text-sm text-[#132226] dark:text-[#F4F7F6] font-heading">{activeDept.doctor}</h4>
+                  <p className="text-xs text-[#0F766E] dark:text-[#2DD4BF] font-medium">{activeDept.cabin}</p>
                 </div>
               </div>
 
               {/* Currently Serving Token */}
-              <div className="text-center p-3.5 rounded-xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B63] dark:text-[#C4CFC3]">{t('inCabinNow', 'In Cabin Now')}</span>
-                <div className="text-2xl font-black text-[#22291F] dark:text-[#FAF7F2] font-heading mt-0.5">
+              <div className="text-center p-3.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA]">{t('inCabinNow', 'In Cabin Now')}</span>
+                <div className="text-2xl font-black text-[#132226] dark:text-[#F4F7F6] font-heading mt-0.5">
                   {activeDept.servingToken}
                 </div>
-                <span className="text-[10px] text-[#2D6A4F] dark:text-[#52B788] font-medium">{t('consultationInProgress', 'Consultation in progress')}</span>
+                <span className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] font-medium">{t('consultationInProgress', 'Consultation in progress')}</span>
               </div>
 
               {/* Your Token & Estimated Wait */}
-              <div className="text-center p-3.5 rounded-xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#C97B4A] dark:text-[#E58A54]">{t('nextTokenAvailable', 'Next Token Available')}</span>
-                <div className="text-2xl font-black text-[#2D6A4F] dark:text-[#52B788] font-heading mt-0.5">
+              <div className="text-center p-3.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#F97316] dark:text-[#FB923C]">{t('nextTokenAvailable', 'Next Token Available')}</span>
+                <div className="text-2xl font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading mt-0.5">
                   {activeDept.nextToken}
                 </div>
-                <span className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3]">{t('estimatedWait', 'Est. Wait')}: <strong>{activeDept.estWait}</strong></span>
+                <span className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">{t('estimatedWait', 'Est. Wait')}: <strong>{activeDept.estWait}</strong></span>
               </div>
 
               {/* 1-Click CTA */}
@@ -447,12 +447,12 @@ export default function LandingPage() {
                     ) || doctors[0] || null;
                     openBookingModal(matchedDoc);
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] dark:border dark:border-[#52B788]/40 text-[#FAF7F2] font-semibold text-xs rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] dark:border dark:border-[#2DD4BF]/40 text-[#F4F7F6] font-semibold text-xs rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer"
                 >
                   <span>{language === 'hi' ? `${activeDept.nextToken} टोकन लें` : `Reserve ${activeDept.nextToken} Now`}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-[10px] text-center text-[#8E8E84] dark:text-[#94A493] mt-2">
+                <p className="text-[10px] text-center text-[#758D94] dark:text-[#79949B] mt-2">
                   {activeDept.slotsLeft} {t('slotsLeftToday', 'consultation slots left today')}
                 </p>
               </div>
@@ -466,10 +466,10 @@ export default function LandingPage() {
       {/* 4. Three Core Functional Portals */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#22291F] dark:text-[#FAF7F2]">
+          <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#132226] dark:text-[#F4F7F6]">
             {t('oneIntegratedPlatform', 'One Integrated Platform for Clinic Operations')}
           </h2>
-          <p className="text-xs sm:text-sm text-[#6B6B63] dark:text-[#C4CFC3]">
+          <p className="text-xs sm:text-sm text-[#5A7178] dark:text-[#9DB4BA]">
             {t('platformSubtitle', 'Designed for compassionate patient experience, smooth doctor workflows, and transparent clinic oversight.')}
           </p>
         </div>
@@ -477,40 +477,40 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {/* Card 1: Patient Hub */}
-          <div className="bg-[#F7F3EB] dark:bg-[#1C221C] rounded-3xl border border-[#E8DFD1] dark:border-[#2F3B2F] hover:border-[#D5C9B3] dark:hover:border-[#445644] p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(34,41,31,0.05)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
+          <div className="bg-[#F7F3EB] dark:bg-[#121C21] rounded-3xl border border-[#E8DFD1] dark:border-[#21333A] hover:border-[#D5C9B3] dark:hover:border-[#2C444E] p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(34,41,31,0.05)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#2D6A4F] text-[#FAF7F2] flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F766E] text-[#F4F7F6] flex items-center justify-center shadow-sm">
                 <Ticket className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#2D6A4F] dark:text-[#52B788]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF]">
                   {language === 'hi' ? 'मरीज़ सेवाएं' : 'Patient Services'}
                 </span>
-                <h3 className="text-xl font-bold text-[#22291F] dark:text-[#FAF7F2] mt-1 font-heading">
+                <h3 className="text-xl font-bold text-[#132226] dark:text-[#F4F7F6] mt-1 font-heading">
                   {t('patientHub', 'Patient Hub')}
                 </h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-1.5 leading-relaxed">
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-1.5 leading-relaxed">
                   {t('patientHubDesc', 'Book sequential doctor consultations with live slot capacity checks, download digital token slips, and access past diagnoses.')}
                 </p>
               </div>
-              <ul className="space-y-2 text-xs text-[#6B6B63] dark:text-[#C4CFC3] pt-2 border-t border-[#E8DFD1]/80 dark:border-[#2F3B2F]">
+              <ul className="space-y-2 text-xs text-[#5A7178] dark:text-[#9DB4BA] pt-2 border-t border-[#E8DFD1]/80 dark:border-[#21333A]">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                   <span>{language === 'hi' ? 'क्रमिक टोकन आवंटन (TK-01, TK-02)' : 'Sequential token allocation (TK-01, TK-02)'}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                   <span>{language === 'hi' ? 'प्रिंट करने योग्य डिजिटल पर्ची (PDF)' : 'Downloadable & printable PDF token slips'}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                   <span>{language === 'hi' ? 'सुरक्षित डिजिटल डॉक्टर पर्ची एवं इतिहास' : 'Archived doctor notes & digital prescriptions'}</span>
                 </li>
               </ul>
             </div>
             <Link
               to="/patient"
-              className="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] dark:border dark:border-[#52B788]/40 text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors"
+              className="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] dark:border dark:border-[#2DD4BF]/40 text-[#F4F7F6] text-xs font-semibold rounded-xl shadow-xs transition-colors"
             >
               <span>{t('accessPatientHub', 'Access Patient Hub')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -518,40 +518,40 @@ export default function LandingPage() {
           </div>
 
           {/* Card 2: Doctor Queue */}
-          <div className="bg-[#EEF5F0] dark:bg-[#1C221C] rounded-3xl border border-[#D5E5D8] dark:border-[#2F3B2F] hover:border-[#BED6C3] dark:hover:border-[#445644] p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(45,106,79,0.06)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
+          <div className="bg-[#EEF5F0] dark:bg-[#121C21] rounded-3xl border border-[#D5E5D8] dark:border-[#21333A] hover:border-[#BED6C3] dark:hover:border-[#2C444E] p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(45,106,79,0.06)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#2D6A4F] text-[#FAF7F2] flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F766E] text-[#F4F7F6] flex items-center justify-center shadow-sm">
                 <Stethoscope className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#2D6A4F] dark:text-[#52B788]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF]">
                   {language === 'hi' ? 'डॉक्टर परामर्श' : 'Clinical Consultation'}
                 </span>
-                <h3 className="text-xl font-bold text-[#22291F] dark:text-[#FAF7F2] mt-1 font-heading">
+                <h3 className="text-xl font-bold text-[#132226] dark:text-[#F4F7F6] mt-1 font-heading">
                   {t('doctorQueueTitle', 'Doctor Queue')}
                 </h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-1.5 leading-relaxed">
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-1.5 leading-relaxed">
                   {t('doctorQueueDesc', 'Real-time chronologically sorted queue of daily patients, quick consultation completion, and immediate clinical record archiving.')}
                 </p>
               </div>
-              <ul className="space-y-2 text-xs text-[#6B6B63] dark:text-[#C4CFC3] pt-2 border-t border-[#D5E5D8]/80 dark:border-[#2F3B2F]">
+              <ul className="space-y-2 text-xs text-[#5A7178] dark:text-[#9DB4BA] pt-2 border-t border-[#D5E5D8]/80 dark:border-[#21333A]">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                   <span>{language === 'hi' ? 'रीयल-टाइम दैनिक मरीज़ कतार' : 'Chronological live daily patient queue stream'}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                   <span>{language === 'hi' ? 'क्लिनिकल नोट्स, रोग निदान एवं Rx' : 'Clinical notes, diagnosis & Rx issuance'}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                   <span>{language === 'hi' ? 'पूर्व मेडिकल इतिहास तुरंत देखें' : 'Instant patient consultation history lookup'}</span>
                 </li>
               </ul>
             </div>
             <Link
               to="/doctor"
-              className="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] dark:border dark:border-[#52B788]/40 text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors"
+              className="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] dark:border dark:border-[#2DD4BF]/40 text-[#F4F7F6] text-xs font-semibold rounded-xl shadow-xs transition-colors"
             >
               <span>{t('accessDoctorQueue', 'Access Doctor Queue')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -559,40 +559,40 @@ export default function LandingPage() {
           </div>
 
           {/* Card 3: Operations Hub (Warm Terracotta Card) */}
-          <div className="bg-[#FAF1E8] dark:bg-[#201D1A] rounded-3xl border border-[#ECD8C9] dark:border-[#E58A54]/30 hover:border-[#DFC1AC] dark:hover:border-[#E58A54]/60 p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(201,123,74,0.06)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
+          <div className="bg-[#FAF1E8] dark:bg-[#201D1A] rounded-3xl border border-[#ECD8C9] dark:border-[#FB923C]/30 hover:border-[#DFC1AC] dark:hover:border-[#FB923C]/60 p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(201,123,74,0.06)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#C97B4A] dark:bg-[#E58A54] text-[#FAF7F2] flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-[#F97316] dark:bg-[#FB923C] text-[#F4F7F6] flex items-center justify-center shadow-sm">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#B35F2B] dark:text-[#E58A54]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#EA580C] dark:text-[#FB923C]">
                   {language === 'hi' ? 'क्लिनिक संचालन' : 'Clinic Operations'}
                 </span>
-                <h3 className="text-xl font-bold text-[#22291F] dark:text-[#FAF7F2] mt-1 font-heading">
+                <h3 className="text-xl font-bold text-[#132226] dark:text-[#F4F7F6] mt-1 font-heading">
                   {t('operationsHub', 'Operations Hub')}
                 </h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-1.5 leading-relaxed">
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-1.5 leading-relaxed">
                   {t('operationsHubDesc', 'Doctor scheduling and cabin allocations, master appointment ledger, UN SDG 3 health camp announcements, and encrypted cloud backups.')}
                 </p>
               </div>
-              <ul className="space-y-2 text-xs text-[#6B6B63] dark:text-[#C4CFC3] pt-2 border-t border-[#ECD8C9]/80 dark:border-[#2F3B2F]">
+              <ul className="space-y-2 text-xs text-[#5A7178] dark:text-[#9DB4BA] pt-2 border-t border-[#ECD8C9]/80 dark:border-[#21333A]">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#C97B4A] dark:text-[#E58A54] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#F97316] dark:text-[#FB923C] shrink-0" />
                   <span>{language === 'hi' ? 'केबिन आवंटन एवं समय प्रबंधक' : 'Cabin suite & consultation hours manager'}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#C97B4A] dark:text-[#E58A54] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#F97316] dark:text-[#FB923C] shrink-0" />
                   <span>{language === 'hi' ? 'CSV निर्यात सहित मास्टर लेजर' : 'Master queue ledger with CSV export'}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#C97B4A] dark:text-[#E58A54] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#F97316] dark:text-[#FB923C] shrink-0" />
                   <span>{language === 'hi' ? 'स्वास्थ्य शिविर एवं कैंप घोषणाएं' : 'Community health drive & camp publisher'}</span>
                 </li>
               </ul>
             </div>
             <Link
               to="/admin"
-              className="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#40916C] dark:border dark:border-[#52B788]/40 text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors"
+              className="mt-6 w-full flex items-center justify-center gap-2 py-3 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#14B8A6] dark:border dark:border-[#2DD4BF]/40 text-[#F4F7F6] text-xs font-semibold rounded-xl shadow-xs transition-colors"
             >
               <span>{t('accessAdminHub', 'Access Admin Hub')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -606,20 +606,20 @@ export default function LandingPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2D6A4F]/12 text-[#2D6A4F] dark:bg-[#2D6A4F]/20 dark:text-[#52B788] text-xs font-bold border border-[#2D6A4F]/25 mb-1.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0F766E]/12 text-[#0F766E] dark:bg-[#0F766E]/20 dark:text-[#2DD4BF] text-xs font-bold border border-[#0F766E]/25 mb-1.5">
               <Stethoscope className="w-3.5 h-3.5" />
               <span>{language === 'hi' ? 'समर्पित स्वास्थ्य विशेषज्ञ' : 'Compassionate Care Providers'}</span>
             </div>
-            <h2 className="text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+            <h2 className="text-2xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
               {t('ourSpecialists', 'Our Community Medical Specialists')}
             </h2>
-            <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+            <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
               {t('ourSpecialistsDesc', 'Experienced physicians dedicated to community primary health and wellness')}
             </p>
           </div>
           <Link
             to="/register"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2D6A4F] dark:text-[#52B788] hover:underline self-start sm:self-center"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] dark:text-[#2DD4BF] hover:underline self-start sm:self-center"
           >
             <span>{t('bookTokenWithSpecialist', 'Reserve Token With a Doctor')}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -630,7 +630,7 @@ export default function LandingPage() {
           {displayDoctors.map((doc) => (
             <div
               key={doc.id || doc.name}
-              className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 p-5 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between group"
+              className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40 p-5 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-3">
@@ -642,12 +642,12 @@ export default function LandingPage() {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = getDoctorFallbackAvatar(doc.name);
                       }}
-                      className="w-13 h-13 rounded-2xl object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915] shrink-0"
+                      className="w-13 h-13 rounded-2xl object-cover border border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114] shrink-0"
                     />
                     <div className="min-w-0">
-                      <h3 className="font-bold text-sm text-[#22291F] dark:text-[#FAF7F2] font-heading truncate">{doc.name}</h3>
-                      <p className="text-xs font-medium text-[#2D6A4F] dark:text-[#52B788] truncate">{doc.specialization}</p>
-                      <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">{doc.cabin || 'Cabin 101'}</p>
+                      <h3 className="font-bold text-sm text-[#132226] dark:text-[#F4F7F6] font-heading truncate">{doc.name}</h3>
+                      <p className="text-xs font-medium text-[#0F766E] dark:text-[#2DD4BF] truncate">{doc.specialization}</p>
+                      <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA] mt-0.5">{doc.cabin || 'Cabin 101'}</p>
                     </div>
                   </div>
                 </div>
@@ -656,26 +656,26 @@ export default function LandingPage() {
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/40">
                     <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Verified Specialist
                   </span>
-                  <span className="text-[10px] font-semibold text-[#2D6A4F] dark:text-[#52B788] bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 px-2 py-0.5 rounded-full border border-[#2D6A4F]/20">
+                  <span className="text-[10px] font-semibold text-[#0F766E] dark:text-[#2DD4BF] bg-[#0F766E]/10 dark:bg-[#2DD4BF]/15 px-2 py-0.5 rounded-full border border-[#0F766E]/20">
                     Available Today
                   </span>
                 </div>
 
-                <div className="py-2.5 border-y border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5 my-3 text-xs">
+                <div className="py-2.5 border-y border-[#E0E7E5] dark:border-[#21333A] space-y-1.5 my-3 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-[#6B6B63] dark:text-[#C4CFC3]">{t('experience', 'Experience')}:</span>
-                    <span className="font-medium text-[#22291F] dark:text-[#FAF7F2]">{doc.experience || '10+ yrs'}</span>
+                    <span className="text-[#5A7178] dark:text-[#9DB4BA]">{t('experience', 'Experience')}:</span>
+                    <span className="font-medium text-[#132226] dark:text-[#F4F7F6]">{doc.experience || '10+ yrs'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#6B6B63] dark:text-[#C4CFC3]">{t('consultationFee', 'Consultation')}:</span>
-                    <span className="font-bold text-[#2D6A4F] dark:text-[#52B788]">{t('freeCommunityCare', 'Free (Community Care)')}</span>
+                    <span className="text-[#5A7178] dark:text-[#9DB4BA]">{t('consultationFee', 'Consultation')}:</span>
+                    <span className="font-bold text-[#0F766E] dark:text-[#2DD4BF]">{t('freeCommunityCare', 'Free (Community Care)')}</span>
                   </div>
                 </div>
 
                 {/* Available Days */}
                 <div className="flex flex-wrap gap-1 mb-4">
                   {(doc.availableDays || doc.days || ["Mon", "Tue", "Wed", "Thu", "Fri"]).slice(0, 4).map(day => (
-                    <span key={day} className="px-2 py-0.5 bg-[#FAF7F2] dark:bg-[#151915] text-[#6B6B63] dark:text-[#C4CFC3] border border-[#E6DFC6] dark:border-[#2F3B2F] rounded-md text-[10px] font-medium">
+                    <span key={day} className="px-2 py-0.5 bg-[#F4F7F6] dark:bg-[#0B1114] text-[#5A7178] dark:text-[#9DB4BA] border border-[#E0E7E5] dark:border-[#21333A] rounded-md text-[10px] font-medium">
                       {day}
                     </span>
                   ))}
@@ -684,9 +684,9 @@ export default function LandingPage() {
 
               <button
                 onClick={() => openBookingModal(doc)}
-                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-[#FAF7F2] hover:bg-[#2D6A4F] dark:bg-[#151915] dark:hover:bg-[#357A5B] hover:text-white dark:hover:text-white text-[#22291F] dark:text-[#FAF7F2] text-xs font-bold rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] transition-all cursor-pointer shadow-2xs group-hover:border-[#2D6A4F]"
+                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 bg-[#F4F7F6] hover:bg-[#0F766E] dark:bg-[#0B1114] dark:hover:bg-[#0D9488] hover:text-white dark:hover:text-white text-[#132226] dark:text-[#F4F7F6] text-xs font-bold rounded-xl border border-[#CFDAD6] dark:border-[#21333A] transition-all cursor-pointer shadow-2xs group-hover:border-[#0F766E]"
               >
-                <Ticket className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] group-hover:text-white transition-colors" />
+                <Ticket className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] group-hover:text-white transition-colors" />
                 <span>{t('bookTokenWithSpecialist', 'Book Token with Specialist')}</span>
               </button>
             </div>
@@ -697,67 +697,67 @@ export default function LandingPage() {
       {/* 6. Community Voices & Social Proof */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15 text-xs font-bold border border-[#C97B4A]/30">
-            <Quote className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F97316]/15 text-[#EA580C] dark:text-[#FB923C] dark:border-[#FB923C]/40 dark:bg-[#FB923C]/15 text-xs font-bold border border-[#F97316]/30">
+            <Quote className="w-3.5 h-3.5 text-[#F97316] dark:text-[#FB923C]" />
             <span>{t('communityStories', 'Community Stories')}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold font-heading text-[#22291F] dark:text-[#FAF7F2]">
+          <h2 className="text-2xl sm:text-3xl font-bold font-heading text-[#132226] dark:text-[#F4F7F6]">
             {t('realImpact', 'Real Impact for Everyday Families')}
           </h2>
-          <p className="text-xs sm:text-sm text-[#6B6B63] dark:text-[#C4CFC3]">
+          <p className="text-xs sm:text-sm text-[#5A7178] dark:text-[#9DB4BA]">
             {t('realImpactDesc', 'How zero-cost digital tokens and community drives transform local primary healthcare access.')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
-            <p className="text-xs text-[#22291F] dark:text-[#FAF7F2] italic leading-relaxed">
+          <div className="p-6 rounded-2xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-sm flex flex-col justify-between">
+            <p className="text-xs text-[#132226] dark:text-[#F4F7F6] italic leading-relaxed">
               {language === 'hi' 
                 ? '"पहले अपने 3 साल के बच्चे को बुखार की जांच के लिए लाना मतलब 2 घंटे भीड़ में बैठना था। अपना के डिजिटल टोकन से, हम अपने समय से ठीक 5 मिनट पहले पहुंचे।"'
                 : '"Previously, bringing my 3-year-old for fever checks meant sitting in a packed corridor for 2 hours. With Apna\'s digital token, we walked in exactly 5 minutes before our slot."'}
             </p>
-            <div className="flex items-center gap-3 pt-4 mt-4 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
-              <div className="w-9 h-9 rounded-full bg-[#2D6A4F] text-[#FAF7F2] font-bold text-xs flex items-center justify-center">
+            <div className="flex items-center gap-3 pt-4 mt-4 border-t border-[#E0E7E5] dark:border-[#21333A]">
+              <div className="w-9 h-9 rounded-full bg-[#0F766E] text-[#F4F7F6] font-bold text-xs flex items-center justify-center">
                 AS
               </div>
               <div>
-                <p className="text-xs font-bold text-[#22291F] dark:text-[#FAF7F2]">Ananya Sharma</p>
-                <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">{language === 'hi' ? 'दो बच्चों की मां • ईस्ट ब्लॉक' : 'Mother of two • East Block'}</p>
+                <p className="text-xs font-bold text-[#132226] dark:text-[#F4F7F6]">Ananya Sharma</p>
+                <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">{language === 'hi' ? 'दो बच्चों की मां • ईस्ट ब्लॉक' : 'Mother of two • East Block'}</p>
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
-            <p className="text-xs text-[#22291F] dark:text-[#FAF7F2] italic leading-relaxed">
+          <div className="p-6 rounded-2xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-sm flex flex-col justify-between">
+            <p className="text-xs text-[#132226] dark:text-[#F4F7F6] italic leading-relaxed">
               {language === 'hi'
                 ? '"रविवार के निःशुल्क स्वास्थ्य जांच शिविर में मेरे पिताजी के उच्च रक्तचाप का समय रहते पता चला। डॉक्टरों ने बिना हड़बड़ी के सब कुछ समझाया।"'
                 : '"The free Sunday health screening camp identified my father\'s hypertension early. Having doctors explain medications clearly without rushed visits saved our family immense distress."'}
             </p>
-            <div className="flex items-center gap-3 pt-4 mt-4 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
-              <div className="w-9 h-9 rounded-full bg-[#C97B4A] dark:bg-[#E58A54] text-[#FAF7F2] font-bold text-xs flex items-center justify-center">
+            <div className="flex items-center gap-3 pt-4 mt-4 border-t border-[#E0E7E5] dark:border-[#21333A]">
+              <div className="w-9 h-9 rounded-full bg-[#F97316] dark:bg-[#FB923C] text-[#F4F7F6] font-bold text-xs flex items-center justify-center">
                 RK
               </div>
               <div>
-                <p className="text-xs font-bold text-[#22291F] dark:text-[#FAF7F2]">Rajesh Kumar</p>
-                <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">{language === 'hi' ? 'स्थानीय नागरिक • सेक्टर 4' : 'Community Member • Sector 4'}</p>
+                <p className="text-xs font-bold text-[#132226] dark:text-[#F4F7F6]">Rajesh Kumar</p>
+                <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">{language === 'hi' ? 'स्थानीय नागरिक • सेक्टर 4' : 'Community Member • Sector 4'}</p>
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
-            <p className="text-xs text-[#22291F] dark:text-[#FAF7F2] italic leading-relaxed">
+          <div className="p-6 rounded-2xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-sm flex flex-col justify-between">
+            <p className="text-xs text-[#132226] dark:text-[#F4F7F6] italic leading-relaxed">
               {language === 'hi'
                 ? '"सलाहकार डॉक्टर के रूप में, डिजिटल कतार से केबिन में शांति और अनुशासन रहता है। मरीज़ का इतिहास और पर्ची स्क्रीन पर सामने रहती है जिससे हम पूरा ध्यान मरीज़ पर दे सकते हैं।"'
                 : '"As a consulting doctor, the digital queue brings order and calmness to my cabin. Patient history and prescriptions are right on screen so I can focus 100% on the patient."'}
             </p>
-            <div className="flex items-center gap-3 pt-4 mt-4 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
-              <div className="w-9 h-9 rounded-full bg-[#2D6A4F] text-[#FAF7F2] font-bold text-xs flex items-center justify-center">
+            <div className="flex items-center gap-3 pt-4 mt-4 border-t border-[#E0E7E5] dark:border-[#21333A]">
+              <div className="w-9 h-9 rounded-full bg-[#0F766E] text-[#F4F7F6] font-bold text-xs flex items-center justify-center">
                 SJ
               </div>
               <div>
-                <p className="text-xs font-bold text-[#22291F] dark:text-[#FAF7F2]">Dr. Sarah Jenkins</p>
-                <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">{language === 'hi' ? 'वरिष्ठ चिकित्सक' : 'Senior Consulting Physician'}</p>
+                <p className="text-xs font-bold text-[#132226] dark:text-[#F4F7F6]">Dr. Sarah Jenkins</p>
+                <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">{language === 'hi' ? 'वरिष्ठ चिकित्सक' : 'Senior Consulting Physician'}</p>
               </div>
             </div>
           </div>
@@ -767,18 +767,18 @@ export default function LandingPage() {
 
       {/* 7. SDG 3 Impact Highlight Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-[#F0EBE1] dark:bg-[#1C221C] border border-[#E4DCCE] dark:border-[#2F3B2F] p-8 sm:p-10 shadow-sm transition-colors">
+        <div className="rounded-3xl bg-[#E8F0EE] dark:bg-[#121C21] border border-[#DCE5E2] dark:border-[#21333A] p-8 sm:p-10 shadow-sm transition-colors">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
             <div className="lg:col-span-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] dark:border-[#E58A54]/40 dark:bg-[#E58A54]/15 text-xs font-semibold border border-[#C97B4A]/30">
-                <Award className="w-4 h-4 text-[#C97B4A] dark:text-[#E58A54]" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F97316]/15 text-[#EA580C] dark:text-[#FB923C] dark:border-[#FB923C]/40 dark:bg-[#FB923C]/15 text-xs font-semibold border border-[#F97316]/30">
+                <Award className="w-4 h-4 text-[#F97316] dark:text-[#FB923C]" />
                 <span>UN Sustainable Development Goals • Target 3.8</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#22291F] dark:text-[#FAF7F2] tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#132226] dark:text-[#F4F7F6] tracking-tight">
                 {language === 'hi' ? 'सामुदायिक क्लिनिकों में बुनियादी स्वास्थ्य सेवा सुगम बनाना' : 'Bridging Essential Healthcare Access in Community Clinics'}
               </h2>
-              <p className="text-sm text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed font-sans">
+              <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed font-sans">
                 {language === 'hi'
                   ? 'संयुक्त राष्ट्र सतत विकास लक्ष्य 3 का लक्ष्य 3.8 सभी के लिए सार्वभौमिक स्वास्थ्य कवरेज, वित्तीय सुरक्षा और आवश्यक गुणवत्तापूर्ण स्वास्थ्य सेवाओं की पहुंच का आह्वान करता है। अपना क्लिनिक डिजिटल कतार प्रणाली और निःशुल्क स्वास्थ्य जांच के माध्यम से इस मिशन का समर्थन करता है।'
                   : 'Target 3.8 of the United Nations SDGs calls for universal health coverage, financial risk protection, access to quality essential health services, and affordable essential medicines. Apna Clinic directly supports this mission through zero-barrier digital queue scheduling, compassionate local care, and regular community diagnostic drives.'}
@@ -786,25 +786,25 @@ export default function LandingPage() {
             </div>
 
             <div className="lg:col-span-4 grid grid-cols-2 gap-3">
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#151915] border border-[#E4DCCE] dark:border-[#2F3B2F] text-center shadow-xs">
-                <span className="block text-xl sm:text-2xl font-black text-[#2D6A4F] dark:text-[#52B788] font-heading">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#0B1114] border border-[#DCE5E2] dark:border-[#21333A] text-center shadow-xs">
+                <span className="block text-xl sm:text-2xl font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading">
                   ₹{estimatedSavings.toLocaleString('en-IN')}
                 </span>
-                <span className="text-[11px] font-medium text-[#6B6B63] dark:text-[#C4CFC3] mt-1 block">{t('patientFeesSaved', 'Patient Fees Saved')}</span>
+                <span className="text-[11px] font-medium text-[#5A7178] dark:text-[#9DB4BA] mt-1 block">{t('patientFeesSaved', 'Patient Fees Saved')}</span>
               </div>
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#151915] border border-[#E4DCCE] dark:border-[#2F3B2F] text-center shadow-xs">
-                <span className="block text-2xl font-black text-[#C97B4A] dark:text-[#E58A54] font-heading">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#0B1114] border border-[#DCE5E2] dark:border-[#21333A] text-center shadow-xs">
+                <span className="block text-2xl font-black text-[#F97316] dark:text-[#FB923C] font-heading">
                   {totalTokensIssued > 0 ? `${totalTokensIssued}+` : '150+'}
                 </span>
-                <span className="text-[11px] font-medium text-[#6B6B63] dark:text-[#C4CFC3] mt-1 block">{t('tokensAllocated', 'Tokens Allocated')}</span>
+                <span className="text-[11px] font-medium text-[#5A7178] dark:text-[#9DB4BA] mt-1 block">{t('tokensAllocated', 'Tokens Allocated')}</span>
               </div>
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#151915] border border-[#E4DCCE] dark:border-[#2F3B2F] text-center shadow-xs">
-                <span className="block text-2xl font-black text-[#2D6A4F] dark:text-[#52B788] font-heading">100%</span>
-                <span className="text-[11px] font-medium text-[#6B6B63] dark:text-[#C4CFC3] mt-1 block">{t('freeUnderSdg', 'Free Under SDG 3')}</span>
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#0B1114] border border-[#DCE5E2] dark:border-[#21333A] text-center shadow-xs">
+                <span className="block text-2xl font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading">100%</span>
+                <span className="text-[11px] font-medium text-[#5A7178] dark:text-[#9DB4BA] mt-1 block">{t('freeUnderSdg', 'Free Under SDG 3')}</span>
               </div>
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#151915] border border-[#E4DCCE] dark:border-[#2F3B2F] text-center shadow-xs">
-                <span className="block text-2xl font-black text-[#22291F] dark:text-[#FAF7F2] font-heading">0 sec</span>
-                <span className="text-[11px] font-medium text-[#6B6B63] dark:text-[#C4CFC3] mt-1 block">{t('cloudRealTimeSync', 'Cloud Real-Time Sync')}</span>
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#0B1114] border border-[#DCE5E2] dark:border-[#21333A] text-center shadow-xs">
+                <span className="block text-2xl font-black text-[#132226] dark:text-[#F4F7F6] font-heading">0 sec</span>
+                <span className="text-[11px] font-medium text-[#5A7178] dark:text-[#9DB4BA] mt-1 block">{t('cloudRealTimeSync', 'Cloud Real-Time Sync')}</span>
               </div>
             </div>
 
@@ -842,47 +842,47 @@ export default function LandingPage() {
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-[#1C221C] rounded-3xl max-w-md w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden p-6 sm:p-7 shadow-2xl text-center space-y-5 animate-in zoom-in-95 relative"
+            className="bg-white dark:bg-[#121C21] rounded-3xl max-w-md w-full border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden p-6 sm:p-7 shadow-2xl text-center space-y-5 animate-in zoom-in-95 relative"
           >
             {/* Top Close Button */}
             <button
               type="button"
               onClick={() => setAuthPromptOpen(false)}
-              className="absolute top-4 right-4 p-2 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-xl hover:bg-[#FAF7F2] dark:hover:bg-[#242C24] transition-colors cursor-pointer"
+              className="absolute top-4 right-4 p-2 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-xl hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Glowing Icon Badge */}
-            <div className="w-16 h-16 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 border border-[#0F766E]/20 dark:border-[#2DD4BF]/30 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center mx-auto shadow-sm">
               <Ticket className="w-8 h-8" />
             </div>
 
             {/* Title & Explanation */}
             <div className="space-y-2">
-              <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#C97B4A]/12 text-[#B35F2B] dark:text-[#E58A54] border border-[#C97B4A]/25">
+              <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F97316]/12 text-[#EA580C] dark:text-[#FB923C] border border-[#F97316]/25">
                 Authentication Required
               </span>
-              <h3 className="text-xl font-extrabold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+              <h3 className="text-xl font-extrabold text-[#132226] dark:text-[#F4F7F6] font-heading">
                 {t('signInRequiredTitle', 'Please Sign In to Book Your Token')}
               </h3>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed">
                 {t('signInRequiredDesc', 'To allocate your sequential queue token, display your wait time on the OPD TV, and receive direct email appointment receipts with QR triage verification, please sign in or register your free patient account.')}
               </p>
             </div>
 
             {/* Feature Highlights Pill Grid */}
-            <div className="p-3.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-2 text-left text-xs">
-              <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
-                <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+            <div className="p-3.5 bg-[#F4F7F6] dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] space-y-2 text-left text-xs">
+              <div className="flex items-center gap-2 text-[#132226] dark:text-[#F4F7F6]">
+                <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                 <span>Instant Digital Token (TK-01, TK-02...)</span>
               </div>
-              <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
-                <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+              <div className="flex items-center gap-2 text-[#132226] dark:text-[#F4F7F6]">
+                <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                 <span>Direct email confirmation with digital token slip</span>
               </div>
-              <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
-                <CheckCircle2 className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+              <div className="flex items-center gap-2 text-[#132226] dark:text-[#F4F7F6]">
+                <CheckCircle2 className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
                 <span>100% Free Consultation under UN SDG 3</span>
               </div>
             </div>
@@ -893,7 +893,7 @@ export default function LandingPage() {
                 to="/login"
                 state={{ redirectFrom: 'bookToken', doctor: pendingDoctorForAuth }}
                 onClick={() => setAuthPromptOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-bold text-sm rounded-xl transition-all shadow-sm cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] font-bold text-sm rounded-xl transition-all shadow-sm cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>{t('signInAction', 'Sign In to Your Account')}</span>
@@ -904,9 +904,9 @@ export default function LandingPage() {
                 to="/register"
                 state={{ redirectFrom: 'bookToken', doctor: pendingDoctorForAuth }}
                 onClick={() => setAuthPromptOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-white dark:bg-[#1C221C] hover:bg-[#FAF7F2] dark:hover:bg-[#242C24] text-[#22291F] dark:text-[#FAF7F2] border border-[#D8CEB3] dark:border-[#2F3B2F] font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-2xs"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-white dark:bg-[#121C21] hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] text-[#132226] dark:text-[#F4F7F6] border border-[#CFDAD6] dark:border-[#21333A] font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-2xs"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54]" />
+                <Sparkles className="w-3.5 h-3.5 text-[#F97316] dark:text-[#FB923C]" />
                 <span>{t('createAccountAction', 'Create Free Patient Account (Takes 30s)')}</span>
               </Link>
             </div>
@@ -914,7 +914,7 @@ export default function LandingPage() {
             <button
               type="button"
               onClick={() => setAuthPromptOpen(false)}
-              className="text-[11px] text-[#8E8E84] dark:text-[#94A493] hover:underline cursor-pointer pt-1"
+              className="text-[11px] text-[#758D94] dark:text-[#79949B] hover:underline cursor-pointer pt-1"
             >
               Continue browsing clinic specialties
             </button>

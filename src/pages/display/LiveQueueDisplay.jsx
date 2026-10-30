@@ -248,22 +248,22 @@ export default function LiveQueueDisplay() {
   }, [doctors, pendingAppointments]);
 
   return (
-    <div className="min-h-screen bg-[#F8F6F1] text-[#22291F] dark:bg-[#131713] dark:text-[#FAF7F2] flex flex-col justify-between selection:bg-[#2D6A4F] selection:text-[#FAF7F2] font-sans overflow-x-hidden transition-colors duration-200 relative">
+    <div className="min-h-screen bg-[#F4F7F6] text-[#132226] dark:bg-[#0B1114] dark:text-[#F4F7F6] flex flex-col justify-between selection:bg-[#0F766E] selection:text-[#F4F7F6] font-sans overflow-x-hidden transition-colors duration-200 relative">
       <HealthcareBackground />
 
       {/* Top Header Bar */}
-      <header className="border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-white/95 dark:bg-[#1C221C]/95 px-3 sm:px-6 py-3 sm:py-4 backdrop-blur-md sticky top-0 z-30 transition-colors">
+      <header className="border-b border-[#E0E7E5] dark:border-[#21333A] bg-white/95 dark:bg-[#121C21]/95 px-3 sm:px-6 py-3 sm:py-4 backdrop-blur-md sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-4">
 
           {/* Logo & Clinic Branding + Exit on mobile */}
           <div className="flex items-center justify-between gap-3">
             <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] flex items-center justify-center shadow-md shrink-0">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] flex items-center justify-center shadow-md shrink-0">
                 <HeartHandshake className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <h1 className="text-base sm:text-xl font-black font-heading tracking-tight text-[#22291F] dark:text-[#FAF7F2] truncate">
+                  <h1 className="text-base sm:text-xl font-black font-heading tracking-tight text-[#132226] dark:text-[#F4F7F6] truncate">
                     Arogya Community Clinic
                   </h1>
                   <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5 shrink-0">
@@ -271,7 +271,7 @@ export default function LiveQueueDisplay() {
                     <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-emerald-500"></span>
                   </span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] font-medium tracking-wide uppercase truncate">
+                <p className="text-[10px] sm:text-[11px] text-[#5A7178] dark:text-[#9DB4BA] font-medium tracking-wide uppercase truncate">
                   OPD Waiting Hall • Real-Time Token Call Board
                 </p>
               </div>
@@ -280,7 +280,7 @@ export default function LiveQueueDisplay() {
             {/* Exit TV Mode Link - on mobile right side of logo */}
             <Link
               to="/"
-              className="md:hidden flex items-center gap-1 px-2.5 py-1.5 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl transition-colors shadow-xs shrink-0"
+              className="md:hidden flex items-center gap-1 px-2.5 py-1.5 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-semibold rounded-xl transition-colors shadow-xs shrink-0"
               title="Exit TV Display Mode"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -291,13 +291,13 @@ export default function LiveQueueDisplay() {
           {/* Clock & Controls */}
           <div className="flex items-center justify-between md:justify-end gap-2 sm:gap-3">
             {/* Live Clock Display */}
-            <div className="flex items-center gap-2 sm:gap-3 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-[#F0EBE1] dark:bg-[#242C24] border border-[#E4DCCE] dark:border-[#2F3B2F] rounded-xl sm:rounded-2xl shadow-2xs">
-              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+            <div className="flex items-center gap-2 sm:gap-3 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-[#E8F0EE] dark:bg-[#19272D] border border-[#DCE5E2] dark:border-[#21333A] rounded-xl sm:rounded-2xl shadow-2xs">
+              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
               <div>
-                <p className="text-xs sm:text-sm font-black font-mono tracking-wider text-[#22291F] dark:text-[#FAF7F2] leading-tight">
+                <p className="text-xs sm:text-sm font-black font-mono tracking-wider text-[#132226] dark:text-[#F4F7F6] leading-tight">
                   {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                 </p>
-                <p className="text-[9px] sm:text-[10px] text-[#6B6B63] dark:text-[#C4CFC3] font-medium leading-tight">
+                <p className="text-[9px] sm:text-[10px] text-[#5A7178] dark:text-[#9DB4BA] font-medium leading-tight">
                   {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               </div>
@@ -308,7 +308,7 @@ export default function LiveQueueDisplay() {
               {/* Mobile QR Scan Button */}
               <button
                 onClick={() => setShowQrModal(true)}
-                className="p-2 sm:px-3 sm:py-2 bg-white dark:bg-[#242C24] hover:bg-[#2D6A4F]/10 dark:hover:bg-[#357A5B]/20 border border-[#E6DFC6] dark:border-[#445644] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 text-xs font-bold text-[#2D6A4F] dark:text-[#52B788] rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                className="p-2 sm:px-3 sm:py-2 bg-white dark:bg-[#19272D] hover:bg-[#0F766E]/10 dark:hover:bg-[#0D9488]/20 border border-[#E0E7E5] dark:border-[#2C444E] hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40 text-xs font-bold text-[#0F766E] dark:text-[#2DD4BF] rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 title="Scan QR Code to open on mobile"
               >
                 <QrCode className="w-3.5 h-3.5" />
@@ -318,11 +318,11 @@ export default function LiveQueueDisplay() {
               {/* Theme Toggle Button */}
               <button
                 onClick={toggleTheme}
-                className="p-2 sm:p-2.5 rounded-xl border border-[#E6DFC6] dark:border-[#445644] bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#357A5B]/20 text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] transition-all cursor-pointer shadow-xs"
+                className="p-2 sm:p-2.5 rounded-xl border border-[#E0E7E5] dark:border-[#2C444E] bg-white dark:bg-[#19272D] hover:bg-[#F4F7F6] dark:hover:bg-[#0D9488]/20 text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6] transition-all cursor-pointer shadow-xs"
                 title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
                 aria-label="Toggle visual theme"
               >
-                {isDark ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E58A54]" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2D6A4F]" />}
+                {isDark ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#FB923C]" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0F766E]" />}
               </button>
 
               {/* Sound Toggle Button */}
@@ -335,8 +335,8 @@ export default function LiveQueueDisplay() {
                   }
                 }}
                 className={`p-2 sm:p-2.5 rounded-xl border transition-colors cursor-pointer shadow-xs ${soundEnabled
-                  ? 'bg-[#2D6A4F]/15 dark:bg-[#357A5B]/25 border-[#2D6A4F]/40 dark:border-[#52B788]/40 text-[#2D6A4F] dark:text-[#52B788]'
-                  : 'bg-white dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#8E8E84] dark:text-[#94A493]'
+                  ? 'bg-[#0F766E]/15 dark:bg-[#0D9488]/25 border-[#0F766E]/40 dark:border-[#2DD4BF]/40 text-[#0F766E] dark:text-[#2DD4BF]'
+                  : 'bg-white dark:bg-[#19272D] border-[#E0E7E5] dark:border-[#2C444E] text-[#758D94] dark:text-[#79949B]'
                   }`}
                 title={soundEnabled ? "Chime Sound Enabled (Click to Mute)" : "Muted (Click to Enable Chime)"}
               >
@@ -348,8 +348,8 @@ export default function LiveQueueDisplay() {
                 onClick={() => setPrivacyMasked(!privacyMasked)}
                 className={`p-2 sm:px-2.5 sm:py-2 rounded-xl border text-xs font-semibold cursor-pointer shadow-xs transition-colors flex items-center gap-1.5 ${
                   privacyMasked
-                    ? 'bg-[#2D6A4F]/15 dark:bg-[#357A5B]/25 border-[#2D6A4F]/40 dark:border-[#52B788]/40 text-[#2D6A4F] dark:text-[#52B788]'
-                    : 'bg-white dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] text-[#8E8E84] dark:text-[#94A493]'
+                    ? 'bg-[#0F766E]/15 dark:bg-[#0D9488]/25 border-[#0F766E]/40 dark:border-[#2DD4BF]/40 text-[#0F766E] dark:text-[#2DD4BF]'
+                    : 'bg-white dark:bg-[#19272D] border-[#E0E7E5] dark:border-[#2C444E] text-[#758D94] dark:text-[#79949B]'
                 }`}
                 title={privacyMasked ? "Privacy Mask Enabled (Patient names partially hidden)" : "Privacy Mask Disabled (Showing full names)"}
               >
@@ -364,17 +364,17 @@ export default function LiveQueueDisplay() {
                   setIsNewTokenAlert(true);
                   setTimeout(() => setIsNewTokenAlert(false), 5000);
                 }}
-                className="p-2 sm:px-3 sm:py-2 bg-white dark:bg-[#242C24] hover:bg-[#2D6A4F]/10 dark:hover:bg-[#357A5B]/20 border border-[#E6DFC6] dark:border-[#445644] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                className="p-2 sm:px-3 sm:py-2 bg-white dark:bg-[#19272D] hover:bg-[#0F766E]/10 dark:hover:bg-[#0D9488]/20 border border-[#E0E7E5] dark:border-[#2C444E] hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40 text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6] rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 title="Test Waiting Hall Audio Chime"
               >
-                <Bell className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54]" />
+                <Bell className="w-3.5 h-3.5 text-[#F97316] dark:text-[#FB923C]" />
                 <span className="hidden sm:inline">Chime</span>
               </button>
 
               {/* Fullscreen Mode Button */}
               <button
                 onClick={toggleFullscreen}
-                className="hidden sm:inline-flex p-2.5 bg-white dark:bg-[#242C24] hover:bg-[#2D6A4F]/10 dark:hover:bg-[#357A5B]/20 border border-[#E6DFC6] dark:border-[#445644] hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 rounded-xl text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2] transition-colors cursor-pointer shadow-xs"
+                className="hidden sm:inline-flex p-2.5 bg-white dark:bg-[#19272D] hover:bg-[#0F766E]/10 dark:hover:bg-[#0D9488]/20 border border-[#E0E7E5] dark:border-[#2C444E] hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40 rounded-xl text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6] transition-colors cursor-pointer shadow-xs"
                 title={isFullscreen ? "Exit Fullscreen" : "Fullscreen Mode"}
               >
                 {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -383,7 +383,7 @@ export default function LiveQueueDisplay() {
               {/* Exit TV Mode Link (Desktop) */}
               <Link
                 to="/"
-                className="hidden md:flex items-center gap-1 px-3.5 py-2 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl transition-colors shadow-xs"
+                className="hidden md:flex items-center gap-1 px-3.5 py-2 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-semibold rounded-xl transition-colors shadow-xs"
                 title="Exit TV Display Mode"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -404,7 +404,7 @@ export default function LiveQueueDisplay() {
             onClick={() => {
               playCallChime();
             }}
-            className="fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-[#2D6A4F]/95 dark:bg-[#1C221C]/95 text-[#FAF7F2] border border-[#52B788]/40 shadow-2xl backdrop-blur-md cursor-pointer animate-bounce select-none transition-all max-w-[92vw]"
+            className="fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-[#0F766E]/95 dark:bg-[#121C21]/95 text-[#F4F7F6] border border-[#2DD4BF]/40 shadow-2xl backdrop-blur-md cursor-pointer animate-bounce select-none transition-all max-w-[92vw]"
             title="Click or tap anywhere to enable sound alerts"
           >
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
@@ -412,7 +412,7 @@ export default function LiveQueueDisplay() {
             </div>
             <div className="text-left min-w-0">
               <p className="text-xs font-bold font-heading">Tap anywhere to enable sound</p>
-              <p className="text-[10px] sm:text-[11px] text-[#A3C9B8] dark:text-[#C4CFC3] truncate">Browser requires a user interaction to allow OPD audio chime</p>
+              <p className="text-[10px] sm:text-[11px] text-[#A3C9B8] dark:text-[#9DB4BA] truncate">Browser requires a user interaction to allow OPD audio chime</p>
             </div>
             <span className="shrink-0 px-2.5 py-1 rounded-lg bg-white/25 text-white text-[10px] font-bold uppercase tracking-wider">
               Enable
@@ -422,16 +422,16 @@ export default function LiveQueueDisplay() {
 
         {/* Doctor Cabin Filter Chips */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-          <span className="text-[#6B6B63] dark:text-[#C4CFC3] font-semibold text-[11px] uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
-            <Stethoscope className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+          <span className="text-[#5A7178] dark:text-[#9DB4BA] font-semibold text-[11px] uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
+            <Stethoscope className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
             Filter Cabin:
           </span>
           <button
             onClick={() => setSelectedDoctorId('all')}
             className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer shrink-0 ${
               selectedDoctorId === 'all'
-                ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] shadow-xs'
-                : 'bg-white dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#445644] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] shadow-xs'
+                : 'bg-white dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#2C444E] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
             }`}
           >
             All Cabins
@@ -442,8 +442,8 @@ export default function LiveQueueDisplay() {
               onClick={() => setSelectedDoctorId(doc.id)}
               className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer shrink-0 ${
                 selectedDoctorId === doc.id
-                  ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] shadow-xs'
-                  : 'bg-white dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#445644] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                  ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] shadow-xs'
+                  : 'bg-white dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#2C444E] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               {doc.name} • {doc.cabin || 'Cabin'}
@@ -452,11 +452,11 @@ export default function LiveQueueDisplay() {
         </div>
 
         {/* NOW CALLING HERO BOARD - Solid Deep Green High-Contrast Wall TV Banner */}
-        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#1B4332] dark:bg-[#14261B] border-2 sm:border-4 border-[#2D6A4F] dark:border-[#357A5B] shadow-2xl p-5 sm:p-7 lg:p-9 text-[#FAF7F2] transition-all duration-300">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#134E4A] dark:bg-[#14261B] border-2 sm:border-4 border-[#0F766E] dark:border-[#0D9488] shadow-2xl p-5 sm:p-7 lg:p-9 text-[#F4F7F6] transition-all duration-300">
           
           {/* Subtle background ambient lighting effect for TV vibrancy */}
           <div className="absolute -right-16 -top-16 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute -left-16 -bottom-16 w-80 h-80 bg-[#40916C]/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute -left-16 -bottom-16 w-80 h-80 bg-[#14B8A6]/20 rounded-full blur-3xl pointer-events-none"></div>
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
 
@@ -466,7 +466,7 @@ export default function LiveQueueDisplay() {
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
                 <span>Now Calling • Proceed to Cabin</span>
                 {isNewTokenAlert && (
-                  <span className="ml-1 px-2 py-0.5 rounded-md bg-[#E58A54] text-[#151915] text-[10px] font-black animate-pulse shadow-xs">
+                  <span className="ml-1 px-2 py-0.5 rounded-md bg-[#FB923C] text-[#0B1114] text-[10px] font-black animate-pulse shadow-xs">
                     NEW CALL
                   </span>
                 )}
@@ -499,21 +499,21 @@ export default function LiveQueueDisplay() {
 
             {/* Right Col: Assigned Doctor & Cabin Indicator Card (Wider 7-col allocation for natural text wrapping) */}
             {currentCalling ? (
-              <div className="lg:col-span-7 bg-white dark:bg-[#1C221C] text-[#22291F] dark:text-[#FAF7F2] rounded-2xl border-2 border-emerald-400/40 dark:border-[#52B788]/40 p-4 sm:p-5 lg:p-6 space-y-3 shadow-2xl">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+              <div className="lg:col-span-7 bg-white dark:bg-[#121C21] text-[#132226] dark:text-[#F4F7F6] rounded-2xl border-2 border-emerald-400/40 dark:border-[#2DD4BF]/40 p-4 sm:p-5 lg:p-6 space-y-3 shadow-2xl">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#E0E7E5] dark:border-[#21333A]">
                   <div className="flex-1 min-w-0 pr-2">
-                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#A85222] dark:text-[#E58A54] block">
+                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#EA580C] dark:text-[#FB923C] block">
                       Assigned Specialist
                     </span>
-                    <h3 className="text-lg sm:text-2xl font-black font-heading mt-0.5 text-[#22291F] dark:text-[#FAF7F2] leading-snug">
+                    <h3 className="text-lg sm:text-2xl font-black font-heading mt-0.5 text-[#132226] dark:text-[#F4F7F6] leading-snug">
                       {currentCalling.doctorName}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#2D6A4F] dark:text-[#52B788] font-bold mt-1 leading-normal">
+                    <p className="text-xs sm:text-sm text-[#0F766E] dark:text-[#2DD4BF] font-bold mt-1 leading-normal">
                       {currentCalling.specialization}
                     </p>
                   </div>
 
-                  <div className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] text-center shrink-0 shadow-md border-2 border-emerald-400/50 dark:border-[#52B788]/50 self-start sm:self-center">
+                  <div className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] text-center shrink-0 shadow-md border-2 border-emerald-400/50 dark:border-[#2DD4BF]/50 self-start sm:self-center">
                     <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-emerald-200 block leading-tight">
                       Please Report To
                     </span>
@@ -523,20 +523,20 @@ export default function LiveQueueDisplay() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs pt-0.5 text-[#52584E] dark:text-[#C4CFC3]">
-                  <div className="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                    <span className="text-[9px] sm:text-[10px] uppercase font-bold text-[#62685E] dark:text-[#94A493] block">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-3 text-xs pt-0.5 text-[#455A60] dark:text-[#9DB4BA]">
+                  <div className="p-2.5 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]">
+                    <span className="text-[9px] sm:text-[10px] uppercase font-bold text-[#52676D] dark:text-[#79949B] block">
                       Scheduled Slot
                     </span>
-                    <span className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-xs sm:text-sm">
+                    <span className="font-bold text-[#132226] dark:text-[#F4F7F6] text-xs sm:text-sm">
                       {currentCalling.time}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                    <span className="text-[9px] sm:text-[10px] uppercase font-bold text-[#62685E] dark:text-[#94A493] block">
+                  <div className="p-2.5 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]">
+                    <span className="text-[9px] sm:text-[10px] uppercase font-bold text-[#52676D] dark:text-[#79949B] block">
                       Consultation Reason
                     </span>
-                    <span className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-xs sm:text-sm block">
+                    <span className="font-bold text-[#132226] dark:text-[#F4F7F6] text-xs sm:text-sm block">
                       {currentCalling.reason || 'Routine Consultation'}
                     </span>
                   </div>
@@ -555,11 +555,11 @@ export default function LiveQueueDisplay() {
         {/* CABIN ROSTER & QUEUE STATUS GRID */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] flex items-center gap-2 font-heading">
-              <Stethoscope className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
+            <h2 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] flex items-center gap-2 font-heading">
+              <Stethoscope className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF]" />
               <span>Specialist Cabins &amp; Upcoming Queue ({pendingAppointments.length} Waiting)</span>
             </h2>
-            <span className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] font-mono">
+            <span className="text-xs text-[#5A7178] dark:text-[#9DB4BA] font-mono">
               Auto-sync active
             </span>
           </div>
@@ -573,28 +573,28 @@ export default function LiveQueueDisplay() {
                   key={doctor.id}
                   className={`rounded-2xl p-4 sm:p-5 shadow-sm space-y-2.5 sm:space-y-3 flex flex-col justify-between transition-all duration-200 ${
                     isConsulting
-                      ? 'bg-emerald-50/40 dark:bg-[#1B291D] border-2 border-emerald-500/60 dark:border-[#52B788]/60 shadow-md shadow-emerald-500/10'
-                      : 'bg-stone-50/80 dark:bg-[#1C221C] border border-stone-200 dark:border-[#2F3B2F] opacity-95'
+                      ? 'bg-emerald-50/40 dark:bg-[#1B291D] border-2 border-emerald-500/60 dark:border-[#2DD4BF]/60 shadow-md shadow-emerald-500/10'
+                      : 'bg-stone-50/80 dark:bg-[#121C21] border border-stone-200 dark:border-[#21333A] opacity-95'
                   }`}
                 >
                   <div>
                     {/* Doctor Info */}
-                    <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+                    <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#E0E7E5] dark:border-[#21333A]">
                       <div className="min-w-0 flex-1 pr-1">
-                        <span className="text-[10px] font-bold text-[#A85222] dark:text-[#E58A54] uppercase tracking-wider block">
+                        <span className="text-[10px] font-bold text-[#EA580C] dark:text-[#FB923C] uppercase tracking-wider block">
                           {doctor.cabin || 'Cabin 101'}
                         </span>
-                        <h3 className="font-bold text-sm text-[#22291F] dark:text-[#FAF7F2] font-heading leading-tight mt-0.5">
+                        <h3 className="font-bold text-sm text-[#132226] dark:text-[#F4F7F6] font-heading leading-tight mt-0.5">
                           {doctor.name}
                         </h3>
-                        <p className="text-[11px] text-[#2D6A4F] dark:text-[#52B788] font-medium leading-tight mt-0.5">
+                        <p className="text-[11px] text-[#0F766E] dark:text-[#2DD4BF] font-medium leading-tight mt-0.5">
                           {doctor.specialization.split('(')[0]}
                         </p>
                       </div>
                       <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 border ${
                         isConsulting
                           ? 'bg-emerald-500 text-white border-emerald-600 shadow-xs'
-                          : 'bg-stone-200/70 dark:bg-[#242C24] text-stone-600 dark:text-[#C4CFC3] border-stone-300 dark:border-[#445644]'
+                          : 'bg-stone-200/70 dark:bg-[#19272D] text-stone-600 dark:text-[#9DB4BA] border-stone-300 dark:border-[#2C444E]'
                       }`}>
                         {totalInQueue}
                       </span>
@@ -603,25 +603,25 @@ export default function LiveQueueDisplay() {
                     {/* Active In Cabin */}
                     <div className={`my-2.5 sm:my-3 p-2.5 sm:p-3 rounded-xl border text-center transition-colors ${
                       isConsulting
-                        ? 'bg-emerald-100/70 dark:bg-[#243B27] border-emerald-500/40 dark:border-[#52B788]/40 text-emerald-950 dark:text-[#FAF7F2]'
-                        : 'bg-stone-100/80 dark:bg-[#151915] border-stone-200 dark:border-[#2F3B2F] text-stone-600 dark:text-[#C4CFC3]'
+                        ? 'bg-emerald-100/70 dark:bg-[#243B27] border-emerald-500/40 dark:border-[#2DD4BF]/40 text-emerald-950 dark:text-[#F4F7F6]'
+                        : 'bg-stone-100/80 dark:bg-[#0B1114] border-stone-200 dark:border-[#21333A] text-stone-600 dark:text-[#9DB4BA]'
                     }`}>
                       <span className={`text-[10px] font-bold uppercase tracking-wider block ${
-                        isConsulting ? 'text-emerald-800 dark:text-[#52B788]' : 'text-stone-500 dark:text-[#94A493]'
+                        isConsulting ? 'text-emerald-800 dark:text-[#2DD4BF]' : 'text-stone-500 dark:text-[#79949B]'
                       }`}>
                         In Cabin
                       </span>
                       {isConsulting ? (
-                        <div className="text-2xl sm:text-3xl font-black text-[#1B4332] dark:text-[#52B788] font-heading my-0.5 tracking-tight">
+                        <div className="text-2xl sm:text-3xl font-black text-[#134E4A] dark:text-[#2DD4BF] font-heading my-0.5 tracking-tight">
                           {active.tokenNumber}
                         </div>
                       ) : (
-                        <div className="text-xs sm:text-sm font-bold text-stone-600 dark:text-[#C4CFC3] my-1 font-heading">
+                        <div className="text-xs sm:text-sm font-bold text-stone-600 dark:text-[#9DB4BA] my-1 font-heading">
                           Ready
                         </div>
                       )}
                       <span className={`text-[10px] truncate block font-medium ${
-                        isConsulting ? 'text-emerald-900 dark:text-[#FAF7F2]' : 'text-stone-500 dark:text-[#94A493]'
+                        isConsulting ? 'text-emerald-900 dark:text-[#F4F7F6]' : 'text-stone-500 dark:text-[#79949B]'
                       }`}>
                         {isConsulting ? active.patientName : 'Awaiting next patient'}
                       </span>
@@ -629,7 +629,7 @@ export default function LiveQueueDisplay() {
 
                     {/* Next in Line Tokens */}
                     <div>
-                      <span className="text-[10px] font-bold text-[#62685E] dark:text-[#94A493] uppercase tracking-wider block mb-1">
+                      <span className="text-[10px] font-bold text-[#52676D] dark:text-[#79949B] uppercase tracking-wider block mb-1">
                         Next in Line
                       </span>
                       {upcoming.length > 0 ? (
@@ -637,28 +637,28 @@ export default function LiveQueueDisplay() {
                           {upcoming.map((u) => (
                             <span
                               key={u.id}
-                              className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#F0EBE1] dark:bg-[#242C24] text-[#22291F] dark:text-[#FAF7F2] text-xs font-bold rounded-lg border border-[#E6DFC6] dark:border-[#445644]"
+                              className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#E8F0EE] dark:bg-[#19272D] text-[#132226] dark:text-[#F4F7F6] text-xs font-bold rounded-lg border border-[#E0E7E5] dark:border-[#2C444E]"
                             >
                               {u.tokenNumber}
                             </span>
                           ))}
                         </div>
                       ) : (
-                        <span className="text-[11px] text-[#62685E] dark:text-[#94A493] italic">Queue clear</span>
+                        <span className="text-[11px] text-[#52676D] dark:text-[#79949B] italic">Queue clear</span>
                       )}
                     </div>
                   </div>
 
                   {/* Bottom Status Footer */}
-                  <div className="pt-2 border-t border-[#E6DFC6] dark:border-[#2F3B2F] text-[10px] text-[#62685E] dark:text-[#94A493] flex justify-between items-center">
+                  <div className="pt-2 border-t border-[#E0E7E5] dark:border-[#21333A] text-[10px] text-[#52676D] dark:text-[#79949B] flex justify-between items-center">
                     <span>Slots: {doctor.availableSlots?.length || 4}/day</span>
                     {isConsulting ? (
-                      <span className="text-emerald-600 dark:text-[#52B788] font-bold flex items-center gap-1.5">
+                      <span className="text-emerald-600 dark:text-[#2DD4BF] font-bold flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         Consulting
                       </span>
                     ) : (
-                      <span className="text-stone-500 dark:text-[#C4CFC3] font-medium flex items-center gap-1.5">
+                      <span className="text-stone-500 dark:text-[#9DB4BA] font-medium flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-stone-400"></span>
                         Ready / Awaiting
                       </span>
@@ -673,17 +673,17 @@ export default function LiveQueueDisplay() {
       </main>
 
       {/* Bottom Health Camp & Awareness Marquee Ticker */}
-      <footer className="border-t border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#151915] py-2.5 sm:py-3 px-3.5 sm:px-6 transition-colors">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+      <footer className="border-t border-[#E0E7E5] dark:border-[#21333A] bg-white dark:bg-[#0B1114] py-2.5 sm:py-3 px-3.5 sm:px-6 transition-colors">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-xs text-[#5A7178] dark:text-[#9DB4BA]">
 
           <div className="flex items-center gap-2 shrink-0">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#C97B4A]/15 dark:bg-[#E58A54]/15 text-[#B35F2B] dark:text-[#E58A54] border border-[#C97B4A]/30 dark:border-[#E58A54]/40 text-[10px] font-bold uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#F97316]/15 dark:bg-[#FB923C]/15 text-[#EA580C] dark:text-[#FB923C] border border-[#F97316]/30 dark:border-[#FB923C]/40 text-[10px] font-bold uppercase tracking-wider">
               Free SDG 3 Drives
             </span>
           </div>
 
           <div className="flex-1 overflow-hidden min-w-0 text-center sm:text-left">
-            <p className="truncate text-xs font-medium text-[#22291F] dark:text-[#FAF7F2]">
+            <p className="truncate text-xs font-medium text-[#132226] dark:text-[#F4F7F6]">
               {announcements.length > 0
                 ? announcements.map(a => `${a.title} (${a.date} at ${a.location})`).join('  •  ')
                 : 'Free maternal screening, child vaccinations, and chronic disease diagnostic camps active this week.'
@@ -691,8 +691,8 @@ export default function LiveQueueDisplay() {
             </p>
           </div>
 
-          <div className="shrink-0 text-[11px] text-[#8E8E84] dark:text-[#94A493]">
-            Emergency: <strong className="text-rose-600 dark:text-rose-400">108</strong> • Reception: <strong className="text-[#22291F] dark:text-[#FAF7F2]">+91 (011) 2345-6789</strong>
+          <div className="shrink-0 text-[11px] text-[#758D94] dark:text-[#79949B]">
+            Emergency: <strong className="text-rose-600 dark:text-rose-400">108</strong> • Reception: <strong className="text-[#132226] dark:text-[#F4F7F6]">+91 (011) 2345-6789</strong>
           </div>
 
         </div>

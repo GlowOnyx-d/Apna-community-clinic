@@ -133,8 +133,8 @@ function VitalGaugeCard({ type, label, value, compact = false }) {
 
   if (compact) {
     return (
-      <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-medium border ${evalResult ? evalResult.pill : 'bg-white dark:bg-[#1C221C] border-[#E6DFC6] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2]'}`}>
-        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${evalResult ? evalResult.bg : 'bg-[#2D6A4F]'}`} />
+      <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-medium border ${evalResult ? evalResult.pill : 'bg-white dark:bg-[#121C21] border-[#E0E7E5] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6]'}`}>
+        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${evalResult ? evalResult.bg : 'bg-[#0F766E]'}`} />
         <span className="font-bold">{label}:</span>
         <span>{value}</span>
         {evalResult && (
@@ -146,16 +146,16 @@ function VitalGaugeCard({ type, label, value, compact = false }) {
 
   // Full Rich Gauge with 3-segment visual meter
   return (
-    <div className="flex-1 min-w-[130px] p-2.5 rounded-xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xs space-y-1.5">
+    <div className="flex-1 min-w-[130px] p-2.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs space-y-1.5">
       <div className="flex items-center justify-between text-[11px]">
-        <span className="font-semibold text-[#6B6B63] dark:text-[#C4CFC3]">{label}</span>
+        <span className="font-semibold text-[#5A7178] dark:text-[#9DB4BA]">{label}</span>
         {evalResult && (
           <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${evalResult.pill}`}>
             {evalResult.status}
           </span>
         )}
       </div>
-      <div className="text-sm font-extrabold text-[#22291F] dark:text-[#FAF7F2] tracking-tight">
+      <div className="text-sm font-extrabold text-[#132226] dark:text-[#F4F7F6] tracking-tight">
         {value}
       </div>
       {/* Visual Range 3-Segment Bar */}
@@ -166,7 +166,7 @@ function VitalGaugeCard({ type, label, value, compact = false }) {
           <div className={`h-1.5 rounded-full transition-all ${evalResult?.segment === 3 ? 'bg-rose-500 ring-2 ring-rose-300 dark:ring-rose-700' : 'bg-rose-200 dark:bg-rose-950/40 opacity-40'}`} />
         </div>
         {evalResult?.label && (
-          <div className="text-[9px] text-[#8E8E84] dark:text-[#94A493] truncate pt-0.5">
+          <div className="text-[9px] text-[#758D94] dark:text-[#79949B] truncate pt-0.5">
             {evalResult.label}
           </div>
         )}
@@ -466,17 +466,17 @@ export default function DoctorDashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
       
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-[#F0EBE1] dark:bg-[#1C221C] border border-[#E4DCCE] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] p-6 sm:p-8 shadow-sm">
+      <div className="relative overflow-hidden rounded-2xl bg-[#E8F0EE] dark:bg-[#121C21] border border-[#DCE5E2] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6] p-6 sm:p-8 shadow-sm">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-semibold border border-[#2D6A4F]/20 dark:border-[#52B788]/30">
-              <Stethoscope className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-semibold border border-[#0F766E]/20 dark:border-[#2DD4BF]/30">
+              <Stethoscope className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF]" />
               <span>Doctor Clinical Consultation Queue</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold font-heading tracking-tight text-[#22291F] dark:text-[#FAF7F2]">
+            <h1 className="text-2xl sm:text-3xl font-bold font-heading tracking-tight text-[#132226] dark:text-[#F4F7F6]">
               Welcome, {activeDoctor?.name || userProfile?.name || 'Doctor'}
             </h1>
-            <p className="text-sm text-[#6B6B63] dark:text-[#C4CFC3]">
+            <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA]">
               {activeDoctor ? `${activeDoctor.specialization} • ${activeDoctor.cabin || 'Cabin 101'}` : (userProfile?.specialization || 'Clinical Specialist')} • Manage daily patient token streams and record diagnostic notes.
             </p>
           </div>
@@ -486,10 +486,10 @@ export default function DoctorDashboard() {
               <button
                 type="button"
                 onClick={handleAdminSeed}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 bg-white/90 dark:bg-[#242C24] hover:bg-white dark:hover:bg-[#2F3B2F] text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/30 dark:border-[#52B788]/30 text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 px-3.5 py-2.5 bg-white/90 dark:bg-[#19272D] hover:bg-white dark:hover:bg-[#21333A] text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
                 title="Hydrate all 3 dashboards with full clinic demo data"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                <Sparkles className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
                 <span>Load Sample Data</span>
               </button>
             </div>
@@ -504,30 +504,30 @@ export default function DoctorDashboard() {
           onClick={() => setActiveTab('queue')}
           className={`p-3.5 sm:p-5 rounded-2xl border shadow-sm flex flex-col justify-between cursor-pointer transition-all ${
             activeTab === 'queue'
-              ? 'bg-white dark:bg-[#1C221C] border-[#2D6A4F] dark:border-[#52B788] ring-2 ring-[#2D6A4F]/15 dark:ring-[#52B788]/20'
-              : 'bg-white dark:bg-[#1C221C] border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40'
+              ? 'bg-white dark:bg-[#121C21] border-[#0F766E] dark:border-[#2DD4BF] ring-2 ring-[#0F766E]/15 dark:ring-[#2DD4BF]/20'
+              : 'bg-white dark:bg-[#121C21] border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40'
           }`}
         >
           <div className="flex items-center gap-2.5 sm:gap-4">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#C97B4A]/12 dark:bg-[#E58A54]/18 text-[#C97B4A] dark:text-[#E58A54] border border-[#C97B4A]/25 dark:border-[#E58A54]/30 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#F97316]/12 dark:bg-[#FB923C]/18 text-[#F97316] dark:text-[#FB923C] border border-[#F97316]/25 dark:border-[#FB923C]/30 flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">In Queue</p>
-              <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{pendingQueue.length}</p>
+              <p className="text-[10px] sm:text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">In Queue</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{pendingQueue.length}</p>
             </div>
           </div>
 
-          <div className="mt-3.5 pt-2.5 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1.5">
+          <div className="mt-3.5 pt-2.5 border-t border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1.5">
             <div className="flex items-center justify-between text-[11px]">
-              <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Awaiting consult</span>
-              <span className="font-semibold text-[#C97B4A] dark:text-[#E58A54]">
+              <span className="text-[#5A7178] dark:text-[#9DB4BA]">Awaiting consult</span>
+              <span className="font-semibold text-[#F97316] dark:text-[#FB923C]">
                 {todayBookedCount > 0 ? `${queuePct}% today` : `${pendingQueue.length} waiting`}
               </span>
             </div>
-            <div className="w-full h-1.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-full overflow-hidden border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+            <div className="w-full h-1.5 bg-[#F4F7F6] dark:bg-[#19272D] rounded-full overflow-hidden border border-[#E0E7E5]/60 dark:border-[#21333A]">
               <div 
-                className="h-full bg-[#C97B4A] dark:bg-[#E58A54] rounded-full transition-all duration-500" 
+                className="h-full bg-[#F97316] dark:bg-[#FB923C] rounded-full transition-all duration-500" 
                 style={{ width: `${Math.min(100, todayBookedCount > 0 ? queuePct : (pendingQueue.length > 0 ? 50 : 0))}%` }}
               />
             </div>
@@ -539,30 +539,30 @@ export default function DoctorDashboard() {
           onClick={() => setActiveTab('completed')}
           className={`p-3.5 sm:p-5 rounded-2xl border shadow-sm flex flex-col justify-between cursor-pointer transition-all ${
             activeTab === 'completed'
-              ? 'bg-white dark:bg-[#1C221C] border-[#2D6A4F] dark:border-[#52B788] ring-2 ring-[#2D6A4F]/15 dark:ring-[#52B788]/20'
-              : 'bg-white dark:bg-[#1C221C] border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40'
+              ? 'bg-white dark:bg-[#121C21] border-[#0F766E] dark:border-[#2DD4BF] ring-2 ring-[#0F766E]/15 dark:ring-[#2DD4BF]/20'
+              : 'bg-white dark:bg-[#121C21] border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40'
           }`}
         >
           <div className="flex items-center gap-2.5 sm:gap-4">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/20 dark:border-[#2DD4BF]/30 flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Completed</p>
-              <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{completedVisits.length}</p>
+              <p className="text-[10px] sm:text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">Completed</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{completedVisits.length}</p>
             </div>
           </div>
 
-          <div className="mt-3.5 pt-2.5 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1.5">
+          <div className="mt-3.5 pt-2.5 border-t border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1.5">
             <div className="flex items-center justify-between text-[11px]">
-              <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Consultation rate</span>
-              <span className="font-semibold text-[#2D6A4F] dark:text-[#52B788]">
+              <span className="text-[#5A7178] dark:text-[#9DB4BA]">Consultation rate</span>
+              <span className="font-semibold text-[#0F766E] dark:text-[#2DD4BF]">
                 {todayBookedCount > 0 ? `${completionPct}% completed` : `${completedVisits.length} total`}
               </span>
             </div>
-            <div className="w-full h-1.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-full overflow-hidden border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+            <div className="w-full h-1.5 bg-[#F4F7F6] dark:bg-[#19272D] rounded-full overflow-hidden border border-[#E0E7E5]/60 dark:border-[#21333A]">
               <div 
-                className="h-full bg-[#2D6A4F] dark:bg-[#52B788] rounded-full transition-all duration-500" 
+                className="h-full bg-[#0F766E] dark:bg-[#2DD4BF] rounded-full transition-all duration-500" 
                 style={{ width: `${Math.min(100, todayBookedCount > 0 ? completionPct : (completedVisits.length > 0 ? 100 : 0))}%` }}
               />
             </div>
@@ -570,30 +570,30 @@ export default function DoctorDashboard() {
         </div>
 
         {/* Card 3: Total Appointments & Daily Slot Capacity */}
-        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#1C221C] p-3.5 sm:p-5 rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-sm flex flex-col justify-between">
+        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#121C21] p-3.5 sm:p-5 rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-sm flex flex-col justify-between">
           <div className="flex items-center gap-2.5 sm:gap-4">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/20 dark:border-[#2DD4BF]/30 flex items-center justify-center shrink-0">
               <Ticket className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <p className="text-[10px] sm:text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">Total Appointments</p>
-              <p className="text-xl sm:text-2xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{doctorAppointments.length}</p>
+              <p className="text-[10px] sm:text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">Total Appointments</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{doctorAppointments.length}</p>
             </div>
           </div>
 
-          <div className="mt-3.5 pt-2.5 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1.5">
+          <div className="mt-3.5 pt-2.5 border-t border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1.5">
             <div className="flex items-center justify-between text-[11px]">
-              <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Today's schedule</span>
-              <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">
+              <span className="text-[#5A7178] dark:text-[#9DB4BA]">Today's schedule</span>
+              <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">
                 {todayBookedCount} of {maxDailySlots} slots booked
               </span>
             </div>
-            <div className="w-full h-1.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-full overflow-hidden border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+            <div className="w-full h-1.5 bg-[#F4F7F6] dark:bg-[#19272D] rounded-full overflow-hidden border border-[#E0E7E5]/60 dark:border-[#21333A]">
               <div 
                 className={`h-full rounded-full transition-all duration-500 ${
                   bookedSlotsPct >= 100 
-                    ? 'bg-[#C97B4A] dark:bg-[#E58A54]' 
-                    : 'bg-[#2D6A4F] dark:bg-[#52B788]'
+                    ? 'bg-[#F97316] dark:bg-[#FB923C]' 
+                    : 'bg-[#0F766E] dark:bg-[#2DD4BF]'
                 }`} 
                 style={{ width: `${Math.min(100, bookedSlotsPct)}%` }}
               />
@@ -603,17 +603,17 @@ export default function DoctorDashboard() {
       </div>
 
       {/* Queue Filter, Doctor Switcher & Search Toolbar */}
-      <div className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         
         {/* Search */}
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+          <Search className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search patient, token, or symptom..."
-            className="w-full pl-10 pr-4 py-2 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors"
+            className="w-full pl-10 pr-4 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] transition-colors"
           />
         </div>
 
@@ -622,11 +622,11 @@ export default function DoctorDashboard() {
           
           {/* Doctor Switcher */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] font-medium hidden sm:inline">Doctor:</span>
+            <span className="text-xs text-[#5A7178] dark:text-[#9DB4BA] font-medium hidden sm:inline">Doctor:</span>
             <select
               value={selectedDoctorView}
               onChange={(e) => setSelectedDoctorView(e.target.value)}
-              className="px-3 py-1.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs font-semibold text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] cursor-pointer"
+              className="px-3 py-1.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs font-semibold text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] cursor-pointer"
             >
               {role !== 'admin' && (
                 <option value="my_queue">
@@ -643,11 +643,11 @@ export default function DoctorDashboard() {
           </div>
 
           {/* Date Filter */}
-          <div className="flex bg-[#FAF7F2] dark:bg-[#242C24] p-1 rounded-xl gap-1 border border-[#D8CEB3] dark:border-[#2F3B2F]">
+          <div className="flex bg-[#F4F7F6] dark:bg-[#19272D] p-1 rounded-xl gap-1 border border-[#CFDAD6] dark:border-[#21333A]">
             <button
               onClick={() => setDateFilter('today')}
               className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                dateFilter === 'today' ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2]' : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                dateFilter === 'today' ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6]' : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               Today
@@ -655,7 +655,7 @@ export default function DoctorDashboard() {
             <button
               onClick={() => setDateFilter('all')}
               className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                dateFilter === 'all' ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2]' : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                dateFilter === 'all' ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6]' : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               All Dates
@@ -663,26 +663,26 @@ export default function DoctorDashboard() {
           </div>
 
           {/* Tab Switcher */}
-          <div className="flex bg-[#FAF7F2] dark:bg-[#242C24] p-1 rounded-xl gap-1 border border-[#D8CEB3] dark:border-[#2F3B2F]">
+          <div className="flex bg-[#F4F7F6] dark:bg-[#19272D] p-1 rounded-xl gap-1 border border-[#CFDAD6] dark:border-[#21333A]">
             <button
               onClick={() => setActiveTab('queue')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
-                activeTab === 'queue' ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] shadow-xs' : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                activeTab === 'queue' ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] shadow-xs' : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               <span>Queue</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${activeTab === 'queue' ? 'bg-white/20 text-white' : 'bg-[#E6DFC6] dark:bg-[#333] text-[#22291F] dark:text-white'}`}>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${activeTab === 'queue' ? 'bg-white/20 text-white' : 'bg-[#E0E7E5] dark:bg-[#333] text-[#132226] dark:text-white'}`}>
                 {pendingQueue.length}
               </span>
             </button>
             <button
               onClick={() => setActiveTab('completed')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
-                activeTab === 'completed' ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] shadow-xs' : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                activeTab === 'completed' ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] shadow-xs' : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               <span>Completed</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-[#E6DFC6] dark:bg-[#333] text-[#22291F] dark:text-white'}`}>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-[#E0E7E5] dark:bg-[#333] text-[#132226] dark:text-white'}`}>
                 {completedVisits.length}
               </span>
             </button>
@@ -695,22 +695,22 @@ export default function DoctorDashboard() {
         /* TAB 1: ACTIVE PATIENT QUEUE */
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+            <h2 className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
               {dateFilter === 'today' ? "Today's Active Patient Queue" : "Active Patient Queue"} ({pendingQueue.length})
             </h2>
-            <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3]">
+            <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA]">
               Sorted by daily token sequence
             </span>
           </div>
 
           {pendingQueue.length === 0 ? (
-            <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
+            <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-2xl border border-dashed border-[#CFDAD6] dark:border-[#21333A] p-12 text-center space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center mx-auto">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">No Patients in Queue</h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] max-w-md mx-auto mt-1">
+                <h3 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">No Patients in Queue</h3>
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] max-w-md mx-auto mt-1">
                   There are no pending consultation tokens right now. To load or refresh starter clinic data across all 3 dashboards, please switch to the Admin Dashboard (admin@communityclinic.org) and click "Load Sample Data".
                 </p>
               </div>
@@ -718,7 +718,7 @@ export default function DoctorDashboard() {
                 <button
                   type="button"
                   onClick={handleAdminSeed}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Load Sample Clinic Data</span>
@@ -728,39 +728,39 @@ export default function DoctorDashboard() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {pendingQueue.map((apt) => (
-                <div key={apt.id} className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#445644] p-5 shadow-sm transition-all flex flex-col justify-between">
+                <div key={apt.id} className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40 dark:hover:border-[#2C444E] p-5 shadow-sm transition-all flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="px-3 py-1 rounded-xl bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] font-bold text-sm tracking-wider shadow-xs">
+                        <span className="px-3 py-1 rounded-xl bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] font-bold text-sm tracking-wider shadow-xs">
                           {apt.tokenNumber || 'TK'}
                         </span>
                         {apt.doctorName && selectedDoctorView === 'all' && (
-                          <span className="text-[11px] px-2 py-0.5 rounded-lg bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 text-[#2D6A4F] dark:text-[#52B788] font-semibold truncate max-w-[130px]">
+                          <span className="text-[11px] px-2 py-0.5 rounded-lg bg-[#0F766E]/10 dark:bg-[#2DD4BF]/15 text-[#0F766E] dark:text-[#2DD4BF] font-semibold truncate max-w-[130px]">
                             {apt.doctorName}
                           </span>
                         )}
                       </div>
-                      <span className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" /> {apt.time}
+                      <span className="text-xs text-[#5A7178] dark:text-[#9DB4BA] flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" /> {apt.time}
                       </span>
                     </div>
 
-                    <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{apt.patientName}</h3>
-                    <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">
+                    <h3 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{apt.patientName}</h3>
+                    <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-0.5">
                       {apt.patientGender || 'Unspecified'}, {apt.patientAge || 'Age N/A'} • {apt.patientPhone || 'No Phone'}
                     </p>
 
-                    <div className="mt-3 p-3 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl text-xs space-y-1 border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                      <span className="text-[#8E8E84] dark:text-[#94A493] font-semibold block uppercase text-[10px]">Reason for Consultation</span>
-                      <p className="text-[#22291F] dark:text-[#FAF7F2] font-medium">{apt.reason || 'General Consultation'}</p>
+                    <div className="mt-3 p-3 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl text-xs space-y-1 border border-[#E0E7E5] dark:border-[#21333A]">
+                      <span className="text-[#758D94] dark:text-[#79949B] font-semibold block uppercase text-[10px]">Reason for Consultation</span>
+                      <p className="text-[#132226] dark:text-[#F4F7F6] font-medium">{apt.reason || 'General Consultation'}</p>
                     </div>
 
                     {/* Vitals summary chip preview */}
                     {apt.vitals ? (
-                      <div className="mt-2.5 p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5">
+                      <div className="mt-2.5 p-2.5 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] space-y-1.5">
                         <div className="flex items-center justify-between text-[10px]">
-                          <span className="font-bold text-[#2D6A4F] dark:text-[#52B788] flex items-center gap-1">
+                          <span className="font-bold text-[#0F766E] dark:text-[#2DD4BF] flex items-center gap-1">
                             <Activity className="w-3 h-3" /> Triage Vitals
                           </span>
                           {apt.vitals.hasAlert ? (
@@ -768,7 +768,7 @@ export default function DoctorDashboard() {
                               <AlertCircle className="w-2.5 h-2.5" /> High Attention
                             </span>
                           ) : (
-                            <span className="text-[9px] text-[#6B6B63] dark:text-[#C4CFC3]">Stable</span>
+                            <span className="text-[9px] text-[#5A7178] dark:text-[#9DB4BA]">Stable</span>
                           )}
                         </div>
                         <div className="flex flex-wrap gap-1.5">
@@ -790,8 +790,8 @@ export default function DoctorDashboard() {
                         </div>
                       </div>
                     ) : (
-                      <div className="mt-2 text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] italic flex items-center gap-1">
-                        <Activity className="w-3 h-3 text-[#8E8E84]" /> Pre-consultation vitals not yet logged
+                      <div className="mt-2 text-[11px] text-[#5A7178] dark:text-[#9DB4BA] italic flex items-center gap-1">
+                        <Activity className="w-3 h-3 text-[#758D94]" /> Pre-consultation vitals not yet logged
                       </div>
                     )}
                   </div>
@@ -800,15 +800,15 @@ export default function DoctorDashboard() {
                     <button
                       type="button"
                       onClick={() => setVitalsModalAppointment(apt)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-[#FAF7F2] dark:bg-[#242C24] hover:bg-[#E6DFC6]/60 dark:hover:bg-[#2F3B2F] border border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border border-[#CFDAD6] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6] text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                     >
-                      <Activity className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                      <Activity className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
                       <span>{apt.vitals ? 'Edit Vitals' : 'Log Vitals'}</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleOpenConsultation(apt)}
-                      className="flex-2 flex items-center justify-center gap-1.5 py-2 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] font-semibold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
+                      className="flex-2 flex items-center justify-center gap-1.5 py-2 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] font-semibold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
                     >
                       <FileText className="w-3.5 h-3.5" />
                       <span>Start Consultation</span>
@@ -823,22 +823,22 @@ export default function DoctorDashboard() {
         /* TAB 2: COMPLETED CONSULTATIONS & CLINICAL RECORDS */
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+            <h2 className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
               Completed Consultations &amp; Clinical Records ({completedVisits.length})
             </h2>
-            <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3]">
+            <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA]">
               Archived consultation notes &amp; digital prescriptions
             </span>
           </div>
 
           {completedVisits.length === 0 ? (
-            <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
+            <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-2xl border border-dashed border-[#CFDAD6] dark:border-[#21333A] p-12 text-center space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">No Completed Visits Yet</h3>
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] max-w-md mx-auto mt-1">
+                <h3 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">No Completed Visits Yet</h3>
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] max-w-md mx-auto mt-1">
                   Completed consultations will appear here with clinical diagnoses, prescribed medications, and doctor follow-up notes.
                 </p>
               </div>
@@ -846,7 +846,7 @@ export default function DoctorDashboard() {
                 <button
                   type="button"
                   onClick={handleAdminSeed}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Load Sample Clinic Data</span>
@@ -856,13 +856,13 @@ export default function DoctorDashboard() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {completedVisits.map((apt) => (
-                <div key={apt.id} className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-sm space-y-3.5">
-                  <div className="flex items-center justify-between pb-2 border-b border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+                <div key={apt.id} className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-sm space-y-3.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-[#E0E7E5]/60 dark:border-[#21333A]">
                     <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-0.5 rounded-lg bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] font-bold text-xs">
+                      <span className="px-2.5 py-0.5 rounded-lg bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] font-bold text-xs">
                         {apt.tokenNumber || 'TK'}
                       </span>
-                      <span className="text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3]">
+                      <span className="text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA]">
                         {apt.date} • {apt.time}
                       </span>
                     </div>
@@ -872,44 +872,44 @@ export default function DoctorDashboard() {
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">{apt.patientName}</h3>
-                    <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">
+                    <h3 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{apt.patientName}</h3>
+                    <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-0.5">
                       {apt.patientGender || 'Adult'}, {apt.patientAge || 'Age N/A'} • {apt.doctorName}
                     </p>
                   </div>
 
                   {/* Diagnosis */}
                   {apt.diagnosis && (
-                    <div className="p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#2D6A4F] dark:text-[#52B788] block">Clinical Diagnosis</span>
-                      <p className="text-xs font-bold text-[#22291F] dark:text-[#FAF7F2] mt-0.5">{apt.diagnosis}</p>
+                    <div className="p-2.5 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#0F766E] dark:text-[#2DD4BF] block">Clinical Diagnosis</span>
+                      <p className="text-xs font-bold text-[#132226] dark:text-[#F4F7F6] mt-0.5">{apt.diagnosis}</p>
                     </div>
                   )}
 
                   {/* Prescription */}
                   {apt.prescription && (
-                    <div className="p-2.5 rounded-xl bg-[#FAF7F2]/60 dark:bg-[#242C24]/60 border border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1">
-                        <Pill className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" /> Prescription &amp; Dosage
+                    <div className="p-2.5 rounded-xl bg-[#F4F7F6]/60 dark:bg-[#19272D]/60 border border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-[#5A7178] dark:text-[#9DB4BA] flex items-center gap-1">
+                        <Pill className="w-3 h-3 text-[#0F766E] dark:text-[#2DD4BF]" /> Prescription &amp; Dosage
                       </span>
-                      <p className="text-[11px] font-mono text-[#22291F] dark:text-[#FAF7F2] whitespace-pre-wrap">{apt.prescription}</p>
+                      <p className="text-[11px] font-mono text-[#132226] dark:text-[#F4F7F6] whitespace-pre-wrap">{apt.prescription}</p>
                     </div>
                   )}
 
                   {/* Observations / Notes */}
                   {apt.notes && (
-                    <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] italic pt-1 border-t border-[#E6DFC6]/50 dark:border-[#2F3B2F]/60">
+                    <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] italic pt-1 border-t border-[#E0E7E5]/50 dark:border-[#21333A]/60">
                       <strong>Notes:</strong> {apt.notes}
                     </p>
                   )}
 
                   {/* Vitals Chip */}
                   {apt.vitals && (
-                    <div className="pt-2 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] flex flex-wrap gap-2 text-[10px]">
-                      {apt.vitals.bp && <span className="px-2 py-0.5 rounded bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]"><strong>BP:</strong> {apt.vitals.bp}</span>}
-                      {apt.vitals.pulse && <span className="px-2 py-0.5 rounded bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]"><strong>Pulse:</strong> {apt.vitals.pulse}</span>}
-                      {apt.vitals.spo2 && <span className="px-2 py-0.5 rounded bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]"><strong>SpO2:</strong> {apt.vitals.spo2}</span>}
-                      {apt.vitals.weight && <span className="px-2 py-0.5 rounded bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F]"><strong>Wt:</strong> {apt.vitals.weight}</span>}
+                    <div className="pt-2 border-t border-[#E0E7E5]/60 dark:border-[#21333A] flex flex-wrap gap-2 text-[10px]">
+                      {apt.vitals.bp && <span className="px-2 py-0.5 rounded bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]"><strong>BP:</strong> {apt.vitals.bp}</span>}
+                      {apt.vitals.pulse && <span className="px-2 py-0.5 rounded bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]"><strong>Pulse:</strong> {apt.vitals.pulse}</span>}
+                      {apt.vitals.spo2 && <span className="px-2 py-0.5 rounded bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]"><strong>SpO2:</strong> {apt.vitals.spo2}</span>}
+                      {apt.vitals.weight && <span className="px-2 py-0.5 rounded bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A]"><strong>Wt:</strong> {apt.vitals.weight}</span>}
                     </div>
                   )}
                 </div>
@@ -922,17 +922,17 @@ export default function DoctorDashboard() {
       {/* Consultation Modal */}
       {selectedAppointment && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#1C221C] w-full max-w-xl rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 space-y-4 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+          <div className="bg-white dark:bg-[#121C21] w-full max-w-xl rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl p-6 space-y-4 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E0E7E5] dark:border-[#21333A]">
               <div>
-                <span className="text-xs font-semibold text-[#2D6A4F] dark:text-[#52B788] uppercase tracking-wider">Consultation Token: {selectedAppointment.tokenNumber}</span>
-                <h3 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] mt-0.5 font-heading">
+                <span className="text-xs font-semibold text-[#0F766E] dark:text-[#2DD4BF] uppercase tracking-wider">Consultation Token: {selectedAppointment.tokenNumber}</span>
+                <h3 className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] mt-0.5 font-heading">
                   Patient: {selectedAppointment.patientName} ({selectedAppointment.patientAge || 'Adult'}y • {selectedAppointment.patientGender || 'Unspecified'})
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedAppointment(null)}
-                className="p-1.5 rounded-lg text-[#6B6B63] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:bg-[#242C24] cursor-pointer"
+                className="p-1.5 rounded-lg text-[#5A7178] hover:bg-[#F4F7F6] dark:text-[#9DB4BA] dark:hover:bg-[#19272D] cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -940,10 +940,10 @@ export default function DoctorDashboard() {
 
             {/* Vitals Triage Banner with Visual Range Meters */}
             {selectedAppointment.vitals ? (
-              <div className="p-3.5 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-2.5">
+              <div className="p-3.5 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-[11px] uppercase tracking-wider text-[#2D6A4F] dark:text-[#52B788] flex items-center gap-1.5">
+                    <span className="font-bold text-[11px] uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF] flex items-center gap-1.5">
                       <Activity className="w-3.5 h-3.5" />
                       Patient Triage Vitals &amp; Clinical Ranges
                     </span>
@@ -956,7 +956,7 @@ export default function DoctorDashboard() {
                   <button
                     type="button"
                     onClick={() => setVitalsModalAppointment(selectedAppointment)}
-                    className="text-[11px] text-[#2D6A4F] dark:text-[#52B788] hover:underline font-semibold cursor-pointer"
+                    className="text-[11px] text-[#0F766E] dark:text-[#2DD4BF] hover:underline font-semibold cursor-pointer"
                   >
                     Edit Vitals
                   </button>
@@ -980,29 +980,29 @@ export default function DoctorDashboard() {
                     <VitalGaugeCard type="bloodSugar" label="Blood Sugar" value={selectedAppointment.vitals.bloodSugar} />
                   )}
                   {selectedAppointment.vitals.weight && (
-                    <div className="flex-1 min-w-[130px] p-2.5 rounded-xl bg-white dark:bg-[#1C221C] border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xs space-y-1.5">
-                      <span className="font-semibold text-[#6B6B63] dark:text-[#C4CFC3] text-[11px] block">Patient Weight</span>
-                      <div className="text-sm font-extrabold text-[#22291F] dark:text-[#FAF7F2] tracking-tight">
+                    <div className="flex-1 min-w-[130px] p-2.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs space-y-1.5">
+                      <span className="font-semibold text-[#5A7178] dark:text-[#9DB4BA] text-[11px] block">Patient Weight</span>
+                      <div className="text-sm font-extrabold text-[#132226] dark:text-[#F4F7F6] tracking-tight">
                         {selectedAppointment.vitals.weight}
                       </div>
-                      <div className="text-[9px] text-[#8E8E84] dark:text-[#94A493] pt-0.5">Physical Metric</div>
+                      <div className="text-[9px] text-[#758D94] dark:text-[#79949B] pt-0.5">Physical Metric</div>
                     </div>
                   )}
                 </div>
 
                 {selectedAppointment.vitals.notes && (
-                  <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] italic pt-1.5 border-t border-[#E6DFC6]/50 dark:border-[#2F3B2F]/60">
+                  <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA] italic pt-1.5 border-t border-[#E0E7E5]/50 dark:border-[#21333A]/60">
                     <strong>Nurse Note:</strong> {selectedAppointment.vitals.notes}
                   </p>
                 )}
               </div>
             ) : (
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] text-xs">
-                <span className="text-[#6B6B63] dark:text-[#C4CFC3]">Pre-consultation vitals not yet logged</span>
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] text-xs">
+                <span className="text-[#5A7178] dark:text-[#9DB4BA]">Pre-consultation vitals not yet logged</span>
                 <button
                   type="button"
                   onClick={() => setVitalsModalAppointment(selectedAppointment)}
-                  className="flex items-center gap-1 px-2.5 py-1 bg-[#2D6A4F]/10 hover:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] rounded-lg font-semibold text-[11px] cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-1 bg-[#0F766E]/10 hover:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] rounded-lg font-semibold text-[11px] cursor-pointer"
                 >
                   <Activity className="w-3 h-3" />
                   <span>+ Record Vitals</span>
@@ -1012,31 +1012,31 @@ export default function DoctorDashboard() {
 
             {/* Past Medical History Accordion */}
             {patientPastVisits.length > 0 && (
-              <div className="rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden">
+              <div className="rounded-xl border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden">
                 <button
                   type="button"
                   onClick={() => setShowHistoryDrawer(!showHistoryDrawer)}
-                  className="w-full flex items-center justify-between p-3 bg-[#FAF7F2] dark:bg-[#242C24] text-xs font-semibold text-[#22291F] dark:text-[#FAF7F2] cursor-pointer hover:bg-[#E6DFC6]/40"
+                  className="w-full flex items-center justify-between p-3 bg-[#F4F7F6] dark:bg-[#19272D] text-xs font-semibold text-[#132226] dark:text-[#F4F7F6] cursor-pointer hover:bg-[#E0E7E5]/40"
                 >
                   <span className="flex items-center gap-2">
-                    <History className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                    <History className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
                     <span>Past Medical History ({patientPastVisits.length} previous visits)</span>
                   </span>
-                  {showHistoryDrawer ? <ChevronUp className="w-4 h-4 text-[#6B6B63]" /> : <ChevronDown className="w-4 h-4 text-[#6B6B63]" />}
+                  {showHistoryDrawer ? <ChevronUp className="w-4 h-4 text-[#5A7178]" /> : <ChevronDown className="w-4 h-4 text-[#5A7178]" />}
                 </button>
                 {showHistoryDrawer && (
-                  <div className="p-3 bg-white dark:bg-[#1C221C] space-y-2 max-h-44 overflow-y-auto text-xs border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
+                  <div className="p-3 bg-white dark:bg-[#121C21] space-y-2 max-h-44 overflow-y-auto text-xs border-t border-[#E0E7E5] dark:border-[#21333A]">
                     {patientPastVisits.map(pv => (
-                      <div key={pv.id} className="p-2 rounded-lg bg-[#FAF7F2]/70 dark:bg-[#242C24]/70 border border-[#E6DFC6]/60 dark:border-[#2F3B2F] space-y-1">
-                        <div className="flex justify-between text-[10px] text-[#6B6B63] dark:text-[#C4CFC3]">
+                      <div key={pv.id} className="p-2 rounded-lg bg-[#F4F7F6]/70 dark:bg-[#19272D]/70 border border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1">
+                        <div className="flex justify-between text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">
                           <span className="font-semibold">{pv.date} • {pv.doctorName}</span>
                           <span>Token #{pv.tokenNumber}</span>
                         </div>
                         {pv.diagnosis && (
-                          <p className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-[11px]">Dx: {pv.diagnosis}</p>
+                          <p className="font-bold text-[#132226] dark:text-[#F4F7F6] text-[11px]">Dx: {pv.diagnosis}</p>
                         )}
                         {pv.prescription && (
-                          <p className="font-mono text-[10px] text-[#6B6B63] dark:text-[#C4CFC3] whitespace-pre-wrap">{pv.prescription}</p>
+                          <p className="font-mono text-[10px] text-[#5A7178] dark:text-[#9DB4BA] whitespace-pre-wrap">{pv.prescription}</p>
                         )}
                       </div>
                     ))}
@@ -1047,28 +1047,28 @@ export default function DoctorDashboard() {
 
             {/* Patient Diagnostic Lab Reports & Pathology Findings */}
             {patientLabReports.length > 0 && (
-              <div className="rounded-xl border border-[#2D6A4F]/30 dark:border-[#52B788]/30 overflow-hidden bg-[#2D6A4F]/5 dark:bg-[#52B788]/10">
+              <div className="rounded-xl border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 overflow-hidden bg-[#0F766E]/5 dark:bg-[#2DD4BF]/10">
                 <button
                   type="button"
                   onClick={() => setShowLabReportsDrawer(!showLabReportsDrawer)}
-                  className="w-full flex items-center justify-between p-3 text-xs font-bold text-[#2D6A4F] dark:text-[#52B788] cursor-pointer hover:bg-[#2D6A4F]/10"
+                  className="w-full flex items-center justify-between p-3 text-xs font-bold text-[#0F766E] dark:text-[#2DD4BF] cursor-pointer hover:bg-[#0F766E]/10"
                 >
                   <span className="flex items-center gap-2">
                     <Activity className="w-3.5 h-3.5" />
                     <span>Patient Diagnostic Lab Reports ({patientLabReports.length} available)</span>
-                    <span className="px-2 py-0.2 rounded-full text-[10px] bg-[#2D6A4F] text-white">Pathology</span>
+                    <span className="px-2 py-0.2 rounded-full text-[10px] bg-[#0F766E] text-white">Pathology</span>
                   </span>
-                  {showLabReportsDrawer ? <ChevronUp className="w-4 h-4 text-[#2D6A4F]" /> : <ChevronDown className="w-4 h-4 text-[#2D6A4F]" />}
+                  {showLabReportsDrawer ? <ChevronUp className="w-4 h-4 text-[#0F766E]" /> : <ChevronDown className="w-4 h-4 text-[#0F766E]" />}
                 </button>
 
                 {showLabReportsDrawer && (
-                  <div className="p-3 bg-white dark:bg-[#1C221C] space-y-2.5 max-h-48 overflow-y-auto text-xs border-t border-[#2D6A4F]/20">
+                  <div className="p-3 bg-white dark:bg-[#121C21] space-y-2.5 max-h-48 overflow-y-auto text-xs border-t border-[#0F766E]/20">
                     {patientLabReports.map(rep => (
-                      <div key={rep.id} className="p-2.5 rounded-lg bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5">
+                      <div key={rep.id} className="p-2.5 rounded-lg bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] space-y-1.5">
                         <div className="flex items-center justify-between">
                           <div>
-                            <span className="font-bold text-[#22291F] dark:text-[#FAF7F2]">{rep.testName}</span>
-                            <span className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3] block">{rep.testDate} • {rep.labName}</span>
+                            <span className="font-bold text-[#132226] dark:text-[#F4F7F6]">{rep.testName}</span>
+                            <span className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA] block">{rep.testDate} • {rep.labName}</span>
                           </div>
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                             rep.status === 'Alert' 
@@ -1084,15 +1084,15 @@ export default function DoctorDashboard() {
                         {rep.keyMetrics && (
                           <div className="flex flex-wrap gap-2 text-[10px]">
                             {rep.keyMetrics.map((km, kIdx) => (
-                              <span key={kIdx} className="px-2 py-0.5 bg-white dark:bg-[#1C221C] rounded border border-[#E6DFC6] dark:border-[#2F3B2F]">
-                                <strong>{km.param}:</strong> <span className="font-mono text-[#2D6A4F] dark:text-[#52B788] font-bold">{km.value}</span>
+                              <span key={kIdx} className="px-2 py-0.5 bg-white dark:bg-[#121C21] rounded border border-[#E0E7E5] dark:border-[#21333A]">
+                                <strong>{km.param}:</strong> <span className="font-mono text-[#0F766E] dark:text-[#2DD4BF] font-bold">{km.value}</span>
                               </span>
                             ))}
                           </div>
                         )}
 
                         {rep.summary && (
-                          <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3] italic">
+                          <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA] italic">
                             {rep.summary}
                           </p>
                         )}
@@ -1105,7 +1105,7 @@ export default function DoctorDashboard() {
 
             <form onSubmit={handleSaveConsultation} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                   Clinical Diagnosis *
                 </label>
                 <input
@@ -1114,16 +1114,16 @@ export default function DoctorDashboard() {
                   value={diagnosis}
                   onChange={(e) => setDiagnosis(e.target.value)}
                   placeholder="e.g. Acute Viral Bronchitis, Hypertension Stage 1"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] transition-colors"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">
+                  <label className="text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
                     Prescription &amp; Medication
                   </label>
-                  <span className="text-[10px] font-semibold text-[#2D6A4F] dark:text-[#52B788] flex items-center gap-1">
+                  <span className="text-[10px] font-semibold text-[#0F766E] dark:text-[#2DD4BF] flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> Quick Presets:
                   </span>
                 </div>
@@ -1134,7 +1134,7 @@ export default function DoctorDashboard() {
                       key={tmpl.name}
                       type="button"
                       onClick={() => applyRxTemplate(tmpl)}
-                      className="px-2 py-0.5 rounded-lg bg-[#2D6A4F]/8 hover:bg-[#2D6A4F]/15 dark:bg-[#52B788]/15 dark:hover:bg-[#52B788]/25 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30 text-[10px] font-semibold transition-colors cursor-pointer"
+                      className="px-2 py-0.5 rounded-lg bg-[#0F766E]/8 hover:bg-[#0F766E]/15 dark:bg-[#2DD4BF]/15 dark:hover:bg-[#2DD4BF]/25 text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/20 dark:border-[#2DD4BF]/30 text-[10px] font-semibold transition-colors cursor-pointer"
                     >
                       + {tmpl.name}
                     </button>
@@ -1145,12 +1145,12 @@ export default function DoctorDashboard() {
                   value={prescription}
                   onChange={(e) => setPrescription(e.target.value)}
                   placeholder="1. Tab Paracetamol 500mg TDS&#10;2. Cough Syrup 10ml BD"
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors font-mono text-xs"
+                  className="w-full px-3.5 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] transition-colors font-mono text-xs"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                   Clinical Observations &amp; Follow-up Notes
                 </label>
                 <textarea
@@ -1158,19 +1158,19 @@ export default function DoctorDashboard() {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Review after 5 days if fever persists. Advised hydration."
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] transition-colors"
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
-                <div className="hidden sm:flex items-center gap-2 text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-[#E0E7E5] dark:border-[#21333A]">
+                <div className="hidden sm:flex items-center gap-2 text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] rounded text-[10px] font-mono shadow-2xs">Esc</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] rounded text-[10px] font-mono shadow-2xs">Esc</kbd>
                     <span>Cancel</span>
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#2F3B2F] rounded text-[10px] font-mono shadow-2xs">Ctrl + Enter</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] rounded text-[10px] font-mono shadow-2xs">Ctrl + Enter</kbd>
                     <span>Complete</span>
                   </span>
                 </div>
@@ -1179,14 +1179,14 @@ export default function DoctorDashboard() {
                   <button
                     type="button"
                     onClick={() => setSelectedAppointment(null)}
-                    className="flex-1 sm:flex-none px-4 py-2 text-xs font-medium text-[#6B6B63] hover:bg-[#FAF7F2] dark:text-[#C4CFC3] dark:hover:bg-[#242C24] border border-[#D8CEB3] dark:border-[#2F3B2F] rounded-xl transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-none px-4 py-2 text-xs font-medium text-[#5A7178] hover:bg-[#F4F7F6] dark:text-[#9DB4BA] dark:hover:bg-[#19272D] border border-[#CFDAD6] dark:border-[#21333A] rounded-xl transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 sm:flex-none px-5 py-2 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-semibold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
+                    className="flex-1 sm:flex-none px-5 py-2 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-semibold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
                   >
                     {loading ? 'Saving Notes...' : 'Complete Consultation & Save Notes'}
                   </button>

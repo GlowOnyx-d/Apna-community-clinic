@@ -53,8 +53,8 @@ export default function ConfirmModal({
   const typeConfig = {
     logout: {
       Icon: LogOut,
-      iconBg: 'bg-[#A85222]/10 dark:bg-[#E58A54]/20 text-[#A85222] dark:text-[#E58A54] border border-[#A85222]/20',
-      confirmBtn: 'bg-[#A85222] hover:bg-[#91451C] dark:bg-[#E58A54] dark:hover:bg-[#d97c45] text-white dark:text-[#151915]'
+      iconBg: 'bg-[#EA580C]/10 dark:bg-[#FB923C]/20 text-[#EA580C] dark:text-[#FB923C] border border-[#EA580C]/20',
+      confirmBtn: 'bg-[#EA580C] hover:bg-[#C2410C] dark:bg-[#FB923C] dark:hover:bg-[#d97c45] text-white dark:text-[#0B1114]'
     },
     danger: {
       Icon: AlertCircle,
@@ -68,8 +68,8 @@ export default function ConfirmModal({
     },
     info: {
       Icon: Info,
-      iconBg: 'bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] border border-[#2D6A4F]/20',
-      confirmBtn: 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-white'
+      iconBg: 'bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border border-[#0F766E]/20',
+      confirmBtn: 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-white'
     }
   };
 
@@ -85,14 +85,14 @@ export default function ConfirmModal({
       aria-labelledby="confirm-modal-title"
     >
       <div
-        className="bg-white dark:bg-[#1C221C] rounded-3xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-7 sm:p-8 max-w-md w-full text-center relative animate-in zoom-in-95 duration-200 my-auto"
+        className="bg-white dark:bg-[#121C21] rounded-3xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl p-7 sm:p-8 max-w-md w-full text-center relative animate-in zoom-in-95 duration-200 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close "X" button in top-right */}
         {!loading && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-1.5 rounded-xl text-[#8E8E84] hover:text-[#22291F] dark:text-[#94A493] dark:hover:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#242C24] transition-colors cursor-pointer"
+            className="absolute top-4 right-4 p-1.5 rounded-xl text-[#758D94] hover:text-[#132226] dark:text-[#79949B] dark:hover:text-[#F4F7F6] hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] transition-colors cursor-pointer"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -107,23 +107,23 @@ export default function ConfirmModal({
         {/* Title with Proper Breathing Padding */}
         <h3
           id="confirm-modal-title"
-          className="text-xl sm:text-2xl font-black text-[#22291F] dark:text-[#FAF7F2] font-heading tracking-tight mb-2.5 px-2"
+          className="text-xl sm:text-2xl font-black text-[#132226] dark:text-[#F4F7F6] font-heading tracking-tight mb-2.5 px-2"
         >
           {title}
         </h3>
 
         {/* Message Body with Comfortable Line Height and Margin */}
-        <p className="text-sm text-[#52584E] dark:text-[#C4CFC3] leading-relaxed max-w-sm mx-auto mb-7 px-1">
+        <p className="text-sm text-[#455A60] dark:text-[#9DB4BA] leading-relaxed max-w-sm mx-auto mb-7 px-1">
           {message}
         </p>
 
         {/* Two-Button Action Cluster with Balanced Spacing */}
-        <div className="grid grid-cols-2 gap-3.5 pt-2 border-t border-[#E6DFC6]/70 dark:border-[#2F3B2F]">
+        <div className="grid grid-cols-2 gap-3.5 pt-2 border-t border-[#E0E7E5]/70 dark:border-[#21333A]">
           <button
             type="button"
             disabled={loading}
             onClick={onClose}
-            className="w-full py-3 px-4 rounded-xl border border-[#D8CEB3] dark:border-[#445644] text-[#52584E] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] bg-[#FAF7F2] dark:bg-[#242C24] hover:bg-[#E6DFC6]/50 text-xs sm:text-sm font-semibold transition-all cursor-pointer disabled:opacity-50"
+            className="w-full py-3 px-4 rounded-xl border border-[#CFDAD6] dark:border-[#2C444E] text-[#455A60] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/50 text-xs sm:text-sm font-semibold transition-all cursor-pointer disabled:opacity-50"
           >
             {cancelText}
           </button>

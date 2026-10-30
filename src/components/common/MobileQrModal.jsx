@@ -63,22 +63,22 @@ export default function MobileQrModal({ isOpen, onClose }) {
       onClick={onClose}
     >
       <div 
-        className="bg-white dark:bg-[#1C221C] rounded-3xl max-w-sm w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-center relative"
+        className="bg-white dark:bg-[#121C21] rounded-3xl max-w-sm w-full border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-center relative"
         onClick={(e) => e.stopPropagation()} // Prevent click inside from closing
       >
         {/* Top Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114]">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] flex items-center justify-center shadow-xs">
+            <div className="w-7 h-7 rounded-lg bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] flex items-center justify-center shadow-xs">
               <HeartHandshake className="w-4 h-4" />
             </div>
-            <h3 className="font-bold text-sm text-[#22291F] dark:text-[#FAF7F2] font-heading">
+            <h3 className="font-bold text-sm text-[#132226] dark:text-[#F4F7F6] font-heading">
               Open on Smartphone
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-xl hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors cursor-pointer"
+            className="p-1.5 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-xl hover:bg-[#E0E7E5]/50 dark:hover:bg-[#19272D] transition-colors cursor-pointer"
             title="Close (or press Esc)"
             aria-label="Close"
           >
@@ -89,18 +89,18 @@ export default function MobileQrModal({ isOpen, onClose }) {
         {/* Body Content */}
         <div className="p-6 space-y-3.5">
           <div className="space-y-1">
-            <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">
+            <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed">
               Connect your phone to the <strong>same Wi-Fi network</strong> and point your camera at this QR code.
             </p>
           </div>
 
           {/* Crisp QR Code Container */}
           <div className="flex justify-center my-1">
-            <div className="p-4 bg-white rounded-2xl border-2 border-dashed border-[#2D6A4F]/30 shadow-md inline-block">
+            <div className="p-4 bg-white rounded-2xl border-2 border-dashed border-[#0F766E]/30 shadow-md inline-block">
               <QRCodeImage 
                 value={mobileUrl} 
                 size={160} 
-                darkColor="#1A1D19" 
+                darkColor="#0B1114" 
                 lightColor="#FFFFFF"
                 alt="Clinic Mobile Portal QR Code"
               />
@@ -108,14 +108,14 @@ export default function MobileQrModal({ isOpen, onClose }) {
           </div>
 
           {/* Wi-Fi Indicator Pill */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#357A5B]/20 dark:text-[#52B788] text-[11px] font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#0D9488]/20 dark:text-[#2DD4BF] text-[11px] font-bold">
             <Wifi className="w-3.5 h-3.5" />
             <span>Wi-Fi LAN: {customIp}:5173</span>
           </div>
 
           {/* Copy Link Bar */}
-          <div className="p-2.5 bg-[#FAF7F2] dark:bg-[#151915] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between gap-2 text-xs">
-            <span className="text-[#6B6B63] dark:text-[#C4CFC3] font-mono truncate text-[11px] select-all pl-1">
+          <div className="p-2.5 bg-[#F4F7F6] dark:bg-[#0B1114] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between gap-2 text-xs">
+            <span className="text-[#5A7178] dark:text-[#9DB4BA] font-mono truncate text-[11px] select-all pl-1">
               {mobileUrl}
             </span>
             <button
@@ -123,7 +123,7 @@ export default function MobileQrModal({ isOpen, onClose }) {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs ${
                 copied 
                   ? 'bg-emerald-600 text-white' 
-                  : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-white'
+                  : 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-white'
               }`}
               title="Copy mobile URL to clipboard"
             >
@@ -138,15 +138,15 @@ export default function MobileQrModal({ isOpen, onClose }) {
               <button
                 type="button"
                 onClick={() => setShowIpConfig(!showIpConfig)}
-                className="text-[#6B6B63] dark:text-[#C4CFC3] hover:underline cursor-pointer inline-flex items-center gap-1"
+                className="text-[#5A7178] dark:text-[#9DB4BA] hover:underline cursor-pointer inline-flex items-center gap-1"
               >
                 <Settings2 className="w-3 h-3" />
                 <span>{showIpConfig ? 'Hide IP settings' : 'Different Wi-Fi IP?'}</span>
               </button>
 
               {showIpConfig && (
-                <div className="mt-2 p-2 bg-[#FAF7F2] dark:bg-[#151915] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5 text-left">
-                  <label className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3] block">
+                <div className="mt-2 p-2 bg-[#F4F7F6] dark:bg-[#0B1114] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] space-y-1.5 text-left">
+                  <label className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA] block">
                     Enter your computer's Wi-Fi IPv4:
                   </label>
                   <div className="flex gap-2">
@@ -155,12 +155,12 @@ export default function MobileQrModal({ isOpen, onClose }) {
                       value={customIp}
                       onChange={(e) => setCustomIp(e.target.value.trim())}
                       placeholder="e.g. 192.168.1.6"
-                      className="flex-1 px-2.5 py-1 text-xs border rounded-lg bg-white dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#445644] font-mono text-[#22291F] dark:text-[#FAF7F2]"
+                      className="flex-1 px-2.5 py-1 text-xs border rounded-lg bg-white dark:bg-[#19272D] border-[#E0E7E5] dark:border-[#2C444E] font-mono text-[#132226] dark:text-[#F4F7F6]"
                     />
                     <button
                       type="button"
                       onClick={() => setCustomIp('192.168.1.6')}
-                      className="px-2 py-1 text-[10px] bg-white dark:bg-[#242C24] border border-[#E6DFC6] dark:border-[#445644] rounded-lg hover:bg-gray-100 dark:hover:bg-[#1C221C] text-xs font-semibold cursor-pointer text-[#22291F] dark:text-[#FAF7F2]"
+                      className="px-2 py-1 text-[10px] bg-white dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#2C444E] rounded-lg hover:bg-gray-100 dark:hover:bg-[#121C21] text-xs font-semibold cursor-pointer text-[#132226] dark:text-[#F4F7F6]"
                     >
                       Reset
                     </button>
@@ -172,10 +172,10 @@ export default function MobileQrModal({ isOpen, onClose }) {
         </div>
 
         {/* Bottom Action Footer */}
-        <div className="p-4 border-t border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915] flex justify-end">
+        <div className="p-4 border-t border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114] flex justify-end">
           <button
             onClick={onClose}
-            className="w-full py-2.5 px-4 rounded-xl bg-white dark:bg-[#242C24] hover:bg-[#F0EBE1] dark:hover:bg-[#1C221C] text-[#22291F] dark:text-[#FAF7F2] border border-[#D8CEB3] dark:border-[#445644] text-xs font-bold transition-colors cursor-pointer"
+            className="w-full py-2.5 px-4 rounded-xl bg-white dark:bg-[#19272D] hover:bg-[#E8F0EE] dark:hover:bg-[#121C21] text-[#132226] dark:text-[#F4F7F6] border border-[#CFDAD6] dark:border-[#2C444E] text-xs font-bold transition-colors cursor-pointer"
           >
             Done / Close
           </button>

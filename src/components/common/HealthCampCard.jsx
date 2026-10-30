@@ -23,9 +23,9 @@ export const getSdgColorConfig = (tags) => {
   
   if (str.includes('sdg 5') || str.includes('gender')) {
     return {
-      border: 'border-l-[#C97B4A] dark:border-l-[#E58A54]',
-      badge: 'bg-[#C97B4A]/12 text-[#B35F2B] dark:bg-[#E58A54]/20 dark:text-[#E58A54] border-[#C97B4A]/30',
-      iconBg: 'bg-[#C97B4A]/12 text-[#B35F2B] dark:bg-[#E58A54]/20 dark:text-[#E58A54]',
+      border: 'border-l-[#F97316] dark:border-l-[#FB923C]',
+      badge: 'bg-[#F97316]/12 text-[#EA580C] dark:bg-[#FB923C]/20 dark:text-[#FB923C] border-[#F97316]/30',
+      iconBg: 'bg-[#F97316]/12 text-[#EA580C] dark:bg-[#FB923C]/20 dark:text-[#FB923C]',
       name: 'SDG 5: Gender Equality'
     };
   }
@@ -55,9 +55,9 @@ export const getSdgColorConfig = (tags) => {
   }
   // Default: SDG 3 (Good Health & Well-being)
   return {
-    border: 'border-l-[#2D6A4F] dark:border-l-[#52B788]',
-    badge: 'bg-[#2D6A4F]/12 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] border-[#2D6A4F]/25 dark:border-[#52B788]/30',
-    iconBg: 'bg-[#2D6A4F]/12 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788]',
+    border: 'border-l-[#0F766E] dark:border-l-[#2DD4BF]',
+    badge: 'bg-[#0F766E]/12 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border-[#0F766E]/25 dark:border-[#2DD4BF]/30',
+    iconBg: 'bg-[#0F766E]/12 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF]',
     name: 'SDG 3: Good Health'
   };
 };
@@ -91,7 +91,7 @@ export const getCampDateStatus = (dateStr) => {
     return {
       status: 'upcoming',
       badgeText: 'Upcoming',
-      badgeStyle: 'bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] border-[#2D6A4F]/25 dark:border-[#52B788]/30'
+      badgeStyle: 'bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border-[#0F766E]/25 dark:border-[#2DD4BF]/30'
     };
   }
 
@@ -109,7 +109,7 @@ export const getCampDateStatus = (dateStr) => {
     return {
       status: 'past',
       badgeText: 'Past',
-      badgeStyle: 'bg-[#E6DFC6]/50 text-[#8E8E84] dark:bg-[#2F3B2F] dark:text-[#94A493] border-[#D8CEB3] dark:border-[#445644]'
+      badgeStyle: 'bg-[#E0E7E5]/50 text-[#758D94] dark:bg-[#21333A] dark:text-[#79949B] border-[#CFDAD6] dark:border-[#2C444E]'
     };
   }
 
@@ -132,7 +132,7 @@ export const getCampDateStatus = (dateStr) => {
   return {
     status: 'upcoming',
     badgeText: 'Upcoming',
-    badgeStyle: 'bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] border-[#2D6A4F]/25 dark:border-[#52B788]/30'
+    badgeStyle: 'bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border-[#0F766E]/25 dark:border-[#2DD4BF]/30'
   };
 };
 
@@ -152,7 +152,7 @@ export default function HealthCampCard({
 
   return (
     <div
-      className={`bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] border-l-[5px] ${sdgConfig.border} p-5 sm:p-6 shadow-sm flex flex-col justify-between hover:border-[#2D6A4F]/40 dark:hover:border-[#52B788]/40 transition-all hover:shadow-md relative overflow-hidden`}
+      className={`bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] border-l-[5px] ${sdgConfig.border} p-5 sm:p-6 shadow-sm flex flex-col justify-between hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40 transition-all hover:shadow-md relative overflow-hidden`}
     >
       <div className="space-y-4">
         {/* Top Badges Row: SDG Tags & Status Indicator */}
@@ -182,13 +182,13 @@ export default function HealthCampCard({
 
             {/* Admin Management Actions: Edit & Delete */}
             {isAdmin && (
-              <div className="flex items-center gap-1 ml-1 pl-2 border-l border-[#E6DFC6] dark:border-[#2F3B2F]">
+              <div className="flex items-center gap-1 ml-1 pl-2 border-l border-[#E0E7E5] dark:border-[#21333A]">
                 {onEdit && (
                   <button
                     type="button"
                     onClick={() => onEdit(ann)}
                     title="Edit Camp Details"
-                    className="p-1.5 text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#2D6A4F] dark:hover:text-[#52B788] hover:bg-[#2D6A4F]/10 dark:hover:bg-[#357A5B]/20 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/10 dark:hover:bg-[#0D9488]/20 rounded-lg transition-colors cursor-pointer"
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
@@ -198,7 +198,7 @@ export default function HealthCampCard({
                     type="button"
                     onClick={() => onDelete(ann)}
                     title="Delete Camp Announcement"
-                    className="p-1.5 text-[#6B6B63] dark:text-[#C4CFC3] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 text-[#5A7178] dark:text-[#9DB4BA] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -214,27 +214,27 @@ export default function HealthCampCard({
             <CampIcon className="w-5 h-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-base sm:text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading leading-snug">
+            <h3 className="text-base sm:text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading leading-snug">
               {ann.title}
             </h3>
             {ann.organizer && (
-              <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493] mt-0.5">
-                Organized by: <span className="font-medium text-[#6B6B63] dark:text-[#C4CFC3]">{ann.organizer}</span>
+              <p className="text-[11px] text-[#758D94] dark:text-[#79949B] mt-0.5">
+                Organized by: <span className="font-medium text-[#5A7178] dark:text-[#9DB4BA]">{ann.organizer}</span>
               </p>
             )}
           </div>
         </div>
 
         {/* Camp Description */}
-        <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed line-clamp-3">
+        <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed line-clamp-3">
           {ann.description}
         </p>
 
         {/* Event Schedule & Location Box */}
-        <div className="p-3 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-2 text-xs">
+        <div className="p-3 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] space-y-2 text-xs">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-[#22291F] dark:text-[#FAF7F2]">
-              <Calendar className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+            <div className="flex items-center gap-2 text-[#132226] dark:text-[#F4F7F6]">
+              <Calendar className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
               <span className="font-semibold">{ann.date}</span>
             </div>
             {dateStatus.status === 'today' && (
@@ -244,14 +244,14 @@ export default function HealthCampCard({
             )}
           </div>
 
-          <div className="flex items-center gap-2 text-[#6B6B63] dark:text-[#C4CFC3]">
-            <MapPin className="w-3.5 h-3.5 text-[#C97B4A] dark:text-[#E58A54] shrink-0" />
+          <div className="flex items-center gap-2 text-[#5A7178] dark:text-[#9DB4BA]">
+            <MapPin className="w-3.5 h-3.5 text-[#F97316] dark:text-[#FB923C] shrink-0" />
             <span className="truncate">{ann.location}</span>
           </div>
 
           {ann.targetGroup && (
-            <div className="flex items-center gap-2 text-[#6B6B63] dark:text-[#C4CFC3]">
-              <Users className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788] shrink-0" />
+            <div className="flex items-center gap-2 text-[#5A7178] dark:text-[#9DB4BA]">
+              <Users className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" />
               <span className="truncate">Target: {ann.targetGroup}</span>
             </div>
           )}
@@ -259,17 +259,17 @@ export default function HealthCampCard({
       </div>
 
       {/* Card Footer: Registered Count (Shared by ALL roles) + Role Action */}
-      <div className="pt-4 mt-4 border-t border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between gap-3">
+      <div className="pt-4 mt-4 border-t border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between gap-3">
         {/* RSVP / Registered Count with People Icon (Requirement 2) */}
-        <div className="flex items-center gap-1.5 text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
-          <div className="w-6 h-6 rounded-lg bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 flex items-center justify-center text-[#2D6A4F] dark:text-[#52B788] shrink-0">
+        <div className="flex items-center gap-1.5 text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+          <div className="w-6 h-6 rounded-lg bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 flex items-center justify-center text-[#0F766E] dark:text-[#2DD4BF] shrink-0">
             <Users className="w-3.5 h-3.5" />
           </div>
           <div>
-            <span className="text-sm font-black font-heading text-[#22291F] dark:text-[#FAF7F2]">
+            <span className="text-sm font-black font-heading text-[#132226] dark:text-[#F4F7F6]">
               {ann.registeredCount || 0}
             </span>
-            <span className="text-[11px] font-medium text-[#8E8E84] dark:text-[#94A493] ml-1">
+            <span className="text-[11px] font-medium text-[#758D94] dark:text-[#79949B] ml-1">
               registered
             </span>
           </div>
@@ -283,10 +283,10 @@ export default function HealthCampCard({
             onClick={() => onRsvp(ann.id)}
             className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
               isPast
-                ? 'bg-[#E6DFC6]/50 dark:bg-[#2F3B2F]/60 text-[#8E8E84] dark:text-[#94A493] cursor-not-allowed'
+                ? 'bg-[#E0E7E5]/50 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] cursor-not-allowed'
                 : isRsvpd
-                  ? 'bg-[#2D6A4F]/15 text-[#2D6A4F] dark:text-[#52B788] border border-[#2D6A4F]/30 dark:border-[#52B788]/30 hover:bg-[#2D6A4F]/25'
-                  : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
+                  ? 'bg-[#0F766E]/15 text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 hover:bg-[#0F766E]/25'
+                  : 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6]'
             }`}
           >
             {isPast ? (
@@ -296,7 +296,7 @@ export default function HealthCampCard({
               </>
             ) : isRsvpd ? (
               <>
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
                 <span>Registered ✓</span>
               </>
             ) : (
@@ -312,7 +312,7 @@ export default function HealthCampCard({
               <button
                 type="button"
                 onClick={() => onEdit(ann)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#2D6A4F]/10 hover:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-bold transition-colors cursor-pointer border border-[#2D6A4F]/20"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0F766E]/10 hover:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-bold transition-colors cursor-pointer border border-[#0F766E]/20"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 <span>Edit Camp</span>
@@ -320,7 +320,7 @@ export default function HealthCampCard({
             )}
           </div>
         ) : (
-          <span className="text-[11px] font-semibold text-[#2D6A4F] dark:text-[#52B788] bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 px-2.5 py-1 rounded-lg">
+          <span className="text-[11px] font-semibold text-[#0F766E] dark:text-[#2DD4BF] bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 px-2.5 py-1 rounded-lg">
             Community Drive
           </span>
         )}

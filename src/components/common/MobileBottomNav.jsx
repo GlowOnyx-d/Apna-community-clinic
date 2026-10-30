@@ -45,7 +45,7 @@ export default function MobileBottomNav() {
   return (
     <nav 
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#131713]/95 backdrop-blur-xl border-t border-[#E6DFC6] dark:border-[#2F3B2F] shadow-[0_-8px_25px_rgba(0,0,0,0.06)] px-3 py-1.5 transition-colors duration-200"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#0B1114]/95 backdrop-blur-xl border-t border-[#E0E7E5] dark:border-[#21333A] shadow-[0_-8px_25px_rgba(0,0,0,0.06)] px-3 py-1.5 transition-colors duration-200"
     >
       <div className="max-w-md mx-auto flex items-center justify-around">
         
@@ -56,8 +56,8 @@ export default function MobileBottomNav() {
           className={({ isActive }) => `
             flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all relative
             ${isActive 
-              ? 'text-[#2D6A4F] dark:text-[#52B788] font-bold' 
-              : 'text-[#6B6B63] dark:text-[#94A493] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+              ? 'text-[#0F766E] dark:text-[#2DD4BF] font-bold' 
+              : 'text-[#5A7178] dark:text-[#79949B] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
             }
           `}
         >
@@ -66,7 +66,7 @@ export default function MobileBottomNav() {
               <div className="relative">
                 <Home className="w-5 h-5 transition-transform duration-200" />
                 {isActive && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#2D6A4F] dark:bg-[#52B788]" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF]" />
                 )}
               </div>
               <span className="text-[10px] mt-1 font-medium">{t('home', 'Home')}</span>
@@ -80,8 +80,8 @@ export default function MobileBottomNav() {
           className={({ isActive }) => `
             flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all relative
             ${isActive 
-              ? 'text-[#2D6A4F] dark:text-[#52B788] font-bold' 
-              : 'text-[#6B6B63] dark:text-[#94A493] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+              ? 'text-[#0F766E] dark:text-[#2DD4BF] font-bold' 
+              : 'text-[#5A7178] dark:text-[#79949B] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
             }
           `}
         >
@@ -90,10 +90,10 @@ export default function MobileBottomNav() {
               <div className="relative">
                 <Ticket className="w-5 h-5 transition-transform duration-200" />
                 {hasActiveToken && (
-                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#C97B4A] dark:bg-[#E58A54] ring-2 ring-white dark:ring-[#131713] animate-pulse" />
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#F97316] dark:bg-[#FB923C] ring-2 ring-white dark:ring-[#0B1114] animate-pulse" />
                 )}
                 {isActive && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#2D6A4F] dark:bg-[#52B788]" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF]" />
                 )}
               </div>
               <span className="text-[10px] mt-1 font-medium">
@@ -109,8 +109,8 @@ export default function MobileBottomNav() {
           className={({ isActive }) => `
             flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all relative
             ${isActive && location.hash === '#specialists'
-              ? 'text-[#2D6A4F] dark:text-[#52B788] font-bold' 
-              : 'text-[#6B6B63] dark:text-[#94A493] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+              ? 'text-[#0F766E] dark:text-[#2DD4BF] font-bold' 
+              : 'text-[#5A7178] dark:text-[#79949B] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
             }
           `}
         >
@@ -123,7 +123,7 @@ export default function MobileBottomNav() {
         {/* 4. OPD TV Live Kiosk */}
         <NavLink
           to="/display"
-          className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all text-[#6B6B63] dark:text-[#94A493] hover:text-[#2D6A4F] dark:hover:text-[#52B788]"
+          className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all text-[#5A7178] dark:text-[#79949B] hover:text-[#0F766E] dark:hover:text-[#2DD4BF]"
         >
           <div className="relative">
             <Tv className="w-5 h-5 transition-transform duration-200" />
@@ -137,8 +137,8 @@ export default function MobileBottomNav() {
           className={({ isActive }) => `
             flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all relative
             ${isActive 
-              ? 'text-[#2D6A4F] dark:text-[#52B788] font-bold' 
-              : 'text-[#6B6B63] dark:text-[#94A493] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+              ? 'text-[#0F766E] dark:text-[#2DD4BF] font-bold' 
+              : 'text-[#5A7178] dark:text-[#79949B] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
             }
           `}
         >
@@ -151,7 +151,7 @@ export default function MobileBottomNav() {
                   <User className="w-5 h-5" />
                 )}
                 {isActive && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#2D6A4F] dark:bg-[#52B788]" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF]" />
                 )}
               </div>
               <span className="text-[10px] mt-1 font-medium truncate max-w-[50px]">

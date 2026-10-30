@@ -81,19 +81,19 @@ export default function PrescriptionModal({ appointment, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs animate-in fade-in overflow-y-auto">
-      <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl max-w-3xl w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl my-auto">
+      <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-2xl max-w-3xl w-full border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl my-auto">
 
         {/* Modal Top Control Bar (Screen only) */}
-        <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#151915]">
+        <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#E0E7E5] dark:border-[#21333A] bg-white dark:bg-[#0B1114]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center">
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-sm font-heading">
+              <h3 className="font-bold text-[#132226] dark:text-[#F4F7F6] text-sm font-heading">
                 Outpatient Medical Prescription &amp; Clinical Summary
               </h3>
-              <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">
+              <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">
                 Token #{appointment.tokenNumber || 'TK'} • Dr. {appointment.doctorName?.replace(/^Dr\.\s*/i, '')}
               </p>
             </div>
@@ -102,16 +102,16 @@ export default function PrescriptionModal({ appointment, onClose }) {
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#D8CEB3] dark:border-[#2F3B2F] bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#151915] text-xs font-semibold text-[#22291F] dark:text-[#FAF7F2] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#CFDAD6] dark:border-[#21333A] bg-white dark:bg-[#19272D] hover:bg-[#F4F7F6] dark:hover:bg-[#0B1114] text-xs font-semibold text-[#132226] dark:text-[#F4F7F6] transition-colors cursor-pointer"
               title="Print Prescription"
             >
-              <Printer className="w-3.5 h-3.5 text-[#6B6B63] dark:text-[#C4CFC3]" />
+              <Printer className="w-3.5 h-3.5 text-[#5A7178] dark:text-[#9DB4BA]" />
               <span className="hidden sm:inline">Print</span>
             </button>
             <button
               onClick={handleDownloadPDF}
               disabled={downloading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2D6A4F] hover:bg-[#245740] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-bold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
               title="Save as A4 PDF"
             >
               <Download className="w-3.5 h-3.5" />
@@ -119,7 +119,7 @@ export default function PrescriptionModal({ appointment, onClose }) {
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-lg hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors ml-1 cursor-pointer"
+              className="p-1.5 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-lg hover:bg-[#E0E7E5]/50 dark:hover:bg-[#19272D] transition-colors ml-1 cursor-pointer"
               title="Close modal"
             >
               <X className="w-5 h-5" />
@@ -128,26 +128,26 @@ export default function PrescriptionModal({ appointment, onClose }) {
         </div>
 
         {/* Scrollable Letterhead Paper Preview */}
-        <div className="p-4 sm:p-6 overflow-y-auto bg-[#ECE6D9] dark:bg-[#151915] flex justify-center">
+        <div className="p-4 sm:p-6 overflow-y-auto bg-[#ECE6D9] dark:bg-[#0B1114] flex justify-center">
 
           {/* Printable Prescription Canvas Container (Strict White Medical Stationery) */}
           <div
             ref={prescriptionRef}
-            className="w-full max-w-[650px] bg-white text-[#1A1D19] rounded-xl shadow-lg border border-[#E0D8C3] p-6 sm:p-8 relative selection:bg-[#2D6A4F] selection:text-white"
+            className="w-full max-w-[650px] bg-white text-[#0B1114] rounded-xl shadow-lg border border-[#E0D8C3] p-6 sm:p-8 relative selection:bg-[#0F766E] selection:text-white"
             style={{ minHeight: '800px' }}
           >
             {/* Top Letterhead Header */}
-            <div className="border-b-2 border-[#2D6A4F] pb-5">
+            <div className="border-b-2 border-[#0F766E] pb-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-[#2D6A4F] text-white flex items-center justify-center shadow-xs">
+                  <div className="w-12 h-12 rounded-xl bg-[#0F766E] text-white flex items-center justify-center shadow-xs">
                     <HeartHandshake className="w-7 h-7" />
                   </div>
                   <div>
-                    <h1 className="text-xl sm:text-2xl font-black font-heading tracking-tight text-[#1A1D19]">
+                    <h1 className="text-xl sm:text-2xl font-black font-heading tracking-tight text-[#0B1114]">
                       Apna Community Health Clinic
                     </h1>
-                    <p className="text-[11px] font-semibold text-[#2D6A4F] uppercase tracking-wider">
+                    <p className="text-[11px] font-semibold text-[#0F766E] uppercase tracking-wider">
                       Universal Primary Healthcare &amp; Wellness Initiative
                     </p>
                     <p className="text-[10px] text-[#6B7280]">
@@ -157,34 +157,34 @@ export default function PrescriptionModal({ appointment, onClose }) {
                 </div>
 
                 <div className="text-right text-[10px] text-[#4B5563] hidden sm:block leading-tight">
-                  <p className="font-bold text-[#1A1D19]">Community Health Center Complex</p>
+                  <p className="font-bold text-[#0B1114]">Community Health Center Complex</p>
                   <p>Ward 4, Health City</p>
                   <p>Phone: +91 11 2345 6789</p>
-                  <p className="text-[#2D6A4F] font-semibold">support@Apnaclinic.org</p>
+                  <p className="text-[#0F766E] font-semibold">support@Apnaclinic.org</p>
                 </div>
               </div>
             </div>
 
             {/* Doctor & Patient Info Strip */}
-            <div className="my-5 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#FAF7F2] p-4 rounded-xl border border-[#E6DFC6] text-xs">
+            <div className="my-5 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#F4F7F6] p-4 rounded-xl border border-[#E0E7E5] text-xs">
               {/* Doctor Details */}
-              <div className="space-y-1 sm:border-r sm:border-[#E6DFC6] sm:pr-4">
+              <div className="space-y-1 sm:border-r sm:border-[#E0E7E5] sm:pr-4">
                 <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider flex items-center gap-1">
-                  <Stethoscope className="w-3 h-3 text-[#2D6A4F]" /> Attending Specialist
+                  <Stethoscope className="w-3 h-3 text-[#0F766E]" /> Attending Specialist
                 </span>
-                <p className="font-bold text-sm text-[#1A1D19]">{appointment.doctorName}</p>
-                <p className="text-[11px] font-medium text-[#2D6A4F]">{appointment.specialization}</p>
+                <p className="font-bold text-sm text-[#0B1114]">{appointment.doctorName}</p>
+                <p className="text-[11px] font-medium text-[#0F766E]">{appointment.specialization}</p>
                 <p className="text-[10px] text-[#6B7280]">OPD Consultation Room • Active License</p>
               </div>
 
               {/* Patient Details */}
               <div className="space-y-1">
                 <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider flex items-center gap-1">
-                  <User className="w-3 h-3 text-[#2D6A4F]" /> Patient Profile
+                  <User className="w-3 h-3 text-[#0F766E]" /> Patient Profile
                 </span>
                 <div className="flex items-center justify-between">
-                  <p className="font-bold text-sm text-[#1A1D19]">{appointment.patientName}</p>
-                  <span className="px-2 py-0.5 rounded bg-[#2D6A4F] text-white font-mono font-bold text-xs">
+                  <p className="font-bold text-sm text-[#0B1114]">{appointment.patientName}</p>
+                  <span className="px-2 py-0.5 rounded bg-[#0F766E] text-white font-mono font-bold text-xs">
                     {appointment.tokenNumber || 'TK-01'}
                   </span>
                 </div>
@@ -240,8 +240,8 @@ export default function PrescriptionModal({ appointment, onClose }) {
             {/* Rx Symbol & Medication Advice */}
             <div className="my-6 border-t border-[#E5E7EB] pt-4">
               <div className="flex items-center gap-2 mb-3">
-                <span className="font-serif italic font-black text-2xl text-[#2D6A4F]">℞</span>
-                <h3 className="font-bold text-sm text-[#1A1D19] uppercase tracking-wide">
+                <span className="font-serif italic font-black text-2xl text-[#0F766E]">℞</span>
+                <h3 className="font-bold text-sm text-[#0B1114] uppercase tracking-wide">
                   Prescription &amp; Dosage Instructions
                 </h3>
               </div>
@@ -251,9 +251,9 @@ export default function PrescriptionModal({ appointment, onClose }) {
                   {prescriptionLines.map((line, idx) => (
                     <div
                       key={idx}
-                      className="p-3 bg-[#FAF7F2] rounded-xl border border-[#E6DFC6] flex items-start gap-3"
+                      className="p-3 bg-[#F4F7F6] rounded-xl border border-[#E0E7E5] flex items-start gap-3"
                     >
-                      <div className="w-5 h-5 rounded-full bg-[#2D6A4F]/15 text-[#2D6A4F] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-[#0F766E]/15 text-[#0F766E] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                         {idx + 1}
                       </div>
                       <div className="text-xs text-[#1F2937] font-medium leading-relaxed">
@@ -285,12 +285,12 @@ export default function PrescriptionModal({ appointment, onClose }) {
 
               {/* Official Digital Seal */}
               <div className="flex items-center gap-2.5">
-                <div className="w-14 h-14 rounded-full border-2 border-dashed border-[#2D6A4F]/60 flex flex-col items-center justify-center p-1 text-center rotate-[-8deg] bg-emerald-50/40">
-                  <ShieldCheck className="w-4 h-4 text-[#2D6A4F]" />
-                  <span className="text-[8px] font-black uppercase text-[#2D6A4F] leading-tight">
+                <div className="w-14 h-14 rounded-full border-2 border-dashed border-[#0F766E]/60 flex flex-col items-center justify-center p-1 text-center rotate-[-8deg] bg-emerald-50/40">
+                  <ShieldCheck className="w-4 h-4 text-[#0F766E]" />
+                  <span className="text-[8px] font-black uppercase text-[#0F766E] leading-tight">
                     ACHC VERIFIED
                   </span>
-                  <span className="text-[7px] text-[#2D6A4F] font-mono">
+                  <span className="text-[7px] text-[#0F766E] font-mono">
                     VALID
                   </span>
                 </div>
@@ -307,22 +307,22 @@ export default function PrescriptionModal({ appointment, onClose }) {
                   <QRCodeImage 
                     value={`AROGYA-RX|${appointment.id}|TOKEN:${appointment.tokenNumber || 'TK'}|PATIENT:${appointment.patientName}|DOCTOR:${appointment.doctorName}|DATE:${appointment.date}`} 
                     size={52} 
-                    darkColor="#1A1D19" 
+                    darkColor="#0B1114" 
                     alt="Rx Verification QR Code"
                   />
                 </div>
                 <span className="text-[8px] text-gray-500 font-mono mt-0.5 flex items-center gap-0.5">
-                  <QrCode className="w-2.5 h-2.5 text-[#2D6A4F]" /> Scan to Verify Rx
+                  <QrCode className="w-2.5 h-2.5 text-[#0F766E]" /> Scan to Verify Rx
                 </span>
               </div>
 
               {/* Doctor's Signature Block */}
               <div className="text-right space-y-1">
-                <div className="font-serif italic text-lg text-[#1A1D19] pr-2 tracking-wide font-bold">
+                <div className="font-serif italic text-lg text-[#0B1114] pr-2 tracking-wide font-bold">
                   {appointment.doctorName}
                 </div>
-                <div className="w-44 border-b border-[#1A1D19] ml-auto"></div>
-                <p className="text-[10px] font-bold text-[#1A1D19] uppercase">Medical Officer / Specialist Signature</p>
+                <div className="w-44 border-b border-[#0B1114] ml-auto"></div>
+                <p className="text-[10px] font-bold text-[#0B1114] uppercase">Medical Officer / Specialist Signature</p>
                 <p className="text-[9px] text-[#6B7280]">License Reg. Validated</p>
               </div>
 

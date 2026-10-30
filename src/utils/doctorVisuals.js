@@ -39,13 +39,13 @@ export const getDoctorFallbackAvatar = (name = 'Doctor') => {
     <circle cx="60" cy="45" r="22" fill="#E2BA99"/>
     <path d="M38 43c0-13 10-23 22-23s22 10 22 23c0 3-1 6-2 7-3-8-10-13-20-13s-17 5-20 13c-1-1-2-4-2-7z" fill="#3D2E28"/>
     <path d="M22 110c2-26 18-38 38-38s36 12 38 38" fill="url(#coatGrad)" stroke="#C8D6CD" stroke-width="1.5"/>
-    <polygon points="60,86 48,72 72,72" fill="#2D6A4F"/>
+    <polygon points="60,86 48,72 72,72" fill="#0F766E"/>
     <polygon points="46,72 60,110 52,110 40,72" fill="#FFFFFF" stroke="#C8D6CD" stroke-width="1"/>
     <polygon points="74,72 60,110 68,110 80,72" fill="#FFFFFF" stroke="#C8D6CD" stroke-width="1"/>
-    <path d="M49 74c0 10 4 16 11 16s11-6 11-16" fill="none" stroke="#2D6A4F" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="60" cy="94" r="4" fill="#52B788" stroke="#2D6A4F" stroke-width="1.5"/>
-    <circle cx="92" cy="28" r="14" fill="#2D6A4F" stroke="#FFFFFF" stroke-width="2"/>
-    <text x="92" y="33" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#FAF7F2" text-anchor="middle">${initial}</text>
+    <path d="M49 74c0 10 4 16 11 16s11-6 11-16" fill="none" stroke="#0F766E" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="60" cy="94" r="4" fill="#2DD4BF" stroke="#0F766E" stroke-width="1.5"/>
+    <circle cx="92" cy="28" r="14" fill="#0F766E" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="92" y="33" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#F4F7F6" text-anchor="middle">${initial}</text>
   </svg>`.replace(/\n\s*/g, '');
 
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
@@ -90,7 +90,7 @@ export const getSpecialtyConfig = (specialization = '') => {
     return {
       key: 'pediatrics',
       label: 'Pediatrics',
-      badgeClass: 'bg-[#C97B4A]/12 text-[#B35F2B] border-[#C97B4A]/30 dark:bg-[#E58A54]/18 dark:text-[#E58A54] dark:border-[#E58A54]/30'
+      badgeClass: 'bg-[#F97316]/12 text-[#EA580C] border-[#F97316]/30 dark:bg-[#FB923C]/18 dark:text-[#FB923C] dark:border-[#FB923C]/30'
     };
   }
 
@@ -114,7 +114,7 @@ export const getSpecialtyConfig = (specialization = '') => {
     return {
       key: 'general',
       label: 'General Medicine',
-      badgeClass: 'bg-[#2D6A4F]/10 text-[#2D6A4F] border-[#2D6A4F]/25 dark:bg-[#52B788]/15 dark:text-[#52B788] dark:border-[#52B788]/30'
+      badgeClass: 'bg-[#0F766E]/10 text-[#0F766E] border-[#0F766E]/25 dark:bg-[#2DD4BF]/15 dark:text-[#2DD4BF] dark:border-[#2DD4BF]/30'
     };
   }
 

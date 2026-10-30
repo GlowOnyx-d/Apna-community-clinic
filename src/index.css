@@ -8,46 +8,46 @@
     --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
 
     /* Warm Humanist Community Care Palette (Light Mode Default) */
-    --bg-canvas: #FAF7F2;
-    --bg-surface: #F0EBE1;
+    --bg-canvas: #F4F7F6;
+    --bg-surface: #E8F0EE;
     --bg-surface-elevated: #FFFFFF;
-    --border-subtle: #E6DFC6;
-    --border-default: #D8CEB3;
+    --border-subtle: #E0E7E5;
+    --border-default: #CFDAD6;
 
-    --text-primary: #22291F;
-    --text-secondary: #52584E;
-    --text-muted: #62685E;
+    --text-primary: #132226;
+    --text-secondary: #455A60;
+    --text-muted: #52676D;
 
-    --color-forest: #2D6A4F;
-    --color-forest-hover: #23543E;
-    --color-forest-light: #408A68;
-    --color-forest-tint: rgba(45, 106, 79, 0.08);
+    --color-forest: #0F766E;
+    --color-forest-hover: #115E59;
+    --color-forest-light: #14B8A6;
+    --color-forest-tint: rgba(15, 118, 110, 0.10);
 
-    --color-terracotta: #A85222;
-    --color-terracotta-hover: #91451C;
-    --color-terracotta-tint: rgba(168, 82, 34, 0.12);
+    --color-terracotta: #EA580C;
+    --color-terracotta-hover: #C2410C;
+    --color-terracotta-tint: rgba(234, 88, 12, 0.12);
   }
 
   :root.dark, .dark {
-    /* Warm Humanist Botanical Nocturne Palette */
-    --bg-canvas: #151915;
-    --bg-surface: #1C221C;
-    --bg-surface-elevated: #242C24;
-    --border-subtle: #2F3B2F;
-    --border-default: #445644;
+    /* Nordic Sea & Coral Nocturne Palette */
+    --bg-canvas: #0B1114;
+    --bg-surface: #121C21;
+    --bg-surface-elevated: #19272D;
+    --border-subtle: #21333A;
+    --border-default: #2C444E;
 
-    --text-primary: #FAF7F2;
-    --text-secondary: #C4CFC3;
-    --text-muted: #94A493;
+    --text-primary: #F0F7F6;
+    --text-secondary: #9DB4BA;
+    --text-muted: #79949B;
 
-    --color-forest: #357A5B;
-    --color-forest-hover: #40916C;
-    --color-forest-light: #52B788;
-    --color-forest-tint: rgba(82, 183, 136, 0.18);
+    --color-forest: #0D9488;
+    --color-forest-hover: #14B8A6;
+    --color-forest-light: #2DD4BF;
+    --color-forest-tint: rgba(45, 212, 191, 0.16);
 
-    --color-terracotta: #E58A54;
-    --color-terracotta-hover: #EE9A68;
-    --color-terracotta-tint: rgba(229, 138, 84, 0.16);
+    --color-terracotta: #FB923C;
+    --color-terracotta-hover: #FDBA74;
+    --color-terracotta-tint: rgba(251, 146, 60, 0.16);
   }
 
   body {
@@ -63,34 +63,34 @@
   }
 }
 
-/* Warm Humanist Glassmorphism Header */
+/* Nordic Frosted Glassmorphism Header */
 .glass-humanist {
-  background: rgba(250, 247, 242, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(244, 247, 246, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .dark .glass-humanist {
-  background: rgba(21, 25, 21, 0.94);
-  border-bottom: 1px solid #2F3B2F;
+  background: rgba(11, 17, 20, 0.92);
+  border-bottom: 1px solid #21333A;
 }
 
 /* Modern Frosted Glass Card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(230, 223, 198, 0.7);
-  box-shadow: 0 10px 30px -5px rgba(34, 41, 31, 0.05);
+  border: 1px solid rgba(224, 231, 229, 0.8);
+  box-shadow: 0 10px 30px -5px rgba(19, 34, 38, 0.05);
 }
 
 .dark .glass-card {
-  background: rgba(28, 34, 28, 0.85);
+  background: rgba(18, 28, 33, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(47, 59, 47, 0.8);
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(33, 51, 58, 0.8);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45);
 }
 
 /* Digital Boarding Pass Ticket Perforated Edge Notches */
@@ -224,11 +224,11 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #2F3B2F;
+  background: #21333A;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #445644;
+  background: #2C444E;
 }
 
 /* Hide scrollbar for Chrome, Safari, Edge, Firefox */

@@ -163,25 +163,25 @@ export default function StaffManagementModal({ isOpen, onClose }) {
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-3xl max-h-[92vh] flex flex-col bg-white dark:bg-[#1C221C] rounded-3xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl overflow-hidden"
+        className="w-full max-w-3xl max-h-[92vh] flex flex-col bg-white dark:bg-[#121C21] rounded-3xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-5 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-gradient-to-r from-[#FAF7F2] to-white dark:from-[#242C24] dark:to-[#1C221C] flex items-center justify-between">
+        <div className="px-6 py-5 border-b border-[#E0E7E5] dark:border-[#21333A] bg-gradient-to-r from-[#F4F7F6] to-white dark:from-[#19272D] dark:to-[#121C21] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center shadow-xs">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+                <h2 className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
                   Staff &amp; Admin Authorization Hub
                 </h2>
-                <span className="px-2 py-0.5 rounded-full bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] text-[10px] font-bold">
                   Restricted Access
                 </span>
               </div>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
                 Manage administrative personnel and issue private credentials without public self-registration.
               </p>
             </div>
@@ -189,14 +189,14 @@ export default function StaffManagementModal({ isOpen, onClose }) {
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-[#6B6B63] hover:text-[#22291F] dark:text-[#94A493] dark:hover:text-[#FAF7F2] hover:bg-[#FAF7F2] dark:hover:bg-[#242C24] transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-[#5A7178] hover:text-[#132226] dark:text-[#79949B] dark:hover:text-[#F4F7F6] hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Security Banner Note */}
-        <div className="px-6 py-2.5 bg-[#2D6A4F]/5 dark:bg-[#52B788]/10 border-b border-[#2D6A4F]/10 dark:border-[#52B788]/20 flex items-center justify-between text-[11px] text-[#2D6A4F] dark:text-[#52B788]">
+        <div className="px-6 py-2.5 bg-[#0F766E]/5 dark:bg-[#2DD4BF]/10 border-b border-[#0F766E]/10 dark:border-[#2DD4BF]/20 flex items-center justify-between text-[11px] text-[#0F766E] dark:text-[#2DD4BF]">
           <div className="flex items-center gap-1.5 font-medium">
             <Key className="w-3.5 h-3.5" />
             <span>Public registration for Admin / Staff is locked. Only clinic administrators can grant accounts here.</span>
@@ -205,14 +205,14 @@ export default function StaffManagementModal({ isOpen, onClose }) {
         </div>
 
         {/* Sub-Navigation Tabs */}
-        <div className="px-6 pt-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between bg-white dark:bg-[#1C221C]">
+        <div className="px-6 pt-3 border-b border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between bg-white dark:bg-[#121C21]">
           <div className="flex gap-2">
             <button
               onClick={() => { setActiveTab('list'); setSuccessData(null); }}
               className={`pb-3 px-3 text-xs font-bold transition-all relative cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'list'
-                  ? 'text-[#2D6A4F] dark:text-[#52B788] border-b-2 border-[#2D6A4F] dark:border-[#52B788]'
-                  : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                  ? 'text-[#0F766E] dark:text-[#2DD4BF] border-b-2 border-[#0F766E] dark:border-[#2DD4BF]'
+                  : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               <Users className="w-4 h-4" />
@@ -223,8 +223,8 @@ export default function StaffManagementModal({ isOpen, onClose }) {
               onClick={() => setActiveTab('add')}
               className={`pb-3 px-3 text-xs font-bold transition-all relative cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'add'
-                  ? 'text-[#2D6A4F] dark:text-[#52B788] border-b-2 border-[#2D6A4F] dark:border-[#52B788]'
-                  : 'text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] dark:hover:text-[#FAF7F2]'
+                  ? 'text-[#0F766E] dark:text-[#2DD4BF] border-b-2 border-[#0F766E] dark:border-[#2DD4BF]'
+                  : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
               }`}
             >
               <UserPlus className="w-4 h-4" />
@@ -240,12 +240,12 @@ export default function StaffManagementModal({ isOpen, onClose }) {
           {activeTab === 'list' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
                   These accounts have executive management privileges over specialist queues, patient records, and health camp drives.
                 </p>
                 <button
                   onClick={() => setActiveTab('add')}
-                  className="px-3 py-1.5 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1 cursor-pointer shrink-0"
+                  className="px-3 py-1.5 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1 cursor-pointer shrink-0"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Add Staff</span>
@@ -256,34 +256,34 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                 {clinicStaff.map((staff) => (
                   <div
                     key={staff.id || staff.email}
-                    className="p-4 rounded-2xl bg-[#FAF7F2]/80 dark:bg-[#242C24]/60 border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-3 relative group"
+                    className="p-4 rounded-2xl bg-[#F4F7F6]/80 dark:bg-[#19272D]/60 border border-[#E0E7E5] dark:border-[#21333A] space-y-3 relative group"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center font-bold text-sm shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center font-bold text-sm shrink-0">
                           {staff.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-bold text-[#22291F] dark:text-[#FAF7F2] truncate">
+                          <p className="text-sm font-bold text-[#132226] dark:text-[#F4F7F6] truncate">
                             {staff.name}
                           </p>
-                          <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] truncate">
+                          <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] truncate">
                             {staff.email}
                           </p>
                         </div>
                       </div>
 
-                      <span className="px-2 py-0.5 rounded-full bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] text-[10px] font-bold shrink-0">
+                      <span className="px-2 py-0.5 rounded-full bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] text-[10px] font-bold shrink-0">
                         {staff.role === 'admin' ? 'Admin' : 'Staff'}
                       </span>
                     </div>
 
-                    <div className="pt-2 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] flex items-center justify-between text-xs">
+                    <div className="pt-2 border-t border-[#E0E7E5]/60 dark:border-[#21333A] flex items-center justify-between text-xs">
                       <div>
-                        <span className="text-[11px] font-medium text-[#52584E] dark:text-[#C4CFC3] block truncate">
+                        <span className="text-[11px] font-medium text-[#455A60] dark:text-[#9DB4BA] block truncate">
                           {staff.department || staff.designation || 'Clinic Operations'}
                         </span>
-                        <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493]">
+                        <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">
                           Phone: {staff.phone || '+91 98765 00000'}
                         </span>
                       </div>
@@ -292,7 +292,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                         <button
                           onClick={() => handleSendCredentialsEmail(staff)}
                           title="Email login credentials"
-                          className="p-1.5 rounded-lg bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#445644] text-[#2D6A4F] dark:text-[#52B788] hover:bg-[#2D6A4F]/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg bg-white dark:bg-[#121C21] border border-[#CFDAD6] dark:border-[#2C444E] text-[#0F766E] dark:text-[#2DD4BF] hover:bg-[#0F766E]/10 transition-colors cursor-pointer"
                         >
                           <Mail className="w-3.5 h-3.5" />
                         </button>
@@ -304,7 +304,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                               }
                             }}
                             title="Revoke staff account"
-                            className="p-1.5 rounded-lg bg-white dark:bg-[#1C221C] border border-rose-200 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg bg-white dark:bg-[#121C21] border border-rose-200 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -330,12 +330,12 @@ export default function StaffManagementModal({ isOpen, onClose }) {
 
               {/* In-Modal Email Delivery Alert */}
               {emailDeliveryReceipt && (
-                <div className="p-3 bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 border border-[#2D6A4F]/25 dark:border-[#52B788]/30 rounded-xl text-xs flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-[#2D6A4F] dark:text-[#52B788]">
+                <div className="p-3 bg-[#0F766E]/10 dark:bg-[#2DD4BF]/15 border border-[#0F766E]/25 dark:border-[#2DD4BF]/30 rounded-xl text-xs flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-[#0F766E] dark:text-[#2DD4BF]">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
                     <span>Credentials email dispatched directly to recipient inbox ({emailDeliveryReceipt.recipientEmail})</span>
                   </div>
-                  <button onClick={() => setEmailDeliveryReceipt(null)} className="text-xs text-[#2D6A4F] hover:underline cursor-pointer">
+                  <button onClick={() => setEmailDeliveryReceipt(null)} className="text-xs text-[#0F766E] hover:underline cursor-pointer">
                     Dismiss
                   </button>
                 </div>
@@ -366,10 +366,10 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                   </div>
 
                   {/* Credentials Box */}
-                  <div className="p-4 rounded-xl bg-white dark:bg-[#1C221C] border border-emerald-200 dark:border-emerald-800/40 space-y-2 text-xs">
+                  <div className="p-4 rounded-xl bg-white dark:bg-[#121C21] border border-emerald-200 dark:border-emerald-800/40 space-y-2 text-xs">
                     <div className="flex justify-between items-center py-1 border-b border-gray-100 dark:border-gray-800">
                       <span className="text-gray-500">Official Portal Login:</span>
-                      <span className="font-mono font-bold text-[#22291F] dark:text-[#FAF7F2]">{successData.email}</span>
+                      <span className="font-mono font-bold text-[#132226] dark:text-[#F4F7F6]">{successData.email}</span>
                     </div>
                     <div className="flex justify-between items-center py-1 border-b border-gray-100 dark:border-gray-800">
                       <span className="text-gray-500">Temporary Password:</span>
@@ -377,11 +377,11 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     </div>
                     <div className="flex justify-between items-center py-1 border-b border-gray-100 dark:border-gray-800">
                       <span className="text-gray-500">Assigned Department:</span>
-                      <span className="font-semibold text-[#22291F] dark:text-[#FAF7F2]">{successData.designation}</span>
+                      <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">{successData.designation}</span>
                     </div>
                     <div className="flex justify-between items-center py-1">
                       <span className="text-gray-500">Registered Phone:</span>
-                      <span className="font-medium text-[#22291F] dark:text-[#FAF7F2]">{successData.phone}</span>
+                      <span className="font-medium text-[#132226] dark:text-[#F4F7F6]">{successData.phone}</span>
                     </div>
                   </div>
 
@@ -391,7 +391,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                       onClick={() => handleCopyCredentials(
                         `APNA CLINIC STAFF LOGIN\nEmail: ${successData.email}\nPassword: ${successData.password}\nPortal: https://communityclinic.org/login`
                       )}
-                      className="flex-1 min-w-[140px] flex items-center justify-center gap-1.5 py-2.5 px-4 bg-white dark:bg-[#1C221C] hover:bg-gray-50 border border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300 text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs"
+                      className="flex-1 min-w-[140px] flex items-center justify-center gap-1.5 py-2.5 px-4 bg-white dark:bg-[#121C21] hover:bg-gray-50 border border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300 text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>{copied ? 'Credentials Copied!' : 'Copy Login Details'}</span>
@@ -400,7 +400,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     <button
                       onClick={() => handleSendCredentialsEmail(successData)}
                       disabled={isSendingEmail}
-                      className="flex-1 min-w-[160px] flex items-center justify-center gap-1.5 py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs disabled:opacity-50"
+                      className="flex-1 min-w-[160px] flex items-center justify-center gap-1.5 py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs disabled:opacity-50"
                     >
                       <Mail className="w-3.5 h-3.5" />
                       <span>{isSendingEmail ? 'Dispatching Email...' : 'Send Details on Email'}</span>
@@ -428,7 +428,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                   )}
 
                   {emailDeliveryReceipt && (
-                    <div className="p-3 bg-white/80 dark:bg-[#1C221C]/80 rounded-xl border border-emerald-300 dark:border-emerald-700/60 text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+                    <div className="p-3 bg-white/80 dark:bg-[#121C21]/80 rounded-xl border border-emerald-300 dark:border-emerald-700/60 text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span>Credentials email dispatched directly to {emailDeliveryReceipt.recipientEmail}.</span>
                     </div>
@@ -446,35 +446,35 @@ export default function StaffManagementModal({ isOpen, onClose }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-[#455A60] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                         Staff Full Name *
                       </label>
                       <div className="relative">
-                        <User className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+                        <User className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
                         <input
                           type="text"
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="e.g. Dr. Sunita Rao or Ramesh Kumar"
-                          className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F] transition-all"
+                          className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E] transition-all"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-[#455A60] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                         Official Email Address *
                       </label>
                       <div className="relative">
-                        <Mail className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+                        <Mail className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
                         <input
                           type="email"
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="staff.name@communityclinic.org"
-                          className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F] transition-all"
+                          className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E] transition-all"
                         />
                       </div>
                     </div>
@@ -482,15 +482,15 @@ export default function StaffManagementModal({ isOpen, onClose }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-[#455A60] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                         Department / Role Preset
                       </label>
                       <div className="relative">
-                        <Building className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+                        <Building className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
                         <select
                           value={designation}
                           onChange={(e) => setDesignation(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F]"
+                          className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E]"
                         >
                           {COMMON_DESIGNATIONS.map((d) => (
                             <option key={d} value={d}>{d}</option>
@@ -500,7 +500,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-[#455A60] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                         Custom Designation (Optional)
                       </label>
                       <input
@@ -508,34 +508,34 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                         value={customDesignation}
                         onChange={(e) => setCustomDesignation(e.target.value)}
                         placeholder="e.g. Lead Nurse, Lab Technician"
-                        className="w-full px-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F]"
+                        className="w-full px-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-[#455A60] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                         Mobile Phone (For Records)
                       </label>
                       <div className="relative">
-                        <Phone className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+                        <Phone className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
                         <input
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+91 98765 43210"
-                          className="w-full pl-10 pr-4 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F]"
+                          className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E]"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#52584E] dark:text-[#C4CFC3] uppercase tracking-wider mb-1.5">
+                      <label className="block text-xs font-bold text-[#455A60] dark:text-[#9DB4BA] uppercase tracking-wider mb-1.5">
                         Temporary Password *
                       </label>
                       <div className="relative">
-                        <Lock className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+                        <Lock className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
                         <input
                           type={showPassword ? 'text' : 'password'}
                           required
@@ -543,12 +543,12 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           placeholder="At least 6 characters"
-                          className="w-full pl-10 pr-10 py-2.5 bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-sm text-[#22291F] dark:text-[#FAF7F2] focus:outline-none focus:border-[#2D6A4F]"
+                          className="w-full pl-10 pr-10 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] focus:outline-none focus:border-[#0F766E]"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-3 text-[#8E8E84] hover:text-[#22291F] dark:text-[#94A493] cursor-pointer"
+                          className="absolute right-3 top-3 text-[#758D94] hover:text-[#132226] dark:text-[#79949B] cursor-pointer"
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -560,7 +560,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     <button
                       type="button"
                       onClick={() => setActiveTab('list')}
-                      className="px-4 py-2.5 border border-[#D8CEB3] dark:border-[#445644] text-[#6B6B63] dark:text-[#C4CFC3] text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                      className="px-4 py-2.5 border border-[#CFDAD6] dark:border-[#2C444E] text-[#5A7178] dark:text-[#9DB4BA] text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                       Cancel
                     </button>
@@ -568,7 +568,7 @@ export default function StaffManagementModal({ isOpen, onClose }) {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="px-5 py-2.5 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-xs font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+                      className="px-5 py-2.5 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-xs font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
                     >
                       <ShieldCheck className="w-4 h-4" />
                       <span>{loading ? 'Authorizing & Creating...' : 'Grant Admin / Staff Access'}</span>
@@ -582,12 +582,12 @@ export default function StaffManagementModal({ isOpen, onClose }) {
         </div>
 
         {/* Modal Footer Note */}
-        <div className="px-6 py-3.5 border-t border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2]/60 dark:bg-[#242C24]/60 flex items-center justify-between text-[11px] text-[#6B6B63] dark:text-[#94A493]">
+        <div className="px-6 py-3.5 border-t border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6]/60 dark:bg-[#19272D]/60 flex items-center justify-between text-[11px] text-[#5A7178] dark:text-[#79949B]">
           <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
             <span>Authorized staff can access all modules: Pharmacy, Appointments, Doctor Schedules, and Health Camps.</span>
           </div>
-          <button onClick={onClose} className="hover:underline font-bold text-[#2D6A4F] dark:text-[#52B788] cursor-pointer">
+          <button onClick={onClose} className="hover:underline font-bold text-[#0F766E] dark:text-[#2DD4BF] cursor-pointer">
             Close
           </button>
         </div>

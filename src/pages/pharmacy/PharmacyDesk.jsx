@@ -240,66 +240,66 @@ export default function PharmacyDesk() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#F0EBE1] to-[#E6DFC6]/50 dark:from-[#1C221C] dark:to-[#151915] border border-[#E4DCCE] dark:border-[#2F3B2F] p-6 sm:p-8 shadow-sm">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#E8F0EE] to-[#E0E7E5]/50 dark:from-[#121C21] dark:to-[#0B1114] border border-[#DCE5E2] dark:border-[#21333A] p-6 sm:p-8 shadow-sm">
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-semibold border border-[#2D6A4F]/20 dark:border-[#52B788]/30">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-semibold border border-[#0F766E]/20 dark:border-[#2DD4BF]/30">
               <Pill className="w-3.5 h-3.5" />
               <span>SDG 3 Universal Essential Medicine Access Scheme</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#22291F] dark:text-[#FAF7F2] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#132226] dark:text-[#F4F7F6] tracking-tight">
               Community Pharmacy &amp; Medicine Dispensary Desk
             </h1>
-            <p className="text-sm text-[#6B6B63] dark:text-[#C4CFC3] leading-relaxed">
+            <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed">
               Verify digital doctor prescriptions, package essential medicines, dispatch email pickup notifications, and print thermal dosage instructions for patients.
             </p>
           </div>
 
           {/* Quick Metrics Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3.5 bg-white dark:bg-[#242C24] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#B35F2B] dark:text-[#E58A54] block">Awaiting Dispense</span>
-              <div className="text-2xl font-black text-[#B35F2B] dark:text-[#E58A54] font-heading mt-0.5">
+            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#EA580C] dark:text-[#FB923C] block">Awaiting Dispense</span>
+              <div className="text-2xl font-black text-[#EA580C] dark:text-[#FB923C] font-heading mt-0.5">
                 {pendingCount}
               </div>
-              <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493]">Pending fulfillment</span>
+              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">Pending fulfillment</span>
             </div>
 
-            <div className="p-3.5 bg-white dark:bg-[#242C24] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#2D6A4F] dark:text-[#52B788] block">Dispensed Today</span>
-              <div className="text-2xl font-black text-[#2D6A4F] dark:text-[#52B788] font-heading mt-0.5">
+            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF] block">Dispensed Today</span>
+              <div className="text-2xl font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading mt-0.5">
                 {dispensedCount}
               </div>
-              <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493]">Patients served</span>
+              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">Patients served</span>
             </div>
 
-            <div className="p-3.5 bg-white dark:bg-[#242C24] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B63] dark:text-[#C4CFC3] block">Essential Medicines</span>
-              <div className="text-2xl font-black text-[#22291F] dark:text-[#FAF7F2] font-heading mt-0.5">
+            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">Essential Medicines</span>
+              <div className="text-2xl font-black text-[#132226] dark:text-[#F4F7F6] font-heading mt-0.5">
                 {(pharmacyStock || []).length}
               </div>
-              <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493]">Free generic lines</span>
+              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">Free generic lines</span>
             </div>
 
-            <div className="p-3.5 bg-white dark:bg-[#242C24] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B63] dark:text-[#C4CFC3] block">Low Stock Alerts</span>
-              <div className={`text-2xl font-black font-heading mt-0.5 ${lowStockCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-[#2D6A4F] dark:text-[#52B788]'}`}>
+            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">Low Stock Alerts</span>
+              <div className={`text-2xl font-black font-heading mt-0.5 ${lowStockCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-[#0F766E] dark:text-[#2DD4BF]'}`}>
                 {lowStockCount}
               </div>
-              <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493]">{lowStockCount > 0 ? 'Requires restock' : 'Supplies healthy'}</span>
+              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">{lowStockCount > 0 ? 'Requires restock' : 'Supplies healthy'}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Tabs Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6DFC6] dark:border-[#2F3B2F] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E0E7E5] dark:border-[#21333A] pb-4">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('queue')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'queue'
-                ? 'bg-[#2D6A4F] text-[#FAF7F2] shadow-xs'
-                : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] border border-[#E6DFC6] dark:border-[#2F3B2F]'
+                ? 'bg-[#0F766E] text-[#F4F7F6] shadow-xs'
+                : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] border border-[#E0E7E5] dark:border-[#21333A]'
               }`}
           >
             <Clock className="w-3.5 h-3.5" />
@@ -309,8 +309,8 @@ export default function PharmacyDesk() {
           <button
             onClick={() => setActiveTab('inventory')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'inventory'
-                ? 'bg-[#2D6A4F] text-[#FAF7F2] shadow-xs'
-                : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] hover:text-[#22291F] border border-[#E6DFC6] dark:border-[#2F3B2F]'
+                ? 'bg-[#0F766E] text-[#F4F7F6] shadow-xs'
+                : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] border border-[#E0E7E5] dark:border-[#21333A]'
               }`}
           >
             <Package className="w-3.5 h-3.5" />
@@ -320,13 +320,13 @@ export default function PharmacyDesk() {
 
         {/* Search Bar */}
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-2.5" />
+          <Search className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-2.5" />
           <input
             type="text"
             placeholder={activeTab === 'queue' ? "Search patient, token, medicine, or phone..." : "Search medicine by name or generic..."}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#1C221C] border border-[#D8CEB3] dark:border-[#445644] rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none focus:border-[#2D6A4F] dark:focus:border-[#52B788]"
+            className="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#121C21] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF]"
           />
         </div>
       </div>
@@ -340,8 +340,8 @@ export default function PharmacyDesk() {
             <button
               onClick={() => setFilter('pending')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'pending'
-                  ? 'bg-[#C97B4A] text-white border-[#C97B4A]'
-                  : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#E6DFC6] dark:border-[#2F3B2F]'
+                  ? 'bg-[#F97316] text-white border-[#F97316]'
+                  : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#E0E7E5] dark:border-[#21333A]'
                 }`}
             >
               Awaiting Dispense ({pendingCount})
@@ -349,8 +349,8 @@ export default function PharmacyDesk() {
             <button
               onClick={() => setFilter('dispensed')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'dispensed'
-                  ? 'bg-[#2D6A4F] text-white border-[#2D6A4F]'
-                  : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#E6DFC6] dark:border-[#2F3B2F]'
+                  ? 'bg-[#0F766E] text-white border-[#0F766E]'
+                  : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#E0E7E5] dark:border-[#21333A]'
                 }`}
             >
               Dispensed Today ({dispensedCount})
@@ -358,8 +358,8 @@ export default function PharmacyDesk() {
             <button
               onClick={() => setFilter('all')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'all'
-                  ? 'bg-[#22291F] text-[#FAF7F2] border-[#22291F] dark:bg-[#FAF7F2] dark:text-[#1C221C] dark:border-[#FAF7F2]'
-                  : 'bg-white dark:bg-[#1C221C] text-[#6B6B63] dark:text-[#C4CFC3] border-[#E6DFC6] dark:border-[#2F3B2F]'
+                  ? 'bg-[#132226] text-[#F4F7F6] border-[#132226] dark:bg-[#F4F7F6] dark:text-[#121C21] dark:border-[#F4F7F6]'
+                  : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#E0E7E5] dark:border-[#21333A]'
                 }`}
             >
               All Prescriptions
@@ -368,14 +368,14 @@ export default function PharmacyDesk() {
 
           {/* Prescriptions List */}
           {prescriptionAppointments.length === 0 ? (
-            <div className="bg-[#FAF7F2] dark:bg-[#1C221C] rounded-2xl border border-dashed border-[#D8CEB3] dark:border-[#2F3B2F] p-12 text-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#2D6A4F]/10 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center mx-auto">
+            <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-2xl border border-dashed border-[#CFDAD6] dark:border-[#21333A] p-12 text-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+              <h3 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
                 No Prescriptions in this View
               </h3>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3] max-w-md mx-auto">
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] max-w-md mx-auto">
                 Prescriptions issued by clinic doctors during consultations will automatically appear here for verification and medicine packing.
               </p>
             </div>
@@ -392,19 +392,19 @@ export default function PharmacyDesk() {
                 return (
                   <div
                     key={apt.id}
-                    className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-sm space-y-4 hover:border-[#2D6A4F]/40 transition-colors"
+                    className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-sm space-y-4 hover:border-[#0F766E]/40 transition-colors"
                   >
                     {/* Top Identity Row */}
-                    <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
+                    <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#E0E7E5]/60 dark:border-[#21333A]">
                       <div className="flex items-center gap-4">
                         {/* High-visibility Dispensary Ticket Badge */}
-                        <div className="flex items-stretch rounded-xl overflow-hidden border-2 border-[#2D6A4F] dark:border-[#52B788] shadow-sm shrink-0 bg-white dark:bg-[#151915]">
-                          <div className="bg-[#2D6A4F] text-[#FAF7F2] px-3 py-2 flex flex-col items-center justify-center min-w-[58px]">
+                        <div className="flex items-stretch rounded-xl overflow-hidden border-2 border-[#0F766E] dark:border-[#2DD4BF] shadow-sm shrink-0 bg-white dark:bg-[#0B1114]">
+                          <div className="bg-[#0F766E] text-[#F4F7F6] px-3 py-2 flex flex-col items-center justify-center min-w-[58px]">
                             <span className="text-[9px] uppercase tracking-wider font-extrabold text-[#A3C9B8]">Ticket</span>
-                            <Ticket className="w-4 h-4 text-[#FAF7F2] mt-0.5" />
+                            <Ticket className="w-4 h-4 text-[#F4F7F6] mt-0.5" />
                           </div>
                           <div className="px-4 py-2 flex items-center justify-center bg-[#EAF3EE] dark:bg-[#1F3327] min-w-[80px]">
-                            <span className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-[#1B4D36] dark:text-[#52B788]">
+                            <span className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-[#1B4D36] dark:text-[#2DD4BF]">
                               {cleanToken}
                             </span>
                           </div>
@@ -412,14 +412,14 @@ export default function PharmacyDesk() {
 
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-base text-[#22291F] dark:text-[#FAF7F2] font-heading">{apt.patientName}</h3>
-                            <span className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3]">
+                            <h3 className="font-bold text-base text-[#132226] dark:text-[#F4F7F6] font-heading">{apt.patientName}</h3>
+                            <span className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">
                               ({apt.patientAge || 'Adult'}y • {apt.patientGender || 'Unspecified'})
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-[#6B6B63] dark:text-[#C4CFC3] mt-0.5">
+                          <div className="flex items-center gap-2 text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-0.5">
                             <span className="flex items-center gap-1">
-                              <Stethoscope className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                              <Stethoscope className="w-3 h-3 text-[#0F766E] dark:text-[#2DD4BF]" />
                               <span>{apt.doctorName}</span>
                             </span>
                             <span>•</span>
@@ -431,11 +431,11 @@ export default function PharmacyDesk() {
                       {/* Status Badge */}
                       <div>
                         {isDispensed ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-[#2D6A4F]/12 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] border border-[#2D6A4F]/25">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-[#0F766E]/12 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border border-[#0F766E]/25">
                             <Check className="w-3 h-3" /> Dispensed
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-[#C97B4A]/15 text-[#B35F2B] dark:bg-[#E58A54]/20 dark:text-[#E58A54] border border-[#C97B4A]/25 animate-pulse">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-[#F97316]/15 text-[#EA580C] dark:bg-[#FB923C]/20 dark:text-[#FB923C] border border-[#F97316]/25 animate-pulse">
                             <Clock className="w-3 h-3" /> Awaiting Pickup
                           </span>
                         )}
@@ -444,22 +444,22 @@ export default function PharmacyDesk() {
 
                     {/* Patient Phone & Contact */}
                     {apt.patientPhone && (
-                      <div className="flex items-center justify-between text-xs py-1.5 px-3 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#E6DFC6]/60 dark:border-[#2F3B2F]">
-                        <span className="text-[#6B6B63] dark:text-[#C4CFC3] flex items-center gap-1.5">
-                          <Phone className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                      <div className="flex items-center justify-between text-xs py-1.5 px-3 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5]/60 dark:border-[#21333A]">
+                        <span className="text-[#5A7178] dark:text-[#9DB4BA] flex items-center gap-1.5">
+                          <Phone className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
                           <span>Contact:</span>
                         </span>
-                        <span className="font-mono font-bold text-[#22291F] dark:text-[#FAF7F2]">{apt.patientPhone}</span>
+                        <span className="font-mono font-bold text-[#132226] dark:text-[#F4F7F6]">{apt.patientPhone}</span>
                       </div>
                     )}
 
                     {/* Diagnosis */}
                     {apt.diagnosis && (
-                      <div className="p-2.5 rounded-xl bg-[#FAF7F2]/60 dark:bg-[#242C24]/60 border border-[#E6DFC6]/60 dark:border-[#2F3B2F] text-xs">
-                        <span className="font-bold text-[#2D6A4F] dark:text-[#52B788] uppercase tracking-wider text-[10px] block mb-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#F4F7F6]/60 dark:bg-[#19272D]/60 border border-[#E0E7E5]/60 dark:border-[#21333A] text-xs">
+                        <span className="font-bold text-[#0F766E] dark:text-[#2DD4BF] uppercase tracking-wider text-[10px] block mb-0.5">
                           Clinical Diagnosis:
                         </span>
-                        <p className="font-medium text-[#22291F] dark:text-[#FAF7F2]">{apt.diagnosis}</p>
+                        <p className="font-medium text-[#132226] dark:text-[#F4F7F6]">{apt.diagnosis}</p>
                       </div>
                     )}
 
@@ -467,8 +467,8 @@ export default function PharmacyDesk() {
                     <div className="space-y-2.5">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
-                          <Pill className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B63] dark:text-[#C4CFC3]">
+                          <Pill className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA]">
                             Medication Verification Checklist ({rxLines.length} prescribed):
                           </span>
                         </div>
@@ -479,7 +479,7 @@ export default function PharmacyDesk() {
                               ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
                               : checkedCount > 0
                                 ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-800'
-                                : 'bg-[#FAF7F2] text-[#6B6B63] dark:bg-[#242C24] dark:text-[#C4CFC3] border border-[#E6DFC6] dark:border-[#2F3B2F]'
+                                : 'bg-[#F4F7F6] text-[#5A7178] dark:bg-[#19272D] dark:text-[#9DB4BA] border border-[#E0E7E5] dark:border-[#21333A]'
                             }`}>
                             {checkedCount === rxLines.length ? `All ${rxLines.length} Verified ✓` : `${checkedCount} of ${rxLines.length} verified`}
                           </span>
@@ -488,7 +488,7 @@ export default function PharmacyDesk() {
                             <button
                               type="button"
                               onClick={() => handleVerifyAllMeds(apt.id, rxLines.length)}
-                              className="text-[10px] text-[#2D6A4F] hover:text-[#23543E] dark:text-[#52B788] dark:hover:text-[#6ee7b7] font-bold hover:underline cursor-pointer transition-colors"
+                              className="text-[10px] text-[#0F766E] hover:text-[#115E59] dark:text-[#2DD4BF] dark:hover:text-[#6ee7b7] font-bold hover:underline cursor-pointer transition-colors"
                             >
                               {checkedCount === rxLines.length ? 'Uncheck All' : 'Verify All'}
                             </button>
@@ -497,11 +497,11 @@ export default function PharmacyDesk() {
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="w-full bg-[#E6DFC6]/50 dark:bg-[#2F3B2F] rounded-full h-1.5 overflow-hidden">
+                      <div className="w-full bg-[#E0E7E5]/50 dark:bg-[#21333A] rounded-full h-1.5 overflow-hidden">
                         <div
                           className={`h-full transition-all duration-300 ${checkedCount === rxLines.length
-                              ? 'bg-[#2D6A4F] dark:bg-[#52B788]'
-                              : 'bg-[#C97B4A] dark:bg-[#E58A54]'
+                              ? 'bg-[#0F766E] dark:bg-[#2DD4BF]'
+                              : 'bg-[#F97316] dark:bg-[#FB923C]'
                             }`}
                           style={{ width: `${rxLines.length > 0 ? (checkedCount / rxLines.length) * 100 : 0}%` }}
                         />
@@ -520,13 +520,13 @@ export default function PharmacyDesk() {
                               onClick={() => !isDispensed && toggleMedCheck(apt.id, idx)}
                               className={`flex items-start justify-between gap-3 p-3 rounded-xl border text-xs transition-all ${isChecked
                                   ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/60 shadow-2xs'
-                                  : 'bg-[#FAF7F2] dark:bg-[#242C24] border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/50 cursor-pointer shadow-2xs'
+                                  : 'bg-[#F4F7F6] dark:bg-[#19272D] border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/50 cursor-pointer shadow-2xs'
                                 }`}
                             >
                               <div className="flex items-start gap-2.5 min-w-0 flex-1">
                                 <div className={`w-4 h-4 rounded mt-0.5 flex items-center justify-center shrink-0 border transition-colors ${isChecked
-                                    ? 'bg-[#2D6A4F] border-[#2D6A4F] text-[#FAF7F2] dark:bg-[#52B788] dark:border-[#52B788] dark:text-[#151915]'
-                                    : 'border-[#8E8E84] dark:border-[#94A493] bg-white dark:bg-[#1C221C]'
+                                    ? 'bg-[#0F766E] border-[#0F766E] text-[#F4F7F6] dark:bg-[#2DD4BF] dark:border-[#2DD4BF] dark:text-[#0B1114]'
+                                    : 'border-[#758D94] dark:border-[#79949B] bg-white dark:bg-[#121C21]'
                                   }`}>
                                   {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
                                 </div>
@@ -534,7 +534,7 @@ export default function PharmacyDesk() {
                                 <div className="min-w-0 flex-1 space-y-1">
                                   <p className={`font-mono text-xs leading-relaxed transition-all ${isChecked
                                       ? 'line-through text-emerald-950/70 dark:text-emerald-200/70 font-medium'
-                                      : 'text-[#22291F] dark:text-[#FAF7F2] font-semibold'
+                                      : 'text-[#132226] dark:text-[#F4F7F6] font-semibold'
                                     }`}>
                                     {line}
                                   </p>
@@ -553,8 +553,8 @@ export default function PharmacyDesk() {
                                           Low Stock: {matchedStock.stock} {matchedStock.unit} remaining (Min: {matchedStock.minAlert})
                                         </span>
                                       ) : (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-[#2D6A4F]/10 text-[#2D6A4F] dark:bg-[#52B788]/20 dark:text-[#52B788] border border-[#2D6A4F]/20 dark:border-[#52B788]/30">
-                                          <Package className="w-3 h-3 text-[#2D6A4F] dark:text-[#52B788]" />
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border border-[#0F766E]/20 dark:border-[#2DD4BF]/30">
+                                          <Package className="w-3 h-3 text-[#0F766E] dark:text-[#2DD4BF]" />
                                           In Stock ({matchedStock.stock} {matchedStock.unit})
                                         </span>
                                       )}
@@ -566,7 +566,7 @@ export default function PharmacyDesk() {
                               <div className="shrink-0 flex items-center">
                                 <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${isChecked
                                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40'
-                                    : 'bg-[#E6DFC6]/50 text-[#8E8E84] dark:bg-[#2F3B2F] dark:text-[#94A493]'
+                                    : 'bg-[#E0E7E5]/50 text-[#758D94] dark:bg-[#21333A] dark:text-[#79949B]'
                                   }`}>
                                   {isChecked ? 'Verified ✓' : 'To Pack'}
                                 </span>
@@ -578,16 +578,16 @@ export default function PharmacyDesk() {
                     </div>
 
                     {/* Action Bar */}
-                    <div className="pt-2 border-t border-[#E6DFC6]/60 dark:border-[#2F3B2F] flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div className="pt-2 border-t border-[#E0E7E5]/60 dark:border-[#21333A] flex flex-wrap items-center justify-between gap-2 text-xs">
 
                       {/* Secondary Actions */}
                       <div className="flex items-center gap-1.5">
                         <button
                           type="button"
                           onClick={() => setSelectedLabelApt(apt)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] border border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2] font-semibold transition-colors cursor-pointer"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#19272D] hover:bg-[#F4F7F6] dark:hover:bg-[#21333A] border border-[#CFDAD6] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6] font-semibold transition-colors cursor-pointer"
                         >
-                          <Printer className="w-3.5 h-3.5 text-[#6B6B63] dark:text-[#C4CFC3]" />
+                          <Printer className="w-3.5 h-3.5 text-[#5A7178] dark:text-[#9DB4BA]" />
                           <span>Print Label</span>
                         </button>
 
@@ -596,17 +596,17 @@ export default function PharmacyDesk() {
                           disabled={emailSendingId === apt.id}
                           onClick={() => handleSendPickupEmail(apt)}
                           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer font-semibold ${emailSendingId === apt.id
-                              ? 'bg-[#FAF7F2] dark:bg-[#242C24] text-[#8E8E84] border-[#D8CEB3] cursor-not-allowed'
+                              ? 'bg-[#F4F7F6] dark:bg-[#19272D] text-[#758D94] border-[#CFDAD6] cursor-not-allowed'
                               : emailSent
                                 ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-300'
                                 : emailErrorMap[apt.id]
                                   ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-300'
-                                  : 'bg-white dark:bg-[#242C24] hover:bg-[#FAF7F2] dark:hover:bg-[#2F3B2F] border-[#D8CEB3] dark:border-[#2F3B2F] text-[#22291F] dark:text-[#FAF7F2]'
+                                  : 'bg-white dark:bg-[#19272D] hover:bg-[#F4F7F6] dark:hover:bg-[#21333A] border-[#CFDAD6] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6]'
                             }`}
                         >
                           {emailSendingId === apt.id ? (
                             <>
-                              <Loader2 className="w-3.5 h-3.5 animate-spin text-[#2D6A4F] dark:text-[#52B788]" />
+                              <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0F766E] dark:text-[#2DD4BF]" />
                               <span>Sending...</span>
                             </>
                           ) : emailSent ? (
@@ -621,7 +621,7 @@ export default function PharmacyDesk() {
                             </>
                           ) : (
                             <>
-                              <Mail className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
+                              <Mail className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
                               <span>Email Notice</span>
                             </>
                           )}
@@ -650,11 +650,11 @@ export default function PharmacyDesk() {
                           disabled={processingId === apt.id}
                           title={!isAllMedsChecked ? `Verify all ${rxLines.length} checklist items before dispensing` : 'Confirm all medications packaged and dispensed'}
                           className={`flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl shadow-xs transition-all text-xs cursor-pointer ${!isAllMedsChecked
-                              ? 'bg-[#E6DFC6]/60 dark:bg-[#2F3B2F]/60 text-[#8E8E84] dark:text-[#94A493] border border-[#D8CEB3] dark:border-[#445644] hover:bg-[#E6DFC6]/80'
-                              : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2]'
+                              ? 'bg-[#E0E7E5]/60 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] border border-[#CFDAD6] dark:border-[#2C444E] hover:bg-[#E0E7E5]/80'
+                              : 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6]'
                             }`}
                         >
-                          <CheckCircle2 className={`w-4 h-4 ${!isAllMedsChecked ? 'text-[#8E8E84] dark:text-[#94A493]' : ''}`} />
+                          <CheckCircle2 className={`w-4 h-4 ${!isAllMedsChecked ? 'text-[#758D94] dark:text-[#79949B]' : ''}`} />
                           <span>
                             {processingId === apt.id
                               ? 'Updating...'
@@ -664,7 +664,7 @@ export default function PharmacyDesk() {
                           </span>
                         </button>
                       ) : (
-                        <span className="text-[11px] text-[#8E8E84] dark:text-[#94A493] italic">
+                        <span className="text-[11px] text-[#758D94] dark:text-[#79949B] italic">
                           Dispensed: {apt.dispensedAt ? new Date(apt.dispensedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Today'}
                         </span>
                       )}
@@ -684,10 +684,10 @@ export default function PharmacyDesk() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">
+              <h2 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
                 Free Community Healthcare Formulary
               </h2>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
                 WHO Model List of Essential Medicines supplied 100% free of charge to community patients under SDG 3.
               </p>
             </div>
@@ -700,17 +700,17 @@ export default function PharmacyDesk() {
               return (
                 <div
                   key={med.id}
-                  className="bg-white dark:bg-[#1C221C] rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-5 shadow-xs space-y-3"
+                  className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-xs space-y-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#2D6A4F] dark:text-[#52B788] block">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF] block">
                         {med.category}
                       </span>
-                      <h3 className="font-bold text-base text-[#22291F] dark:text-[#FAF7F2] font-heading mt-0.5">
+                      <h3 className="font-bold text-base text-[#132226] dark:text-[#F4F7F6] font-heading mt-0.5">
                         {med.name}
                       </h3>
-                      <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">
+                      <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
                         Generic: {med.generic}
                       </p>
                     </div>
@@ -723,31 +723,31 @@ export default function PharmacyDesk() {
                     </span>
                   </div>
 
-                  <div className="p-3 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between text-xs">
+                  <div className="p-3 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between text-xs">
                     <div>
-                      <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493] block">Available Count</span>
-                      <span className="text-lg font-black font-heading text-[#22291F] dark:text-[#FAF7F2]">
-                        {med.stock} <span className="text-xs font-normal text-[#6B6B63] dark:text-[#C4CFC3]">{med.unit}</span>
+                      <span className="text-[10px] text-[#758D94] dark:text-[#79949B] block">Available Count</span>
+                      <span className="text-lg font-black font-heading text-[#132226] dark:text-[#F4F7F6]">
+                        {med.stock} <span className="text-xs font-normal text-[#5A7178] dark:text-[#9DB4BA]">{med.unit}</span>
                       </span>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493] block">Batch / Expiry</span>
-                      <span className="font-mono text-xs font-semibold text-[#22291F] dark:text-[#FAF7F2]">
+                      <span className="text-[10px] text-[#758D94] dark:text-[#79949B] block">Batch / Expiry</span>
+                      <span className="font-mono text-xs font-semibold text-[#132226] dark:text-[#F4F7F6]">
                         {med.batch} ({med.expiry})
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-1">
-                    <span className="text-[10px] text-[#8E8E84]">
+                    <span className="text-[10px] text-[#758D94]">
                       Min. Threshold: {med.minAlert} {med.unit}
                     </span>
 
                     <button
                       type="button"
                       onClick={() => setRestockItem(med)}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#2D6A4F]/10 hover:bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-semibold transition-colors cursor-pointer"
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#0F766E]/10 hover:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-semibold transition-colors cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Restock</span>
@@ -763,17 +763,17 @@ export default function PharmacyDesk() {
       {/* MODAL 1: THERMAL MEDICATION LABEL PRINT SLIP */}
       {selectedLabelApt && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#1C221C] w-full max-w-md rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+          <div className="bg-white dark:bg-[#121C21] w-full max-w-md rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E0E7E5] dark:border-[#21333A]">
               <div className="flex items-center gap-2">
-                <Printer className="w-4 h-4 text-[#2D6A4F] dark:text-[#52B788]" />
-                <h3 className="font-bold text-sm text-[#22291F] dark:text-[#FAF7F2] font-heading">
+                <Printer className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF]" />
+                <h3 className="font-bold text-sm text-[#132226] dark:text-[#F4F7F6] font-heading">
                   Medication Dosage Label
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedLabelApt(null)}
-                className="p-1 rounded-lg text-[#6B6B63] hover:text-[#22291F] cursor-pointer"
+                className="p-1 rounded-lg text-[#5A7178] hover:text-[#132226] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -782,42 +782,42 @@ export default function PharmacyDesk() {
             {/* Printable Sticker Box */}
             <div
               id="printable-med-label"
-              className="p-5 bg-white dark:bg-[#151915] rounded-xl border-2 border-dashed border-[#2D6A4F] space-y-3 text-xs text-[#22291F] dark:text-[#FAF7F2]"
+              className="p-5 bg-white dark:bg-[#0B1114] rounded-xl border-2 border-dashed border-[#0F766E] space-y-3 text-xs text-[#132226] dark:text-[#F4F7F6]"
             >
-              <div className="text-center pb-2 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
+              <div className="text-center pb-2 border-b border-[#E0E7E5] dark:border-[#21333A]">
                 <h4 className="font-extrabold text-sm font-heading">APNA COMMUNITY CLINIC PHARMACY</h4>
-                <p className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3]">SDG 3 Free Drug Supply • Counter #2</p>
+                <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">SDG 3 Free Drug Supply • Counter #2</p>
               </div>
 
               {/* High-visibility Dispensary Ticket Section */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-[#EAF3EE] dark:bg-[#1F3327] border-2 border-[#2D6A4F] dark:border-[#52B788]">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-[#EAF3EE] dark:bg-[#1F3327] border-2 border-[#0F766E] dark:border-[#2DD4BF]">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#2D6A4F] text-white flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#0F766E] text-white flex items-center justify-center shrink-0">
                     <Ticket className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[9px] uppercase font-bold tracking-wider text-[#6B6B63] dark:text-[#C4CFC3] block">
+                    <span className="text-[9px] uppercase font-bold tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">
                       Dispensary Ticket
                     </span>
-                    <span className="text-2xl font-black font-mono tracking-wider text-[#1B4D36] dark:text-[#52B788]">
+                    <span className="text-2xl font-black font-mono tracking-wider text-[#1B4D36] dark:text-[#2DD4BF]">
                       {getCleanTokenNumber(selectedLabelApt)}
                     </span>
                   </div>
                 </div>
-                <div className="text-right text-[11px] font-mono text-[#6B6B63] dark:text-[#C4CFC3]">
-                  <div>Date: <strong className="text-[#22291F] dark:text-[#FAF7F2]">{selectedLabelApt.date}</strong></div>
+                <div className="text-right text-[11px] font-mono text-[#5A7178] dark:text-[#9DB4BA]">
+                  <div>Date: <strong className="text-[#132226] dark:text-[#F4F7F6]">{selectedLabelApt.date}</strong></div>
                   <div>Time: <strong>{selectedLabelApt.time || 'Today'}</strong></div>
                 </div>
               </div>
 
               <div className="py-1 space-y-1 text-xs">
-                <p><strong>Patient:</strong> {selectedLabelApt.patientName} <span className="text-[#6B6B63] dark:text-[#C4CFC3]">({selectedLabelApt.patientAge || 'Adult'}y • {selectedLabelApt.patientGender || 'Unspecified'})</span></p>
+                <p><strong>Patient:</strong> {selectedLabelApt.patientName} <span className="text-[#5A7178] dark:text-[#9DB4BA]">({selectedLabelApt.patientAge || 'Adult'}y • {selectedLabelApt.patientGender || 'Unspecified'})</span></p>
                 <p><strong>Doctor:</strong> {selectedLabelApt.doctorName}</p>
                 {selectedLabelApt.diagnosis && <p><strong>Diagnosis:</strong> {selectedLabelApt.diagnosis}</p>}
               </div>
 
-              <div className="p-3 bg-[#FAF7F2] dark:bg-[#242C24] rounded-lg border border-[#E6DFC6] dark:border-[#2F3B2F] space-y-1.5">
-                <span className="font-bold uppercase tracking-wider text-[10px] text-[#2D6A4F] dark:text-[#52B788] block">
+              <div className="p-3 bg-[#F4F7F6] dark:bg-[#19272D] rounded-lg border border-[#E0E7E5] dark:border-[#21333A] space-y-1.5">
+                <span className="font-bold uppercase tracking-wider text-[10px] text-[#0F766E] dark:text-[#2DD4BF] block">
                   Prescription &amp; Dosage Instructions:
                 </span>
                 <pre className="font-mono text-[11px] whitespace-pre-wrap font-bold">
@@ -825,7 +825,7 @@ export default function PharmacyDesk() {
                 </pre>
               </div>
 
-              <div className="pt-2 text-center text-[9px] text-[#8E8E84] leading-tight">
+              <div className="pt-2 text-center text-[9px] text-[#758D94] leading-tight">
                 Take medicines on time with clean water. Store in a cool dry place out of reach of children.
               </div>
             </div>
@@ -834,7 +834,7 @@ export default function PharmacyDesk() {
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#2D6A4F] hover:bg-[#23543E] text-[#FAF7F2] text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#0F766E] hover:bg-[#115E59] text-[#F4F7F6] text-xs font-bold rounded-xl transition-colors cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print Sticker Label</span>
@@ -842,7 +842,7 @@ export default function PharmacyDesk() {
               <button
                 type="button"
                 onClick={() => setSelectedLabelApt(null)}
-                className="py-2.5 px-4 bg-white dark:bg-[#242C24] border border-[#D8CEB3] text-xs font-semibold rounded-xl cursor-pointer"
+                className="py-2.5 px-4 bg-white dark:bg-[#19272D] border border-[#CFDAD6] text-xs font-semibold rounded-xl cursor-pointer"
               >
                 Close
               </button>
@@ -855,22 +855,22 @@ export default function PharmacyDesk() {
       {/* MODAL 2: RESTOCK MEDICINE */}
       {restockItem && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#1C221C] w-full max-w-sm rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-[#E6DFC6] dark:border-[#2F3B2F]">
-              <h3 className="font-bold text-sm text-[#22291F] dark:text-[#FAF7F2] font-heading">
+          <div className="bg-white dark:bg-[#121C21] w-full max-w-sm rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E0E7E5] dark:border-[#21333A]">
+              <h3 className="font-bold text-sm text-[#132226] dark:text-[#F4F7F6] font-heading">
                 Replenish Medicine Stock
               </h3>
-              <button onClick={() => setRestockItem(null)} className="p-1 text-[#6B6B63] cursor-pointer">
+              <button onClick={() => setRestockItem(null)} className="p-1 text-[#5A7178] cursor-pointer">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="space-y-2 text-xs">
-              <p className="font-bold text-sm text-[#2D6A4F] dark:text-[#52B788]">{restockItem.name}</p>
-              <p className="text-[#6B6B63]">Current Stock: <strong>{restockItem.stock} {restockItem.unit}</strong></p>
+              <p className="font-bold text-sm text-[#0F766E] dark:text-[#2DD4BF]">{restockItem.name}</p>
+              <p className="text-[#5A7178]">Current Stock: <strong>{restockItem.stock} {restockItem.unit}</strong></p>
 
               <div>
-                <label className="block text-[11px] font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider mb-1 mt-3">
+                <label className="block text-[11px] font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider mb-1 mt-3">
                   Add Quantity ({restockItem.unit}):
                 </label>
                 <input
@@ -878,7 +878,7 @@ export default function PharmacyDesk() {
                   min="1"
                   value={restockAmount}
                   onChange={(e) => setRestockAmount(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] text-sm font-bold text-[#22291F] dark:text-[#FAF7F2]"
+                  className="w-full px-3 py-2 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] text-sm font-bold text-[#132226] dark:text-[#F4F7F6]"
                 />
               </div>
             </div>
@@ -887,14 +887,14 @@ export default function PharmacyDesk() {
               <button
                 type="button"
                 onClick={handleApplyRestock}
-                className="flex-1 py-2 px-3 bg-[#2D6A4F] hover:bg-[#23543E] text-white text-xs font-bold rounded-xl cursor-pointer"
+                className="flex-1 py-2 px-3 bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-bold rounded-xl cursor-pointer"
               >
                 Confirm Restock
               </button>
               <button
                 type="button"
                 onClick={() => setRestockItem(null)}
-                className="py-2 px-3 bg-white dark:bg-[#242C24] border border-[#D8CEB3] text-xs font-semibold rounded-xl cursor-pointer"
+                className="py-2 px-3 bg-white dark:bg-[#19272D] border border-[#CFDAD6] text-xs font-semibold rounded-xl cursor-pointer"
               >
                 Cancel
               </button>

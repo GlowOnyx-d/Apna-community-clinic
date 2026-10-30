@@ -205,7 +205,7 @@ export function DataProvider({ children }) {
           initialReadLoggedRef.current = true;
           console.log(
             '%c[Firestore Realtime Connected] Appointments loaded for role:',
-            'color: #2D6A4F; font-weight: bold; font-size: 13px;',
+            'color: #0F766E; font-weight: bold; font-size: 13px;',
             role || 'display',
             `(${list.length} appointments)`
           );

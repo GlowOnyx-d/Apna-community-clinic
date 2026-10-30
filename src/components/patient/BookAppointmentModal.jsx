@@ -143,17 +143,17 @@ export default function BookAppointmentModal({
   if (!doctors || doctors.length === 0) {
     return createPortal(
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
-        <div className="bg-white dark:bg-[#1C221C] w-full max-w-md rounded-2xl border border-[#E6DFC6] dark:border-[#2F3B2F] p-6 text-center space-y-4 shadow-2xl">
-          <div className="w-12 h-12 rounded-xl bg-[#C97B4A]/15 text-[#B35F2B] dark:text-[#E58A54] flex items-center justify-center mx-auto">
+        <div className="bg-white dark:bg-[#121C21] w-full max-w-md rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-6 text-center space-y-4 shadow-2xl">
+          <div className="w-12 h-12 rounded-xl bg-[#F97316]/15 text-[#EA580C] dark:text-[#FB923C] flex items-center justify-center mx-auto">
             <AlertCircle className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#22291F] dark:text-[#FAF7F2] font-heading">No Doctors Available to Book With Yet</h2>
-          <p className="text-sm text-[#6B6B63] dark:text-[#C4CFC3]">
+          <h2 className="text-xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">No Doctors Available to Book With Yet</h2>
+          <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA]">
             No doctors have been added to the clinic system yet. Please ask the clinic administrator to add doctor profiles first.
           </p>
           <button
             onClick={onClose}
-            className="w-full py-2.5 px-4 bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] text-[#FAF7F2] text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
+            className="w-full py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
           >
             Close
           </button>
@@ -415,7 +415,7 @@ export default function BookAppointmentModal({
         particleCount: 60,
         spread: 50,
         origin: { y: 0.6 },
-        colors: ['#2D6A4F', '#52B788', '#C97B4A']
+        colors: ['#0F766E', '#2DD4BF', '#F97316']
       });
 
       if (onSuccess) {
@@ -442,18 +442,18 @@ export default function BookAppointmentModal({
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-[#1C221C] rounded-2xl max-w-xl w-full border border-[#E6DFC6] dark:border-[#2F3B2F] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl"
+        className="bg-white dark:bg-[#121C21] rounded-2xl max-w-xl w-full border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl"
       >
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E6DFC6] dark:border-[#2F3B2F] bg-[#FAF7F2] dark:bg-[#151915]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#2D6A4F] text-[#FAF7F2] flex items-center justify-center shadow-xs">
+            <div className="w-8 h-8 rounded-lg bg-[#0F766E] text-[#F4F7F6] flex items-center justify-center shadow-xs">
               <Ticket className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-[#22291F] dark:text-[#FAF7F2] text-base font-heading">Book Clinic Appointment</h3>
-              <p className="text-xs text-[#6B6B63] dark:text-[#C4CFC3]">Instant Token Queue Allocation</p>
+              <h3 className="font-bold text-[#132226] dark:text-[#F4F7F6] text-base font-heading">Book Clinic Appointment</h3>
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">Instant Token Queue Allocation</p>
             </div>
           </div>
           <button 
@@ -464,7 +464,7 @@ export default function BookAppointmentModal({
               onClose?.();
             }}
             aria-label="Close booking modal"
-            className="p-1.5 text-[#6B6B63] hover:text-[#22291F] dark:text-[#C4CFC3] dark:hover:text-[#FAF7F2] rounded-lg hover:bg-[#E6DFC6]/50 dark:hover:bg-[#242C24] transition-colors cursor-pointer"
+            className="p-1.5 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-lg hover:bg-[#E0E7E5]/50 dark:hover:bg-[#19272D] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -487,10 +487,10 @@ export default function BookAppointmentModal({
           {/* 1. Doctor Selection */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
                 1. Select Healthcare Specialist
               </label>
-              <span className="text-[10px] text-[#2D6A4F] dark:text-[#52B788] font-medium">
+              <span className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] font-medium">
                 {selectedDoctor?.cabin || 'Cabin 101'}
               </span>
             </div>
@@ -508,8 +508,8 @@ export default function BookAppointmentModal({
                     }}
                     className={`flex flex-col text-left p-3 rounded-xl border transition-all cursor-pointer ${
                       isSelected 
-                        ? 'border-[#2D6A4F] dark:border-[#52B788] bg-[#2D6A4F]/10 dark:bg-[#357A5B]/20 shadow-xs' 
-                        : 'border-[#E6DFC6] dark:border-[#2F3B2F] hover:border-[#2D6A4F]/40 dark:hover:border-[#445644] bg-[#FAF7F2] dark:bg-[#242C24]'
+                        ? 'border-[#0F766E] dark:border-[#2DD4BF] bg-[#0F766E]/10 dark:bg-[#0D9488]/20 shadow-xs' 
+                        : 'border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40 dark:hover:border-[#2C444E] bg-[#F4F7F6] dark:bg-[#19272D]'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -520,14 +520,14 @@ export default function BookAppointmentModal({
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = getDoctorFallbackAvatar(docItem.name);
                         }}
-                        className="w-8 h-8 rounded-full object-cover border border-[#E6DFC6] dark:border-[#2F3B2F] bg-white dark:bg-[#151915]"
+                        className="w-8 h-8 rounded-full object-cover border border-[#E0E7E5] dark:border-[#21333A] bg-white dark:bg-[#0B1114]"
                       />
                       <div className="min-w-0">
-                        <p className="text-xs font-bold text-[#22291F] dark:text-[#FAF7F2] truncate font-heading">{docItem.name}</p>
-                        <p className="text-[10px] text-[#2D6A4F] dark:text-[#52B788] font-medium truncate">{docItem.specialization.split('(')[0]}</p>
+                        <p className="text-xs font-bold text-[#132226] dark:text-[#F4F7F6] truncate font-heading">{docItem.name}</p>
+                        <p className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] font-medium truncate">{docItem.specialization.split('(')[0]}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493] font-medium mt-auto">
+                    <span className="text-[10px] text-[#758D94] dark:text-[#79949B] font-medium mt-auto">
                       Works: {(docItem.availableDays || docItem.days || ['All']).slice(0, 3).map(d => d.slice(0, 3)).join(', ')}
                     </span>
                   </button>
@@ -539,10 +539,10 @@ export default function BookAppointmentModal({
           {/* 2. Date Selection with Working Days Enforcement */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
                 2. Select Date (Today or Upcoming)
               </label>
-              <span className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">
+              <span className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">
                 {selectedDoctor?.name}'s days: <strong>{doctorScheduleLabel}</strong>
               </span>
             </div>
@@ -567,10 +567,10 @@ export default function BookAppointmentModal({
                     title={!isWorking ? `Dr. ${selectedDoctor?.name} is off duty on ${item.dayFull}` : `Select ${item.dayFull} (${item.dateStr})`}
                     className={`p-2 rounded-xl text-center flex flex-col items-center justify-center transition-all ${
                       !isWorking
-                        ? 'bg-[#E6DFC6]/30 dark:bg-[#2F3B2F]/30 border border-dashed border-[#D8CEB3]/50 dark:border-[#445644]/40 text-[#8E8E84] dark:text-[#7A8A7A] cursor-not-allowed opacity-60'
+                        ? 'bg-[#E0E7E5]/30 dark:bg-[#21333A]/30 border border-dashed border-[#CFDAD6]/50 dark:border-[#2C444E]/40 text-[#758D94] dark:text-[#7A8A7A] cursor-not-allowed opacity-60'
                         : isSelected
-                          ? 'bg-[#2D6A4F] text-[#FAF7F2] border border-[#2D6A4F] dark:border-[#52B788] shadow-xs cursor-pointer ring-2 ring-[#2D6A4F]/20'
-                          : 'bg-[#FAF7F2] dark:bg-[#242C24] hover:bg-[#E6DFC6]/60 dark:hover:bg-[#2F3B2F] border border-[#D8CEB3] dark:border-[#445644] text-[#22291F] dark:text-[#FAF7F2] cursor-pointer'
+                          ? 'bg-[#0F766E] text-[#F4F7F6] border border-[#0F766E] dark:border-[#2DD4BF] shadow-xs cursor-pointer ring-2 ring-[#0F766E]/20'
+                          : 'bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border border-[#CFDAD6] dark:border-[#2C444E] text-[#132226] dark:text-[#F4F7F6] cursor-pointer'
                     }`}
                   >
                     <span className="text-[9px] uppercase tracking-wider font-bold">
@@ -584,7 +584,7 @@ export default function BookAppointmentModal({
                         ? 'text-rose-600 dark:text-rose-400'
                         : isSelected
                           ? 'text-[#A3C9B8]'
-                          : 'text-[#2D6A4F] dark:text-[#52B788]'
+                          : 'text-[#0F766E] dark:text-[#2DD4BF]'
                     }`}>
                       {!isWorking ? 'Off' : 'Open'}
                     </span>
@@ -597,7 +597,7 @@ export default function BookAppointmentModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <div className="relative">
-                  <Calendar className="w-4 h-4 text-[#8E8E84] dark:text-[#94A493] absolute left-3.5 top-3" />
+                  <Calendar className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
                   <input
                     type="date"
                     required
@@ -610,32 +610,32 @@ export default function BookAppointmentModal({
                         setBookingError(null);
                       }
                     }}
-                    className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs font-medium text-[#22291F] dark:text-[#FAF7F2] focus:outline-none transition-colors ${
+                    className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs font-medium text-[#132226] dark:text-[#F4F7F6] focus:outline-none transition-colors ${
                       !isDateWorkingDay
                         ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 text-rose-800'
-                        : 'bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] focus:border-[#2D6A4F] dark:focus:border-[#52B788]'
+                        : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
                     }`}
                   />
                 </div>
               </div>
 
               {/* Live Token Estimator */}
-              <div className="p-2.5 bg-[#FAF7F2] dark:bg-[#242C24] rounded-xl border border-[#E6DFC6] dark:border-[#2F3B2F] flex items-center justify-between">
+              <div className="p-2.5 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between">
                 <div>
-                  <span className="text-[9px] font-semibold text-[#B35F2B] dark:text-[#E58A54] uppercase tracking-wider block">
+                  <span className="text-[9px] font-semibold text-[#EA580C] dark:text-[#FB923C] uppercase tracking-wider block">
                     Next Queue Token
                   </span>
-                  <p className="text-lg font-black text-[#2D6A4F] dark:text-[#52B788] font-heading leading-tight">{estimatedToken}</p>
-                  <p className="text-[10px] text-[#6B6B63] dark:text-[#C4CFC3]">Sequential daily OPD token</p>
+                  <p className="text-lg font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading leading-tight">{estimatedToken}</p>
+                  <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">Sequential daily OPD token</p>
                 </div>
-                <div className="w-8 h-8 rounded-lg bg-[#2D6A4F]/15 dark:bg-[#52B788]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#0F766E]/15 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center">
                   <Sparkles className="w-4 h-4" />
                 </div>
               </div>
             </div>
 
             {/* Live Date Availability Indicator */}
-            <div className="mt-2.5 p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs bg-white dark:bg-[#1C221C] border-[#E6DFC6] dark:border-[#2F3B2F] shadow-2xs">
+            <div className="mt-2.5 p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs bg-white dark:bg-[#121C21] border-[#E0E7E5] dark:border-[#21333A] shadow-2xs">
               <div className="flex items-center gap-2.5">
                 {!isDateWorkingDay ? (
                   <>
@@ -646,7 +646,7 @@ export default function BookAppointmentModal({
                       <span className="font-bold text-rose-600 dark:text-rose-400 block">
                         Doctor Off Duty on {selectedDayInfo.full}
                       </span>
-                      <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493]">
+                      <p className="text-[11px] text-[#758D94] dark:text-[#79949B]">
                         Available clinic days: <strong>{doctorScheduleLabel}</strong>
                       </p>
                     </div>
@@ -660,7 +660,7 @@ export default function BookAppointmentModal({
                       <span className="font-bold text-rose-600 dark:text-rose-400 block">
                         Fully Booked ({bookedSlotsCount} of {totalSlotsCount} slots taken)
                       </span>
-                      <p className="text-[11px] text-[#8E8E84] dark:text-[#94A493]">
+                      <p className="text-[11px] text-[#758D94] dark:text-[#79949B]">
                         No slots remaining on this day. Please pick another date.
                       </p>
                     </div>
@@ -674,7 +674,7 @@ export default function BookAppointmentModal({
                       <span className="font-bold text-emerald-700 dark:text-emerald-400 block">
                         {availableSlotsCount} of {totalSlotsCount} slots available
                       </span>
-                      <p className="text-[11px] text-[#6B6B63] dark:text-[#C4CFC3]">
+                      <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">
                         {selectedDayInfo.full}, {date} • Standard OPD timings
                       </p>
                     </div>
@@ -699,11 +699,11 @@ export default function BookAppointmentModal({
           {/* 3. Time Slot Picker with Booked Detection */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
                 3. Available Time Slot
               </label>
               {loadingSlots && (
-                <span className="text-[10px] text-[#2D6A4F] dark:text-[#52B788] animate-pulse">
+                <span className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] animate-pulse">
                   Checking slot availability...
                 </span>
               )}
@@ -734,10 +734,10 @@ export default function BookAppointmentModal({
                       title={isBooked ? `${slot} is already booked on ${date}` : `Select ${slot}`}
                       className={`py-2 px-2 rounded-xl text-xs font-medium border text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
                         isBooked
-                          ? 'bg-[#E6DFC6]/40 dark:bg-[#2F3B2F]/40 border-[#D8CEB3]/50 dark:border-[#445644]/40 text-[#8E8E84] dark:text-[#7A8A7A] cursor-not-allowed opacity-75'
+                          ? 'bg-[#E0E7E5]/40 dark:bg-[#21333A]/40 border-[#CFDAD6]/50 dark:border-[#2C444E]/40 text-[#758D94] dark:text-[#7A8A7A] cursor-not-allowed opacity-75'
                           : isSelected
-                            ? 'bg-[#2D6A4F] dark:bg-[#357A5B] text-[#FAF7F2] border-[#2D6A4F] dark:border-[#52B788] shadow-xs cursor-pointer ring-2 ring-[#2D6A4F]/20'
-                            : 'bg-[#FAF7F2] dark:bg-[#242C24] hover:bg-[#E6DFC6]/60 dark:hover:bg-[#2F3B2F] border-[#D8CEB3] dark:border-[#445644] text-[#6B6B63] dark:text-[#C4CFC3] cursor-pointer'
+                            ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] border-[#0F766E] dark:border-[#2DD4BF] shadow-xs cursor-pointer ring-2 ring-[#0F766E]/20'
+                            : 'bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border-[#CFDAD6] dark:border-[#2C444E] text-[#5A7178] dark:text-[#9DB4BA] cursor-pointer'
                       }`}
                     >
                       <span className={isBooked ? 'line-through decoration-rose-500 font-semibold' : 'font-semibold'}>
@@ -760,10 +760,10 @@ export default function BookAppointmentModal({
           </div>
 
           {/* 4. Patient Details & Reason */}
-          <div className="space-y-3 pt-2 border-t border-[#E6DFC6] dark:border-[#2F3B2F]">
+          <div className="space-y-3 pt-2 border-t border-[#E0E7E5] dark:border-[#21333A]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] mb-1">
+                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] mb-1">
                   Patient Full Name <span className="text-rose-500 font-bold">*</span>
                 </label>
                 <input
@@ -777,10 +777,10 @@ export default function BookAppointmentModal({
                     }
                   }}
                   placeholder="e.g. Maya Sharma"
-                  className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none transition-colors ${
+                  className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
                     fieldErrors.name
                       ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
-                      : 'bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] focus:border-[#2D6A4F] dark:focus:border-[#52B788]'
+                      : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
                   }`}
                 />
                 {fieldErrors.name && (
@@ -791,7 +791,7 @@ export default function BookAppointmentModal({
                 )}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3] mb-1">
+                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] mb-1">
                   Contact Phone <span className="text-rose-500 font-bold">*</span>
                 </label>
                 <input
@@ -805,10 +805,10 @@ export default function BookAppointmentModal({
                     }
                   }}
                   placeholder="+91 98765 43210"
-                  className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none transition-colors ${
+                  className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
                     fieldErrors.phone
                       ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
-                      : 'bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] focus:border-[#2D6A4F] dark:focus:border-[#52B788]'
+                      : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
                   }`}
                 />
                 {fieldErrors.phone && (
@@ -822,10 +822,10 @@ export default function BookAppointmentModal({
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-[#6B6B63] dark:text-[#C4CFC3]">
+                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA]">
                   Reason for Visit / Chief Health Concern <span className="text-rose-500 font-bold">*</span>
                 </label>
-                <span className="text-[10px] text-[#8E8E84] dark:text-[#94A493]">
+                <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">
                   Required for doctor
                 </span>
               </div>
@@ -840,10 +840,10 @@ export default function BookAppointmentModal({
                   }
                 }}
                 placeholder="e.g. Mild fever, blood pressure checkup, cough for 2 days..."
-                className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#22291F] dark:text-[#FAF7F2] placeholder-[#8E8E84] dark:placeholder-[#94A493] focus:outline-none transition-colors ${
+                className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
                   fieldErrors.reason
                     ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
-                    : 'bg-[#FAF7F2] dark:bg-[#242C24] border border-[#D8CEB3] dark:border-[#445644] focus:border-[#2D6A4F] dark:focus:border-[#52B788]'
+                    : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
                 }`}
               />
               {fieldErrors.reason && (
@@ -866,10 +866,10 @@ export default function BookAppointmentModal({
                 !activeSlot || 
                 allBookedSlotsSet.has(activeSlot.trim().toLowerCase())
               }
-              className={`w-full flex items-center justify-center gap-2 py-3 px-4 text-[#FAF7F2] text-sm font-semibold rounded-xl transition-all shadow-sm ${
+              className={`w-full flex items-center justify-center gap-2 py-3 px-4 text-[#F4F7F6] text-sm font-semibold rounded-xl transition-all shadow-sm ${
                 loading || !isDateWorkingDay || isDateFullyBooked || !activeSlot || allBookedSlotsSet.has(activeSlot.trim().toLowerCase())
-                  ? 'bg-[#E6DFC6]/50 dark:bg-[#2F3B2F]/60 text-[#8E8E84] dark:text-[#94A493] cursor-not-allowed opacity-60'
-                  : 'bg-[#2D6A4F] hover:bg-[#23543E] dark:bg-[#357A5B] dark:hover:bg-[#2D6A4F] cursor-pointer'
+                  ? 'bg-[#E0E7E5]/50 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] cursor-not-allowed opacity-60'
+                  : 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] cursor-pointer'
               }`}
             >
               <span>

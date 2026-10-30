@@ -4,7 +4,7 @@ import QRCode from 'qrcode';
 export default function QRCodeImage({
   value,
   size = 120,
-  darkColor = '#1A1D19',
+  darkColor = '#0B1114',
   lightColor = '#FFFFFF',
   className = '',
   alt = 'Arogya Clinic QR Code'
@@ -19,7 +19,7 @@ export default function QRCodeImage({
       width: size * 2,
       margin: 1,
       color: {
-        dark: darkColor || '#1A1D19',
+        dark: darkColor || '#0B1114',
         light: lightColor || '#FFFFFF'
       },
       errorCorrectionLevel: 'M'

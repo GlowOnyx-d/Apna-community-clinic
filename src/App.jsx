@@ -42,8 +42,8 @@ const PharmacyDesk = lazy(() => import('./pages/pharmacy/PharmacyDesk'));
 function PageLoader() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-[#2D6A4F] border-t-transparent animate-spin" />
-      <span className="text-xs font-medium text-[#6B6B63] dark:text-[#C4CFC3]">Loading clinic portal...</span>
+      <div className="w-8 h-8 rounded-full border-2 border-[#0F766E] border-t-transparent animate-spin" />
+      <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA]">Loading clinic portal...</span>
     </div>
   );
 }
@@ -73,7 +73,7 @@ function AppRoutes() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8F6F1] text-[#22291F] dark:bg-[#131713] dark:text-[#FAF7F2] font-sans selection:bg-[#2D6A4F] selection:text-[#FAF7F2] transition-colors duration-200 relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#F4F7F6] text-[#132226] dark:bg-[#0B1114] dark:text-[#F4F7F6] font-sans selection:bg-[#0F766E] selection:text-[#F4F7F6] transition-colors duration-200 relative overflow-x-hidden">
       <HealthcareBackground />
       <Navbar />
       <main className="flex-1 relative z-10 pb-16 md:pb-0">

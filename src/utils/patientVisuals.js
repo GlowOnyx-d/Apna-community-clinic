@@ -39,7 +39,7 @@ export const getPatientFallbackAvatar = (name = 'Patient', gender = 'Female') =>
   const initial = (cleanName[0] || 'P').toUpperCase();
   const isMale = (gender || '').toLowerCase() === 'male';
 
-  const bgColor = isMale ? '#2D6A4F' : '#C97B4A';
+  const bgColor = isMale ? '#0F766E' : '#F97316';
   const lightBg = isMale ? '#EAF3EE' : '#FDF4ED';
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
