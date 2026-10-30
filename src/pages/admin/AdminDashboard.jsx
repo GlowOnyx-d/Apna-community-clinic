@@ -55,7 +55,37 @@ export default function AdminDashboard() {
   const fileInputRef = useRef(null);
   const [restoreError, setRestoreError] = useState('');
   const [isRestoring, setIsRestoring] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const [staffModalOpen, setStaffModalOpen] = useState(false);
+
+  const handleSeedSampleData = async () => {
+    if (!window.confirm('Load complete clinic dataset across all dashboards (6 specialists, active consultation queues, patient tokens, and SDG 3 health camps)?')) {
+      return;
+    }
+    setIsSeeding(true);
+    try {
+      await seedSampleClinicData();
+    } catch (err) {
+      console.error('Failed to load sample data:', err);
+    } finally {
+      setIsSeeding(false);
+    }
+  };
+
+  const handleResetDatabase = async () => {
+    if (!window.confirm('Are you sure you want to reset all clinic data to empty? This will clear doctors, appointments, and camps.')) {
+      return;
+    }
+    setIsResetting(true);
+    try {
+      await resetClinicData();
+    } catch (err) {
+      console.error('Failed to reset clinic data:', err);
+    } finally {
+      setIsResetting(false);
+    }
+  };
 
   const pendingAppointments = appointments.filter(a => a.status === 'pending');
   const completedAppointments = appointments.filter(a => a.status === 'done');
@@ -433,29 +463,23 @@ export default function AdminDashboard() {
 
           <div className="flex flex-wrap items-center gap-2.5">
             <button
-              onClick={() => {
-                if (window.confirm('Load complete clinic dataset across all 3 dashboards (5 specialists, active doctor consultation queues, patient tokens, and SDG 3 health camps)?')) {
-                  seedSampleClinicData();
-                }
-              }}
-              className="flex items-center gap-1.5 px-3 py-2 bg-[#0F766E]/15 hover:bg-[#0F766E]/25 text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              onClick={handleSeedSampleData}
+              disabled={isSeeding || isResetting || isRestoring}
+              className="flex items-center gap-1.5 px-3 py-2 bg-[#0F766E]/15 hover:bg-[#0F766E]/25 text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 text-xs font-bold rounded-xl transition-colors disabled:opacity-50 cursor-pointer"
               title="Load sample doctors, appointments, and health camps"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Load Sample Data</span>
+              <Sparkles className={`w-3.5 h-3.5 ${isSeeding ? 'animate-spin' : ''}`} />
+              <span>{isSeeding ? 'Loading Sample Data...' : 'Load Sample Data'}</span>
             </button>
 
             <button
-              onClick={() => {
-                if (window.confirm('Are you sure you want to reset all clinic data to empty? This will clear doctors, appointments, and camps.')) {
-                  resetClinicData();
-                }
-              }}
-              className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              onClick={handleResetDatabase}
+              disabled={isSeeding || isResetting || isRestoring}
+              className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40 text-xs font-bold rounded-xl transition-colors disabled:opacity-50 cursor-pointer"
               title="Clear all clinic records"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Database</span>
+              <RotateCcw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
+              <span>{isResetting ? 'Resetting Database...' : 'Reset Database'}</span>
             </button>
 
             <button

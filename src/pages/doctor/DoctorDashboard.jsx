@@ -146,7 +146,7 @@ function VitalGaugeCard({ type, label, value, compact = false }) {
 
   // Full Rich Gauge with 3-segment visual meter
   return (
-    <div className="flex-1 min-w-[130px] p-2.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs space-y-1.5">
+    <div className="flex-1 min-w-0 sm:min-w-[100px] p-2.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs space-y-1.5">
       <div className="flex items-center justify-between text-[11px]">
         <span className="font-semibold text-[#5A7178] dark:text-[#9DB4BA]">{label}</span>
         {evalResult && (
@@ -191,6 +191,7 @@ export default function DoctorDashboard() {
   const [dateFilter, setDateFilter] = useState('all'); // 'all' | 'today'
   const [activeTab, setActiveTab] = useState('queue'); // 'queue' | 'completed'
   const [selectedDoctorView, setSelectedDoctorView] = useState('my_queue'); // 'my_queue' | doctorId | 'all'
+  const [isSeeding, setIsSeeding] = useState(false);
 
   // Lock background scroll when consultation modal is open
   useEffect(() => {
@@ -457,8 +458,15 @@ export default function DoctorDashboard() {
   }, [labReports, selectedAppointment]);
 
   const handleAdminSeed = async () => {
-    if (window.confirm('Load complete starter clinic dataset across all 3 dashboards (5 specialists, active consultation queues, triage vitals, and SDG 3 health camps)?')) {
-      await seedSampleClinicData();
+    if (window.confirm('Load complete starter clinic dataset across all 3 dashboards (6 specialists, active consultation queues, triage vitals, and SDG 3 health camps)?')) {
+      setIsSeeding(true);
+      try {
+        await seedSampleClinicData();
+      } catch (err) {
+        console.error('DoctorDashboard seed error:', err);
+      } finally {
+        setIsSeeding(false);
+      }
     }
   };
 
@@ -486,11 +494,12 @@ export default function DoctorDashboard() {
               <button
                 type="button"
                 onClick={handleAdminSeed}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 bg-white/90 dark:bg-[#19272D] hover:bg-white dark:hover:bg-[#21333A] text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                disabled={isSeeding}
+                className="flex items-center gap-1.5 px-3.5 py-2.5 bg-white/90 dark:bg-[#19272D] hover:bg-white dark:hover:bg-[#21333A] text-[#0F766E] dark:text-[#2DD4BF] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
                 title="Hydrate all 3 dashboards with full clinic demo data"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
-                <span>Load Sample Data</span>
+                <Sparkles className={`w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF] ${isSeeding ? 'animate-spin' : ''}`} />
+                <span>{isSeeding ? 'Loading Sample Data...' : 'Load Sample Data'}</span>
               </button>
             </div>
           )}
@@ -980,7 +989,7 @@ export default function DoctorDashboard() {
                     <VitalGaugeCard type="bloodSugar" label="Blood Sugar" value={selectedAppointment.vitals.bloodSugar} />
                   )}
                   {selectedAppointment.vitals.weight && (
-                    <div className="flex-1 min-w-[130px] p-2.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs space-y-1.5">
+                    <div className="flex-1 min-w-0 sm:min-w-[100px] p-2.5 rounded-xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs space-y-1.5">
                       <span className="font-semibold text-[#5A7178] dark:text-[#9DB4BA] text-[11px] block">Patient Weight</span>
                       <div className="text-sm font-extrabold text-[#132226] dark:text-[#F4F7F6] tracking-tight">
                         {selectedAppointment.vitals.weight}

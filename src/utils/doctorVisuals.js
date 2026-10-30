@@ -13,6 +13,8 @@ export const DOCTOR_PHOTO_MAP = {
   'amitav roy': 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=300&auto=format&fit=crop&q=80',
   'doc_meera_iyer': 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=300&auto=format&fit=crop&q=80',
   'meera iyer': 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=300&auto=format&fit=crop&q=80',
+  'doc_anita_sharma': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
+  'anita sharma': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
   'doc_vikram_patel': 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80',
   'vikram patel': 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80'
 };
@@ -91,6 +93,14 @@ export const getSpecialtyConfig = (specialization = '') => {
       key: 'pediatrics',
       label: 'Pediatrics',
       badgeClass: 'bg-[#F97316]/12 text-[#EA580C] border-[#F97316]/30 dark:bg-[#FB923C]/18 dark:text-[#FB923C] dark:border-[#FB923C]/30'
+    };
+  }
+
+  if (s.includes('obstetric') || s.includes('gynecol') || s.includes('maternal') || s.includes('women')) {
+    return {
+      key: 'obstetrics',
+      label: "Women's Health",
+      badgeClass: 'bg-rose-500/12 text-rose-700 border-rose-500/30 dark:bg-rose-500/18 dark:text-rose-300 dark:border-rose-500/30'
     };
   }
 

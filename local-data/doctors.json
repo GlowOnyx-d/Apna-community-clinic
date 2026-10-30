@@ -1,11 +1,42 @@
 [
   {
+    "id": "XmMYhNw57vcRWLcvTB0j9EeFydB3",
+    "legacyId": "doc_rajesh_patel",
+    "name": "Dr. Rajesh Patel",
+    "email": "rajesh.patel@communityclinic.org",
+    "specialization": "Internal Medicine & Critical Care",
+    "qualification": "MBBS, MD (Internal Medicine), FICP",
+    "cabin": "Cabin 101 - Acute & Chronic Care Block",
+    "experience": "15+ years",
+    "avatar": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80",
+    "availableDays": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "availableSlots": [
+      "09:00 AM",
+      "10:00 AM",
+      "11:00 AM",
+      "12:00 PM",
+      "02:00 PM",
+      "03:00 PM",
+      "04:00 PM"
+    ],
+    "maxPatientsPerSlot": 4,
+    "rating": 4.96,
+    "consultationFee": "Free (Community Health Funded)"
+  },
+  {
     "id": "doc_sarah_jenkins",
     "name": "Dr. Sarah Jenkins",
     "email": "doctor.sarah@communityclinic.org",
     "specialization": "General Medicine & Family Practice",
     "qualification": "MBBS, MD (Family Medicine)",
-    "cabin": "Cabin 101 - Primary Care Block",
+    "cabin": "Cabin 102 - Primary Care Block",
     "experience": "12+ years",
     "avatar": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&auto=format&fit=crop&q=80",
     "availableDays": [
@@ -24,7 +55,7 @@
       "04:00 PM"
     ],
     "maxPatientsPerSlot": 4,
-    "rating": 4.9,
+    "rating": 4.92,
     "consultationFee": "Free (Community Health Funded)"
   },
   {
@@ -33,8 +64,8 @@
     "email": "doctor.priya@communityclinic.org",
     "specialization": "Pediatrics & Child Health",
     "qualification": "MBBS, DCH, MD (Pediatrics)",
-    "cabin": "Cabin 102 - Maternal & Child Block",
-    "experience": "9+ years",
+    "cabin": "Cabin 103 - Maternal & Child Block",
+    "experience": "10+ years",
     "avatar": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=300&auto=format&fit=crop&q=80",
     "availableDays": [
       "Monday",
@@ -54,13 +85,39 @@
     "consultationFee": "Free (Community Health Funded)"
   },
   {
+    "id": "doc_anita_sharma",
+    "name": "Dr. Anita Sharma",
+    "email": "doctor.anita@communityclinic.org",
+    "specialization": "Obstetrics & Women's Health",
+    "qualification": "MBBS, MS (OB/GYN), FICOG",
+    "cabin": "Cabin 104 - Women's Wellness Suite",
+    "experience": "13+ years",
+    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80",
+    "availableDays": [
+      "Monday",
+      "Tuesday",
+      "Thursday",
+      "Saturday"
+    ],
+    "availableSlots": [
+      "10:00 AM",
+      "11:00 AM",
+      "02:00 PM",
+      "03:00 PM",
+      "04:00 PM"
+    ],
+    "maxPatientsPerSlot": 4,
+    "rating": 4.94,
+    "consultationFee": "Free (Community Health Funded)"
+  },
+  {
     "id": "doc_amitav_roy",
     "name": "Dr. Amitav Roy",
     "email": "doctor.amitav@communityclinic.org",
-    "specialization": "Community Dental Care",
+    "specialization": "Community Dental Care & Oral Surgery",
     "qualification": "BDS, MDS (Conservative Dentistry)",
-    "cabin": "Cabin 103 - Dental Suite",
-    "experience": "8+ years",
+    "cabin": "Cabin 105 - Dental Suite",
+    "experience": "9+ years",
     "avatar": "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=300&auto=format&fit=crop&q=80",
     "availableDays": [
       "Tuesday",
@@ -74,16 +131,16 @@
       "03:00 PM"
     ],
     "maxPatientsPerSlot": 3,
-    "rating": 4.8,
+    "rating": 4.88,
     "consultationFee": "Free (Community Health Funded)"
   },
   {
     "id": "doc_meera_iyer",
     "name": "Dr. Meera Iyer",
     "email": "doctor.meera@communityclinic.org",
-    "specialization": "Preventive Diagnostics & Screening",
+    "specialization": "Preventive Diagnostics & Community Pathology",
     "qualification": "MBBS, DNB (Pathology)",
-    "cabin": "Cabin 104 - Diagnostics Block",
+    "cabin": "Cabin 106 - Diagnostics Block",
     "experience": "11+ years",
     "avatar": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=300&auto=format&fit=crop&q=80",
     "availableDays": [
@@ -102,7 +159,7 @@
       "02:30 PM"
     ],
     "maxPatientsPerSlot": 5,
-    "rating": 4.9,
+    "rating": 4.95,
     "consultationFee": "Free (Community Health Funded)"
   }
 ]

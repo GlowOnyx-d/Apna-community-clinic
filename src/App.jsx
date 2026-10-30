@@ -73,10 +73,10 @@ function AppRoutes() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F4F7F6] text-[#132226] dark:bg-[#0B1114] dark:text-[#F4F7F6] font-sans selection:bg-[#0F766E] selection:text-[#F4F7F6] transition-colors duration-200 relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-[#F4F7F6] text-[#132226] dark:bg-[#0B1114] dark:text-[#F4F7F6] font-sans selection:bg-[#0F766E] selection:text-[#F4F7F6] transition-colors duration-200 relative">
       <HealthcareBackground />
       <Navbar />
-      <main className="flex-1 relative z-10 pb-16 md:pb-0">
+      <main className="flex-1 relative z-10 pb-16 xl:pb-0">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Public Routes */}

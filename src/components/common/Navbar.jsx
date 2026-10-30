@@ -125,7 +125,7 @@ export default function Navbar() {
           </div>
 
           {/* Center: Navigation Links grouped together */}
-          <nav className="hidden md:flex items-center justify-center gap-1.5 lg:gap-2 flex-1 px-2">
+          <nav className="hidden xl:flex items-center justify-center gap-1.5 2xl:gap-2 flex-1 px-2">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = location.pathname === link.path;
@@ -146,7 +146,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right: Cluster pinned firmly to far right edge */}
-          <div className="hidden md:flex items-center gap-2 lg:gap-2.5 shrink-0 justify-end ml-auto">
+          <div className="hidden xl:flex items-center gap-2 lg:gap-2.5 shrink-0 justify-end ml-auto">
             {/* Live OPD TV Waiting Hall Board Link */}
             <Link
               to="/display"
@@ -237,7 +237,20 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Actions (Language + Theme Toggle + Hamburger) */}
-          <div className="flex items-center gap-2 md:hidden shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 xl:hidden shrink-0">
+            {/* Compact OPD TV Link on tablet/mobile header */}
+            <Link
+              to="/display"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open OPD Live TV Waiting Hall Call Board"
+              className="hidden sm:flex items-center gap-1 px-2 py-1.5 rounded-xl border border-[#0F766E]/25 bg-[#0F766E]/10 dark:border-[#2DD4BF]/30 dark:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
+              <Tv className="w-3.5 h-3.5" />
+              <span>TV</span>
+            </Link>
+
             <button
               onClick={toggleLanguage}
               title="Toggle Language"
@@ -266,7 +279,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
+        <div className="xl:hidden border-t border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
           
           {/* Cloud Firestore status inside mobile drawer */}
           <div

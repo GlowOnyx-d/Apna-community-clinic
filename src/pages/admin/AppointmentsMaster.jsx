@@ -170,8 +170,8 @@ export default function AppointmentsMaster() {
         </div>
       ) : (
         <>
-          {/* Mobile View: Responsive Cards (<md) */}
-          <div className="space-y-3 md:hidden">
+          {/* Mobile View: Responsive Cards (<lg) */}
+          <div className="space-y-3 lg:hidden">
             {filteredAppointments.map((apt) => (
               <div
                 key={apt.id}
@@ -289,8 +289,8 @@ export default function AppointmentsMaster() {
             ))}
           </div>
 
-          {/* Desktop View: Full Data Table (>=md) */}
-          <div className="hidden md:block bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-sm overflow-hidden">
+          {/* Desktop View: Full Data Table (>=lg) */}
+          <div className="hidden lg:block bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>

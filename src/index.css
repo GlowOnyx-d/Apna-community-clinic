@@ -50,6 +50,11 @@
     --color-terracotta-tint: rgba(251, 146, 60, 0.16);
   }
 
+  html, body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     font-family: var(--font-sans);
     background-color: var(--bg-canvas);

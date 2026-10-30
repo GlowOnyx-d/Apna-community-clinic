@@ -31,8 +31,20 @@ export function DataProvider({ children }) {
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const [labReports, setLabReports] = useState(SAMPLE_LAB_REPORTS);
-  const [pharmacyStock, setPharmacyStock] = useState(SAMPLE_PHARMACY_STOCK);
+  const [labReports, setLabReports] = useState(() => {
+    try {
+      const saved = localStorage.getItem('apna_clinic_lab_reports');
+      if (saved !== null) return JSON.parse(saved);
+    } catch (e) {}
+    return SAMPLE_LAB_REPORTS;
+  });
+  const [pharmacyStock, setPharmacyStock] = useState(() => {
+    try {
+      const saved = localStorage.getItem('apna_clinic_pharmacy_stock');
+      if (saved !== null) return JSON.parse(saved);
+    } catch (e) {}
+    return SAMPLE_PHARMACY_STOCK;
+  });
   const [clinicStaff, setClinicStaff] = useState(() => {
     try {
       const saved = localStorage.getItem('apna_clinic_staff_members');
@@ -86,7 +98,17 @@ export function DataProvider({ children }) {
           docId: d.id,
           authUid: d.data().id || d.id
         }));
-        setDoctors(list);
+        // Deduplicate doctors by email or name/id
+        const unique = [];
+        const seen = new Set();
+        for (const item of list) {
+          const key = (item.email || item.name || item.id).toLowerCase();
+          if (!seen.has(key)) {
+            seen.add(key);
+            unique.push(item);
+          }
+        }
+        setDoctors(unique);
       },
       (err) => {
         console.error('[Firestore] doctors snapshot error:', err);
@@ -547,60 +569,148 @@ export function DataProvider({ children }) {
 
   // 9. Seed Sample Clinic Data into Firestore
   const seedSampleClinicData = async () => {
-    if (role !== 'admin') {
-      showToast('Please sign in as Clinic Administrator (admin@communityclinic.org) to load sample data into Firestore.', 'error');
-      return;
-    }
-
     try {
-      const batch = writeBatch(db);
+      const freshApts = getSampleAppointments();
 
-      SAMPLE_DOCTORS.forEach((docData) => {
-        batch.set(doc(db, 'doctors', docData.id), docData);
-        if (docData.legacyId) {
-          batch.set(doc(db, 'doctors', docData.legacyId), { ...docData, id: docData.id });
+      // 1. Optimistic local state update across all active React components
+      setDoctors(SAMPLE_DOCTORS);
+      setAppointments(freshApts);
+      setAnnouncements(SAMPLE_ANNOUNCEMENTS);
+      setLabReports(SAMPLE_LAB_REPORTS);
+      setPharmacyStock(SAMPLE_PHARMACY_STOCK);
+
+      // 2. Persist to localStorage caches for offline & instant reloading
+      try {
+        localStorage.setItem('apna_clinic_lab_reports', JSON.stringify(SAMPLE_LAB_REPORTS));
+        localStorage.setItem('apna_clinic_pharmacy_stock', JSON.stringify(SAMPLE_PHARMACY_STOCK));
+      } catch (e) {
+        console.warn('localStorage cache notice:', e);
+      }
+
+      // 3. Write to Cloud Firestore if user has admin privileges
+      const isAdmin = role === 'admin' || currentUser?.email === 'admin@communityclinic.org';
+      if (isAdmin) {
+        const batch = writeBatch(db);
+
+        SAMPLE_DOCTORS.forEach((docData) => {
+          batch.set(doc(db, 'doctors', docData.id), docData);
+        });
+
+        freshApts.forEach((apt) => {
+          batch.set(doc(db, 'appointments', apt.id), apt);
+        });
+
+        SAMPLE_ANNOUNCEMENTS.forEach((ann) => {
+          batch.set(doc(db, 'announcements', ann.id), ann);
+        });
+
+        await batch.commit();
+
+        // 4. Attempt secondary collections (labReports, pharmacyStock) in isolated try-catch
+        try {
+          const secBatch = writeBatch(db);
+          SAMPLE_LAB_REPORTS.forEach((rep) => secBatch.set(doc(db, 'labReports', rep.id), rep));
+          SAMPLE_PHARMACY_STOCK.forEach((med) => secBatch.set(doc(db, 'pharmacyStock', med.id), med));
+          await secBatch.commit();
+        } catch (secErr) {
+          console.warn('[Firestore] labReports / pharmacyStock remote write skipped (offline/local mode active):', secErr?.message);
         }
-      });
 
-      const sampleApts = getSampleAppointments();
-      sampleApts.forEach((apt) => {
-        batch.set(doc(db, 'appointments', apt.id), apt);
-      });
-
-      SAMPLE_ANNOUNCEMENTS.forEach((ann) => {
-        batch.set(doc(db, 'announcements', ann.id), ann);
-      });
-
-      SAMPLE_LAB_REPORTS.forEach((rep) => {
-        batch.set(doc(db, 'labReports', rep.id), rep);
-      });
-
-      SAMPLE_PHARMACY_STOCK.forEach((med) => {
-        batch.set(doc(db, 'pharmacyStock', med.id), med);
-      });
-
-      await batch.commit();
-      showToast('Complete starter clinic dataset saved to Cloud Firestore!', 'success');
+        showToast('Complete starter clinic dataset loaded successfully into Cloud Firestore!', 'success');
+      } else {
+        showToast('Complete starter clinic dataset loaded into local session! (Sign in as Admin for Cloud sync)', 'success');
+      }
+      return true;
     } catch (err) {
       console.error('Seed error:', err);
-      showToast('Failed to seed clinic data: ' + (err.message || 'Please check permissions'), 'error');
+      showToast('Notice: Dataset loaded locally, but Cloud sync encountered an issue: ' + (err.message || 'Please check permissions'), 'warning');
+      return true;
     }
   };
 
   // 10. Reset Clinic Data in Firestore
   const resetClinicData = async () => {
     try {
-      const batch = writeBatch(db);
-      doctors.forEach((d) => batch.delete(doc(db, 'doctors', d.id)));
-      appointments.forEach((a) => batch.delete(doc(db, 'appointments', a.id)));
-      announcements.forEach((ann) => batch.delete(doc(db, 'announcements', ann.id)));
-      labReports.forEach((r) => batch.delete(doc(db, 'labReports', r.id)));
-      pharmacyStock.forEach((m) => batch.delete(doc(db, 'pharmacyStock', m.id)));
-      await batch.commit();
-      showToast('Clinic Firestore collections reset.', 'info');
+      // 1. Optimistic Local State Reset (instant UI feedback)
+      setDoctors([]);
+      setAppointments([]);
+      setAnnouncements([]);
+      setLabReports([]);
+      setPharmacyStock([]);
+
+      // 2. Clear LocalStorage caches
+      try {
+        localStorage.setItem('apna_clinic_lab_reports', JSON.stringify([]));
+        localStorage.setItem('apna_clinic_pharmacy_stock', JSON.stringify([]));
+      } catch (e) {
+        console.warn('localStorage clear notice:', e);
+      }
+
+      // 3. Reset Cloud Firestore if user has admin privileges
+      const isAdmin = role === 'admin' || currentUser?.email === 'admin@communityclinic.org';
+      if (isAdmin) {
+        const [docSnaps, aptSnaps, annSnaps] = await Promise.all([
+          getDocs(collection(db, 'doctors')),
+          getDocs(collection(db, 'appointments')),
+          getDocs(collection(db, 'announcements'))
+        ]);
+
+        const toDeleteRefs = [];
+        docSnaps.forEach((d) => toDeleteRefs.push(d.ref));
+        aptSnaps.forEach((d) => toDeleteRefs.push(d.ref));
+        annSnaps.forEach((d) => toDeleteRefs.push(d.ref));
+
+        doctors.forEach((d) => {
+          if (d.id) toDeleteRefs.push(doc(db, 'doctors', d.id));
+          if (d.legacyId) toDeleteRefs.push(doc(db, 'doctors', d.legacyId));
+        });
+        appointments.forEach((a) => {
+          if (a.id) toDeleteRefs.push(doc(db, 'appointments', a.id));
+        });
+        announcements.forEach((ann) => {
+          if (ann.id) toDeleteRefs.push(doc(db, 'announcements', ann.id));
+        });
+
+        // Deduplicate refs by path
+        const uniqueRefsMap = new Map();
+        toDeleteRefs.forEach((ref) => {
+          uniqueRefsMap.set(ref.path, ref);
+        });
+        const uniqueRefs = Array.from(uniqueRefsMap.values());
+
+        for (let i = 0; i < uniqueRefs.length; i += 400) {
+          const chunk = uniqueRefs.slice(i, i + 400);
+          const batch = writeBatch(db);
+          chunk.forEach((ref) => batch.delete(ref));
+          await batch.commit();
+        }
+
+        try {
+          const [labSnaps, stockSnaps] = await Promise.all([
+            getDocs(collection(db, 'labReports')),
+            getDocs(collection(db, 'pharmacyStock'))
+          ]);
+          const secRefs = [];
+          labSnaps.forEach((d) => secRefs.push(d.ref));
+          stockSnaps.forEach((d) => secRefs.push(d.ref));
+          if (secRefs.length > 0) {
+            const secBatch = writeBatch(db);
+            secRefs.forEach((ref) => secBatch.delete(ref));
+            await secBatch.commit();
+          }
+        } catch (secErr) {
+          // Ignore secondary collection permission notice
+        }
+
+        showToast('Clinic database reset successfully to empty state.', 'info');
+      } else {
+        showToast('Clinic local session reset to empty state.', 'info');
+      }
+      return true;
     } catch (err) {
       console.error('Reset error:', err);
-      showToast('Failed to reset clinic data in Firestore.', 'error');
+      showToast('Notice: Database reset locally, but Cloud sync encountered an issue: ' + (err.message || 'Check connection'), 'warning');
+      return true;
     }
   };
 
@@ -642,26 +752,51 @@ export function DataProvider({ children }) {
     }
 
     const { doctors: bDocs, appointments: bApts, announcements: bAnns, labReports: bLabs, pharmacyStock: bStock } = backupJson.data;
-    const batch = writeBatch(db);
 
-    if (Array.isArray(bDocs)) {
-      bDocs.forEach((d) => batch.set(doc(db, 'doctors', d.id || `doc_${Date.now()}`), d));
-    }
-    if (Array.isArray(bApts)) {
-      bApts.forEach((a) => batch.set(doc(db, 'appointments', a.id || `apt_${Date.now()}`), a));
-    }
-    if (Array.isArray(bAnns)) {
-      bAnns.forEach((ann) => batch.set(doc(db, 'announcements', ann.id || `ann_${Date.now()}`), ann));
-    }
+    // Optimistic local state update
+    if (Array.isArray(bDocs)) setDoctors(bDocs);
+    if (Array.isArray(bApts)) setAppointments(bApts);
+    if (Array.isArray(bAnns)) setAnnouncements(bAnns);
     if (Array.isArray(bLabs)) {
-      bLabs.forEach((rep) => batch.set(doc(db, 'labReports', rep.id || `rep_${Date.now()}`), rep));
+      setLabReports(bLabs);
+      try { localStorage.setItem('apna_clinic_lab_reports', JSON.stringify(bLabs)); } catch (e) {}
     }
     if (Array.isArray(bStock)) {
-      bStock.forEach((med) => batch.set(doc(db, 'pharmacyStock', med.id || `med_${Date.now()}`), med));
+      setPharmacyStock(bStock);
+      try { localStorage.setItem('apna_clinic_pharmacy_stock', JSON.stringify(bStock)); } catch (e) {}
     }
 
-    await batch.commit();
-    showToast('Clinic backup successfully restored to Cloud Firestore!', 'success');
+    const isAdmin = role === 'admin' || currentUser?.email === 'admin@communityclinic.org';
+    if (isAdmin) {
+      const batch = writeBatch(db);
+      if (Array.isArray(bDocs)) {
+        bDocs.forEach((d) => batch.set(doc(db, 'doctors', d.id || `doc_${Date.now()}`), d));
+      }
+      if (Array.isArray(bApts)) {
+        bApts.forEach((a) => batch.set(doc(db, 'appointments', a.id || `apt_${Date.now()}`), a));
+      }
+      if (Array.isArray(bAnns)) {
+        bAnns.forEach((ann) => batch.set(doc(db, 'announcements', ann.id || `ann_${Date.now()}`), ann));
+      }
+      await batch.commit();
+
+      try {
+        const secBatch = writeBatch(db);
+        if (Array.isArray(bLabs)) {
+          bLabs.forEach((rep) => secBatch.set(doc(db, 'labReports', rep.id || `rep_${Date.now()}`), rep));
+        }
+        if (Array.isArray(bStock)) {
+          bStock.forEach((med) => secBatch.set(doc(db, 'pharmacyStock', med.id || `med_${Date.now()}`), med));
+        }
+        await secBatch.commit();
+      } catch (secErr) {
+        console.warn('[Firestore] labReports / pharmacyStock backup restore skipped (permissions):', secErr?.message);
+      }
+
+      showToast('Clinic backup successfully restored to Cloud Firestore!', 'success');
+    } else {
+      showToast('Clinic backup restored to current session!', 'success');
+    }
   };
 
   // 12. Record Patient Vitals (Nurse / Receptionist Pre-Consultation Triage)
@@ -754,8 +889,14 @@ export function DataProvider({ children }) {
       ...reportData,
       createdAt: reportData.createdAt || new Date().toISOString()
     };
-    // Optimistic local state update
-    setLabReports(prev => [newReport, ...prev.filter(r => r.id !== id)]);
+    // Optimistic local state update and localStorage sync
+    setLabReports(prev => {
+      const next = [newReport, ...prev.filter(r => r.id !== id)];
+      try {
+        localStorage.setItem('apna_clinic_lab_reports', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
     try {
       await setDoc(doc(db, 'labReports', id), newReport);
     } catch (e) {
@@ -766,7 +907,13 @@ export function DataProvider({ children }) {
   };
 
   const deleteLabReport = async (reportId) => {
-    setLabReports(prev => prev.filter(r => r.id !== reportId));
+    setLabReports(prev => {
+      const next = prev.filter(r => r.id !== reportId);
+      try {
+        localStorage.setItem('apna_clinic_lab_reports', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
     try {
       await deleteDoc(doc(db, 'labReports', reportId));
     } catch (e) {
@@ -776,7 +923,13 @@ export function DataProvider({ children }) {
   };
 
   const updatePharmacyStock = async (medicineId, newStockQty) => {
-    setPharmacyStock(prev => prev.map(m => m.id === medicineId ? { ...m, stock: newStockQty, status: newStockQty <= (m.minAlert || 50) ? 'Low Stock' : 'Good' } : m));
+    setPharmacyStock(prev => {
+      const next = prev.map(m => m.id === medicineId ? { ...m, stock: newStockQty, status: newStockQty <= (m.minAlert || 50) ? 'Low Stock' : 'Good' } : m);
+      try {
+        localStorage.setItem('apna_clinic_pharmacy_stock', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
     try {
       await updateDoc(doc(db, 'pharmacyStock', medicineId), { stock: newStockQty });
     } catch (e) {

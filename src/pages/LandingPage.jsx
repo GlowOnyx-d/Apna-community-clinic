@@ -399,7 +399,7 @@ export default function LandingPage() {
 
           {/* Dynamic Queue Output Box */}
           <div className="bg-[#F4F7F6] dark:bg-[#0B1114] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-center">
 
               {/* Doctor on Duty */}
               <div className="flex items-center gap-3.5">
@@ -474,7 +474,7 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {/* Card 1: Patient Hub */}
           <div className="bg-[#F7F3EB] dark:bg-[#121C21] rounded-3xl border border-[#E8DFD1] dark:border-[#21333A] hover:border-[#D5C9B3] dark:hover:border-[#2C444E] p-6 sm:p-8 shadow-[0_4px_20px_-2px_rgba(34,41,31,0.05)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between group">
@@ -626,7 +626,7 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {displayDoctors.map((doc) => (
             <div
               key={doc.id || doc.name}
@@ -709,7 +709,7 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
           <div className="p-6 rounded-2xl bg-white dark:bg-[#121C21] border border-[#E0E7E5] dark:border-[#21333A] shadow-sm flex flex-col justify-between">
             <p className="text-xs text-[#132226] dark:text-[#F4F7F6] italic leading-relaxed">
