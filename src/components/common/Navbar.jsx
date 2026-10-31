@@ -67,7 +67,6 @@ export default function Navbar() {
       return [
         { name: t('navDashboard', 'Dashboard'), path: '/patient', icon: Calendar },
         { name: t('navMyAppointments', 'My Appointments'), path: '/patient/appointments', icon: FileText },
-        { name: 'Dispensary', path: '/pharmacy', icon: Pill },
         { name: t('navHealthCamps', 'Health Camps & SDG'), path: '/patient/announcements', icon: Megaphone }
       ];
     }

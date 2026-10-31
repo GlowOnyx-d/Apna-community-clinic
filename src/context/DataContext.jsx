@@ -244,25 +244,6 @@ export function DataProvider({ children }) {
     };
   }, [currentUser, role, isDisplayPage]);
 
-  // Generate unique daily sequential token for (Doctor + Date)
-  const generateTokenNumber = (doctorId, date) => {
-    const doctorDayApts = appointments.filter(
-      (apt) => apt.doctorId === doctorId && apt.date === date
-    );
-    let maxSeq = 0;
-    doctorDayApts.forEach((apt) => {
-      if (apt.tokenNumber) {
-        const match = apt.tokenNumber.match(/\d+/);
-        if (match) {
-          const num = parseInt(match[0], 10);
-          if (num > maxSeq) maxSeq = num;
-        }
-      }
-    });
-    const nextNum = maxSeq + 1;
-    return `TK-${String(nextNum).padStart(2, '0')}`;
-  };
-
   // 1. Book Appointment -> Persists to Firestore with atomic slot conflict validation
   const bookAppointment = async (bookingDetails) => {
     const {
@@ -291,40 +272,8 @@ export function DataProvider({ children }) {
     const slotLockDocId = `${doctorId}_${date}_${cleanTime}`;
     const slotLockRef = doc(db, 'slotLocks', slotLockDocId);
 
-    // 1. Pre-check: Query existing appointments for this doctor + date
-    // to catch any existing active bookings (including sample and pre-existing data)
-    try {
-      const existingAptsQuery = query(
-        collection(db, 'appointments'),
-        where('doctorId', '==', doctorId),
-        where('date', '==', date)
-      );
-      const existingSnap = await getDocs(existingAptsQuery);
-      const conflict = existingSnap.docs.find((d) => {
-        const data = d.data();
-        return (
-          data.status !== 'cancelled' &&
-          (data.time || '').trim().toLowerCase() === time.trim().toLowerCase()
-        );
-      });
-
-      if (conflict) {
-        const err = new Error("This slot was just booked, please choose another time");
-        showToast(err.message, 'error');
-        throw err;
-      }
-    } catch (queryErr) {
-      if (queryErr.message.includes("This slot was just booked")) {
-        throw queryErr;
-      }
-      console.warn('Pre-check query warning (proceeding to transaction):', queryErr);
-    }
-
-    // 2. Atomic Transaction: Claim slot lock & create appointment in a single atomic commit
-    // This prevents race conditions if two patients submit for the exact same slot at the exact same moment.
     const newAppointmentId = `apt_${Date.now()}`;
     const aptRef = doc(db, 'appointments', newAppointmentId);
-    const tokenNumber = generateTokenNumber(doctorId, date);
 
     const newAppointment = {
       id: newAppointmentId,
@@ -340,7 +289,6 @@ export function DataProvider({ children }) {
       date,
       time: time.trim(),
       status: 'pending',
-      tokenNumber,
       reason: reason.trim(),
       notes: '',
       diagnosis: '',
@@ -348,49 +296,30 @@ export function DataProvider({ children }) {
       createdAt: new Date().toISOString()
     };
 
+    const counterRef = doc(db, 'tokenCounters', `${doctorId}_${date}`);
+    let tokenNumber;
     try {
-      await runTransaction(db, async (transaction) => {
-        const slotLockDoc = await transaction.get(slotLockRef);
-        if (slotLockDoc.exists()) {
-          const slotLockData = slotLockDoc.data();
-          if (slotLockData && slotLockData.status !== 'cancelled') {
-            throw new Error("This slot was just booked, please choose another time");
-          }
+      await runTransaction(db, async (tx) => {
+        const lockSnap = await tx.get(slotLockRef);
+        const counterSnap = await tx.get(counterRef);
+        if (lockSnap.exists() && lockSnap.data().status !== 'cancelled') {
+          throw new Error('This slot was just booked, please choose another time');
         }
-
-        // Commit both the appointment and the slot lock atomically
-        transaction.set(aptRef, newAppointment);
-        transaction.set(slotLockRef, {
-          appointmentId: newAppointmentId,
-          doctorId,
-          date,
-          time: time.trim(),
-          status: 'booked',
-          bookedAt: new Date().toISOString()
+        const last = counterSnap.exists() ? counterSnap.data().last : 0;
+        tokenNumber = `TK-${String(last + 1).padStart(2, '0')}`;
+        tx.set(counterRef, { last: last + 1, doctorId, date });
+        tx.set(aptRef, { ...newAppointment, tokenNumber });
+        tx.set(slotLockRef, {
+          appointmentId: newAppointmentId, doctorId, date,
+          time: time.trim(), status: 'booked', bookedAt: new Date().toISOString()
         });
       });
-    } catch (txErr) {
-      if (txErr.message && txErr.message.includes("This slot was just booked")) {
-        showToast(txErr.message, 'error');
-        throw txErr;
-      }
-      // If transaction encounters rules or permissions, attempt direct write with slot lock
-      console.warn('Transaction warning, falling back to direct write:', txErr);
-      await setDoc(aptRef, newAppointment);
-      try {
-        await setDoc(slotLockRef, {
-          appointmentId: newAppointmentId,
-          doctorId,
-          date,
-          time: time.trim(),
-          status: 'booked',
-          bookedAt: new Date().toISOString()
-        });
-      } catch (e) {}
+    } catch (err) {
+      showToast(err.message, 'error');
+      throw err;
     }
-
     showToast(`Appointment booked! Your Token is ${tokenNumber}`, 'success');
-    return newAppointment;
+    return { ...newAppointment, tokenNumber };
   };
 
   // 2. Cancel Appointment -> Updates Firestore 'appointments' and releases slotLock
@@ -616,6 +545,58 @@ export function DataProvider({ children }) {
           console.warn('[Firestore] labReports / pharmacyStock remote write skipped (offline/local mode active):', secErr?.message);
         }
 
+        // 5. Create tokenCounters and slotLocks for seeded appointments
+        try {
+          const counterMap = new Map();
+          freshApts.forEach((apt) => {
+            if (apt.doctorId && apt.date) {
+              const key = `${apt.doctorId}_${apt.date}`;
+              let current = counterMap.get(key);
+              if (!current) {
+                current = { doctorId: apt.doctorId, date: apt.date, last: 0 };
+                counterMap.set(key, current);
+              }
+              if (apt.tokenNumber) {
+                const match = apt.tokenNumber.match(/\d+/);
+                if (match) {
+                  const num = parseInt(match[0], 10);
+                  if (num > current.last) {
+                    current.last = num;
+                  }
+                }
+              }
+            }
+          });
+
+          const syncBatch = writeBatch(db);
+          counterMap.forEach(({ doctorId, date, last }, key) => {
+            syncBatch.set(doc(db, 'tokenCounters', key), {
+              doctorId,
+              date,
+              last
+            });
+          });
+
+          freshApts.forEach((apt) => {
+            if (apt.status !== 'cancelled' && apt.time && apt.doctorId && apt.date) {
+              const cleanTime = apt.time.trim().replace(/[^a-zA-Z0-9]/g, '_');
+              const slotLockDocId = `${apt.doctorId}_${apt.date}_${cleanTime}`;
+              syncBatch.set(doc(db, 'slotLocks', slotLockDocId), {
+                appointmentId: apt.id,
+                doctorId: apt.doctorId,
+                date: apt.date,
+                time: apt.time.trim(),
+                status: 'booked',
+                bookedAt: apt.createdAt || new Date().toISOString()
+              });
+            }
+          });
+
+          await syncBatch.commit();
+        } catch (syncErr) {
+          console.warn('[Firestore] tokenCounters / slotLocks seeding notice:', syncErr?.message);
+        }
+
         showToast('Complete starter clinic dataset loaded successfully into Cloud Firestore!', 'success');
       } else {
         showToast('Complete starter clinic dataset loaded into local session! (Sign in as Admin for Cloud sync)', 'success');
@@ -649,16 +630,20 @@ export function DataProvider({ children }) {
       // 3. Reset Cloud Firestore if user has admin privileges
       const isAdmin = role === 'admin' || currentUser?.email === 'admin@communityclinic.org';
       if (isAdmin) {
-        const [docSnaps, aptSnaps, annSnaps] = await Promise.all([
+        const [docSnaps, aptSnaps, annSnaps, counterSnaps, slotSnaps] = await Promise.all([
           getDocs(collection(db, 'doctors')),
           getDocs(collection(db, 'appointments')),
-          getDocs(collection(db, 'announcements'))
+          getDocs(collection(db, 'announcements')),
+          getDocs(collection(db, 'tokenCounters')),
+          getDocs(collection(db, 'slotLocks'))
         ]);
 
         const toDeleteRefs = [];
         docSnaps.forEach((d) => toDeleteRefs.push(d.ref));
         aptSnaps.forEach((d) => toDeleteRefs.push(d.ref));
         annSnaps.forEach((d) => toDeleteRefs.push(d.ref));
+        counterSnaps.forEach((d) => toDeleteRefs.push(d.ref));
+        slotSnaps.forEach((d) => toDeleteRefs.push(d.ref));
 
         doctors.forEach((d) => {
           if (d.id) toDeleteRefs.push(doc(db, 'doctors', d.id));
@@ -819,21 +804,20 @@ export function DataProvider({ children }) {
       dispensedAt: new Date().toISOString(),
       dispensaryNotes: dispensaryNotes || 'Dispensed with dosage instructions to patient.'
     };
-    // Optimistic local state update
-    setAppointments(prev => prev.map(a => a.id === appointmentId ? { ...a, ...updateData } : a));
     try {
       await updateDoc(doc(db, 'appointments', appointmentId), updateData);
+      setAppointments(prev => prev.map(a => a.id === appointmentId ? { ...a, ...updateData } : a));
+      showToast('Prescription marked as dispensed!', 'success');
     } catch (e) {
-      console.warn('Firestore updateDoc appointments error:', e);
+      console.error(e);
+      showToast('Could not mark as dispensed. Check your permissions.', 'error');
     }
-    showToast('Prescription marked as dispensed by pharmacy desk!', 'success');
   };
 
   // 14. Walk-in Instant Token Generation
   const bookWalkInAppointment = async (walkInData) => {
     const todayStr = new Date().toISOString().split('T')[0];
     const newAppointmentId = `apt_walkin_${Date.now()}`;
-    const tokenNumber = generateTokenNumber(walkInData.doctorId, todayStr);
 
     const newAppointment = {
       id: newAppointmentId,
@@ -849,7 +833,6 @@ export function DataProvider({ children }) {
       date: todayStr,
       time: walkInData.time || 'Walk-in / Immediate',
       status: 'pending',
-      tokenNumber,
       reason: walkInData.reason || 'Walk-in Community Consultation',
       notes: '',
       diagnosis: '',
@@ -858,9 +841,18 @@ export function DataProvider({ children }) {
       createdAt: new Date().toISOString()
     };
 
-    await setDoc(doc(db, 'appointments', newAppointmentId), newAppointment);
+    const counterRef = doc(db, 'tokenCounters', `${walkInData.doctorId}_${todayStr}`);
+    let tokenNumber;
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(counterRef);
+      const last = snap.exists() ? snap.data().last : 0;
+      tokenNumber = `TK-${String(last + 1).padStart(2, '0')}`;
+      tx.set(counterRef, { last: last + 1, doctorId: walkInData.doctorId, date: todayStr });
+      tx.set(doc(db, 'appointments', newAppointmentId), { ...newAppointment, tokenNumber });
+    });
+
     showToast(`Walk-in Token ${tokenNumber} issued successfully!`, 'success');
-    return newAppointment;
+    return { ...newAppointment, tokenNumber };
   };
 
   // 15. Toggle Doctor On-Leave status
@@ -1006,7 +998,6 @@ export function DataProvider({ children }) {
     updateAnnouncement,
     deleteAnnouncement,
     rsvpAnnouncement,
-    generateTokenNumber,
     reloadDataFromStorage,
     seedSampleClinicData,
     resetClinicData,

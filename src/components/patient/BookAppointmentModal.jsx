@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import confetti from 'canvas-confetti';
-import { collection, query, where, onSnapshot, getDocs } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -70,10 +70,8 @@ export default function BookAppointmentModal({
   onClose, 
   onSuccess 
 }) {
-  if (!isOpen) return null;
-
   const { userProfile, role } = useAuth();
-  const { doctors, appointments, bookAppointment, generateTokenNumber } = useData();
+  const { doctors, appointments, bookAppointment } = useData();
 
   const isPatient = (role || userProfile?.role) === 'patient';
 
@@ -101,6 +99,7 @@ export default function BookAppointmentModal({
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [bookingError, setBookingError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [estimatedToken, setEstimatedToken] = useState('TK-01');
 
   // Sync selected doctor if prop changes
   useEffect(() => {
@@ -140,30 +139,7 @@ export default function BookAppointmentModal({
     };
   }, [onClose]);
 
-  if (!doctors || doctors.length === 0) {
-    return createPortal(
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
-        <div className="bg-white dark:bg-[#121C21] w-full max-w-md rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-6 text-center space-y-4 shadow-2xl">
-          <div className="w-12 h-12 rounded-xl bg-[#F97316]/15 text-[#EA580C] dark:text-[#FB923C] flex items-center justify-center mx-auto">
-            <AlertCircle className="w-6 h-6" />
-          </div>
-          <h2 className="text-xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">No Doctors Available to Book With Yet</h2>
-          <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA]">
-            No doctors have been added to the clinic system yet. Please ask the clinic administrator to add doctor profiles first.
-          </p>
-          <button
-            onClick={onClose}
-            className="w-full py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
-          >
-            Close
-          </button>
-        </div>
-      </div>,
-      document.body
-    );
-  }
-
-  const selectedDoctor = doctors.find(d => d.id === selectedDoctorId) || doctors[0];
+  const selectedDoctor = (doctors || []).find(d => d.id === selectedDoctorId) || (doctors && doctors.length > 0 ? doctors[0] : null);
   const currentSlots = selectedDoctor?.availableSlots || ["09:00 AM", "10:00 AM", "11:00 AM"];
 
   // When selected doctor changes, if current date is not a working day for them,
@@ -337,8 +313,36 @@ export default function BookAppointmentModal({
 
   const activeSlot = time;
 
-  // Calculate live preview token
-  const estimatedToken = selectedDoctor ? generateTokenNumber(selectedDoctor.id, date) : 'TK-01';
+  // Read estimated next queue token from Firestore tokenCounters
+  useEffect(() => {
+    let isMounted = true;
+    const fetchEstimatedToken = async () => {
+      if (!selectedDoctor?.id || !date) {
+        if (isMounted) setEstimatedToken('TK-01');
+        return;
+      }
+      try {
+        const counterRef = doc(db, 'tokenCounters', `${selectedDoctor.id}_${date}`);
+        const snap = await getDoc(counterRef);
+        if (isMounted) {
+          if (snap.exists() && typeof snap.data().last === 'number') {
+            const nextNum = snap.data().last + 1;
+            setEstimatedToken(`TK-${String(nextNum).padStart(2, '0')}`);
+          } else {
+            setEstimatedToken('TK-01');
+          }
+        }
+      } catch (err) {
+        console.warn('[BookAppointmentModal] Error fetching token counter:', err);
+        if (isMounted) setEstimatedToken('TK-01');
+      }
+    };
+
+    fetchEstimatedToken();
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedDoctor?.id, date]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -430,6 +434,31 @@ export default function BookAppointmentModal({
       setLoading(false);
     }
   };
+
+  if (!isOpen) return null;
+
+  if (!doctors || doctors.length === 0) {
+    return createPortal(
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
+        <div className="bg-white dark:bg-[#121C21] w-full max-w-md rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-6 text-center space-y-4 shadow-2xl">
+          <div className="w-12 h-12 rounded-xl bg-[#F97316]/15 text-[#EA580C] dark:text-[#FB923C] flex items-center justify-center mx-auto">
+            <AlertCircle className="w-6 h-6" />
+          </div>
+          <h2 className="text-xl font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">No Doctors Available to Book With Yet</h2>
+          <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA]">
+            No doctors have been added to the clinic system yet. Please ask the clinic administrator to add doctor profiles first.
+          </p>
+          <button
+            onClick={onClose}
+            className="w-full py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+      </div>,
+      document.body
+    );
+  }
 
   return createPortal(
     <div 
@@ -626,7 +655,7 @@ export default function BookAppointmentModal({
                     Next Queue Token
                   </span>
                   <p className="text-lg font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading leading-tight">{estimatedToken}</p>
-                  <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">Sequential daily OPD token</p>
+                  <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">Estimated token (final number is assigned when you book)</p>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-[#0F766E]/15 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center">
                   <Sparkles className="w-4 h-4" />

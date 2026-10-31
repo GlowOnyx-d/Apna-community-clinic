@@ -87,91 +87,91 @@ function AppRoutes() {
             <Route path="/announcements" element={<CommunityAnnouncements />} />
 
             {/* Patient Portal Routes */}
-            <Route 
-              path="/patient" 
+            <Route
+              path="/patient"
               element={
                 <ProtectedRoute allowedRoles={['patient']}>
                   <PatientDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/patient/appointments" 
+            <Route
+              path="/patient/appointments"
               element={
                 <ProtectedRoute allowedRoles={['patient']}>
                   <MyAppointments />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/patient/announcements" 
+            <Route
+              path="/patient/announcements"
               element={
                 <ProtectedRoute allowedRoles={['patient']}>
                   <CommunityAnnouncements />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* Doctor Portal Routes */}
-            <Route 
-              path="/doctor" 
+            <Route
+              path="/doctor"
               element={
                 <ProtectedRoute allowedRoles={['doctor']}>
                   <DoctorDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/doctor/patients" 
+            <Route
+              path="/doctor/patients"
               element={
                 <ProtectedRoute allowedRoles={['doctor']}>
                   <PatientRecords />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* Community Dispensary & Pharmacy Fulfillment Desk */}
-            <Route 
-              path="/pharmacy" 
+            <Route
+              path="/pharmacy"
               element={
-                <ProtectedRoute allowedRoles={['admin', 'doctor', 'patient']}>
+                <ProtectedRoute allowedRoles={['admin', 'doctor']}>
                   <PharmacyDesk />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* Admin Portal Routes */}
-            <Route 
-              path="/admin" 
+            <Route
+              path="/admin"
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/admin/doctors" 
+            <Route
+              path="/admin/doctors"
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <DoctorManagement />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/admin/appointments" 
+            <Route
+              path="/admin/appointments"
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AppointmentsMaster />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/admin/announcements" 
+            <Route
+              path="/admin/announcements"
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AnnouncementManager />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* 404 Route */}

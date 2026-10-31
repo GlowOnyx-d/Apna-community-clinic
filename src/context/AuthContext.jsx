@@ -232,8 +232,7 @@ export function AuthProvider({ children }) {
       if (authErr.code === 'auth/email-already-in-use') {
         throw new Error(`An account with email "${cleanEmail}" is already registered.`);
       }
-      console.warn('[Auth] Notice while provisioning secondary auth account:', authErr);
-      realAuthUid = `staff_${Date.now()}`;
+      throw new Error(`Could not create login: ${authErr.message}`);
     }
 
     const newStaffProfile = {

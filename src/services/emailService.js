@@ -4,8 +4,7 @@
  * to dispatch rich HTML emails via Gmail SMTP (Nodemailer).
  */
 
-const DEFAULT_CLOUD_FUNCTION_EMAIL_URL =
-  'https://us-central1-community-service-142b2.cloudfunctions.net/sendClinicEmail';
+import { auth } from '../firebase';
 
 /**
  * Send an email directly via the backend Nodemailer gateway
@@ -39,10 +38,15 @@ export async function sendDirectEmail({
     import.meta.env.VITE_CLINIC_EMAIL_FUNCTION_URL || '/api/sendEmail';
 
   try {
+    const user = auth.currentUser;
+    if (!user) throw new Error('Please sign in to send email.');
+    const idToken = await user.getIdToken();
+
     const response = await fetch(endpointUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`
       },
       body: JSON.stringify({
         recipientEmail: cleanEmail,
