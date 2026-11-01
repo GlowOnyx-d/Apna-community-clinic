@@ -17,7 +17,6 @@ import {
   Moon,
   Tv,
   QrCode,
-  Cloud,
   Languages,
   Pill
 } from 'lucide-react';
@@ -81,10 +80,10 @@ export default function Navbar() {
     if (role === 'admin') {
       return [
         { name: t('navAdminHub', 'Admin Hub'), path: '/admin', icon: BarChart3 },
-        { name: 'Pharmacy Desk', path: '/pharmacy', icon: Pill },
-        { name: t('navDoctorSlots', 'Doctor Slots'), path: '/admin/doctors', icon: Stethoscope },
-        { name: t('navMasterAppointments', 'Master Ledger'), path: '/admin/appointments', icon: Calendar },
-        { name: t('navAnnouncements', 'SDG Announcements'), path: '/admin/announcements', icon: Megaphone }
+        { name: 'Pharmacy', path: '/pharmacy', icon: Pill },
+        { name: t('navDoctorSlots', 'Doctors'), path: '/admin/doctors', icon: Stethoscope },
+        { name: t('navMasterAppointments', 'Ledger'), path: '/admin/appointments', icon: Calendar },
+        { name: t('navAnnouncements', 'Camps'), path: '/admin/announcements', icon: Megaphone }
       ];
     }
     return [];
@@ -115,7 +114,7 @@ export default function Navbar() {
                 </span>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] dark:bg-[#FB923C]"></span>
-                  <span className="text-[10px] font-semibold text-[#5A7178] dark:text-[#9DB4BA] tracking-wider uppercase">
+                  <span className="text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] tracking-wider uppercase">
                     {t('tagline', 'Community Health')}
                   </span>
                 </div>
@@ -132,10 +131,11 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`flex items-center gap-2 px-3 py-1.5 lg:px-3.5 lg:py-2 rounded-xl text-xs lg:text-sm font-medium transition-colors whitespace-nowrap ${isActive
-                    ? 'bg-[#0F766E]/10 text-[#0F766E] font-semibold border border-[#0F766E]/20 dark:bg-[#0F766E]/20 dark:text-[#2DD4BF] dark:border-[#0F766E]/40'
-                    : 'text-[#5A7178] hover:text-[#132226] hover:bg-[#0F766E]/5 dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] dark:hover:bg-[#0F766E]/10'
-                    }`}
+                  className={`flex items-center gap-2 px-3 py-1.5 lg:px-3.5 lg:py-2 rounded-xl text-xs lg:text-sm transition-colors whitespace-nowrap ${
+                    isActive
+                      ? 'bg-[#0F766E]/10 dark:bg-[#0D9488]/15 text-[#0F766E] dark:text-[#2DD4BF] font-semibold'
+                      : 'text-[#5A7178] hover:text-[#132226] hover:bg-[#0F766E]/5 dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] dark:hover:bg-[#0F766E]/10 font-medium'
+                  }`}
                 >
                   <Icon className={`w-4 h-4 ${isActive ? 'text-[#0F766E] dark:text-[#2DD4BF]' : 'text-[#5A7178] dark:text-[#79949B]'}`} />
                   <span>{link.name}</span>
@@ -144,69 +144,63 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right: Cluster pinned firmly to far right edge */}
-          <div className="hidden xl:flex items-center gap-2 lg:gap-2.5 shrink-0 justify-end ml-auto">
-            {/* Live OPD TV Waiting Hall Board Link */}
+          {/* Right: Compact Right-Side Group with icons only & tooltips */}
+          <div className="hidden xl:flex items-center gap-1 shrink-0 justify-end ml-auto">
+            {/* Live OPD TV Waiting Hall Board Link - Icon only */}
             <Link
               to="/display"
               target="_blank"
               rel="noopener noreferrer"
-              title="Open OPD Live TV Waiting Hall Call Board"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#0F766E]/25 bg-[#0F766E]/10 dark:border-[#2DD4BF]/30 dark:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] hover:bg-[#0F766E]/15 text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
+              title="OPD Live TV Waiting Hall Call Board"
+              className="p-2 rounded-xl text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer relative"
             >
-              <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
-              <Tv className="w-3.5 h-3.5" />
-              <span>{t('navOpdTv', 'OPD TV')}</span>
+              <Tv className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse" />
             </Link>
 
-            {/* Cloud Firestore Status Badge */}
+            {/* Cloud Firestore Status Badge - Small colored dot with tooltip */}
             <div
-              title="Connected to Cloud Firestore (Real-time Live Sync Active)"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#0F766E]/20 dark:border-[#2DD4BF]/20 bg-[#0F766E]/5 dark:bg-[#0F766E]/10 text-xs font-medium text-[#0F766E] dark:text-[#2DD4BF] transition-colors whitespace-nowrap"
+              title="Cloud Firestore Live Sync Active"
+              className="p-2 flex items-center justify-center cursor-default"
             >
-              <span className="w-2 h-2 rounded-full bg-[#0F766E] dark:bg-[#2DD4BF] animate-pulse"></span>
-              <Cloud className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
-              <span className="text-[11px] hidden xl:inline font-semibold">
-                {t('navCloudSync', 'Cloud Sync')}
-              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
             </div>
 
-            {/* QR Code Quick Scan Button */}
+            {/* QR Code Quick Scan Button - Icon only */}
             <button
               onClick={() => setShowQrModal(true)}
               title="Scan QR to open clinic portal on mobile"
-              className="p-2 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
+              className="p-2 rounded-xl text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
             >
               <QrCode className="w-4 h-4" />
             </button>
 
-            {/* Language Switcher Button */}
+            {/* Language Switcher Button - Icon only */}
             <button
               onClick={toggleLanguage}
               title={language === 'en' ? "हिंदी में बदलें (Switch to Hindi)" : "Switch to English"}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer text-xs font-semibold"
+              className="p-2 rounded-xl text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
             >
-              <Languages className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
-              <span className="font-bold">{language === 'en' ? 'हिं' : 'EN'}</span>
+              <Languages className="w-4 h-4" />
             </button>
 
-            {/* Theme Toggle Button */}
+            {/* Theme Toggle Button - Icon only */}
             <button
               onClick={toggleTheme}
               title={isDark ? "Switch to Warm Light Mode" : "Switch to Dark Mode"}
               aria-label="Toggle visual theme"
-              className="p-2 rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#F4F7F6] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
+              className="p-2 rounded-xl text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#F4F7F6] hover:bg-[#0F766E]/8 dark:hover:bg-[#0F766E]/20 transition-all cursor-pointer"
             >
               {isDark ? <Sun className="w-4 h-4 text-[#FB923C]" /> : <Moon className="w-4 h-4 text-[#0F766E]" />}
             </button>
 
             {/* User Profile / Logout or Sign In / Register */}
             {currentUser ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-[#E0E7E5] dark:border-[#21333A]">
+              <div className="flex items-center gap-2 pl-2 ml-1 border-l border-[#E0E7E5] dark:border-[#21333A]">
                 <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA] max-w-[140px] truncate" title={userProfile?.name || currentUser.email}>
                   {userProfile?.name || currentUser.email}
                 </span>
-                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider shrink-0 ${roleColors[role] || 'bg-[#0F766E]/10 text-[#0F766E]'}`}>
+                <span className={`px-2 py-0.5 text-xs font-bold rounded-md border uppercase tracking-wider shrink-0 ${roleColors[role] || 'bg-[#0F766E]/10 text-[#0F766E]'}`}>
                   {role}
                 </span>
                 <button
@@ -218,7 +212,7 @@ export default function Navbar() {
                 </button>
               </div>
             ) : !isAuthPage ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-[#E0E7E5] dark:border-[#21333A]">
+              <div className="flex items-center gap-2 pl-2 ml-1 border-l border-[#E0E7E5] dark:border-[#21333A]">
                 <Link
                   to="/login"
                   className="px-3.5 py-1.5 text-xs font-semibold text-[#0F766E] hover:bg-[#0F766E]/10 rounded-xl transition-colors dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] whitespace-nowrap"
@@ -285,7 +279,7 @@ export default function Navbar() {
             className="w-full flex items-center justify-between p-3 rounded-xl border border-[#0F766E]/20 dark:border-[#2DD4BF]/20 bg-[#0F766E]/5 dark:bg-[#0F766E]/15 text-xs font-semibold text-[#0F766E] dark:text-[#2DD4BF]"
           >
             <div className="flex items-center gap-2">
-              <Cloud className="w-4 h-4 text-[#0F766E] dark:text-[#2DD4BF]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
               <span>{language === 'hi' ? 'डेटाबेस:' : 'Database:'}</span>
               <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">
                 {t('navCloudSync', 'Cloud Sync (Live)')}
@@ -336,7 +330,7 @@ export default function Navbar() {
                 <span className="text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA]">
                   {userProfile?.name || currentUser.email}
                 </span>
-                <span className={`px-2 py-0.5 text-[11px] font-bold rounded-md border uppercase tracking-wider ${roleColors[role] || 'bg-[#0F766E]/10 text-[#0F766E]'}`}>
+                <span className={`px-2 py-0.5 text-xs font-bold rounded-md border uppercase tracking-wider ${roleColors[role] || 'bg-[#0F766E]/10 text-[#0F766E]'}`}>
                   {role}
                 </span>
               </div>
@@ -393,4 +387,3 @@ export default function Navbar() {
     </header>
   );
 }
-

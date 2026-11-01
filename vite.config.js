@@ -67,7 +67,13 @@ function clinicApiDevPlugin() {
               }
 
               const transporter = nodemailer.createTransport({
-                service: 'gmail',
+                host: 'smtp.gmail.com',
+                port: 587,
+                secure: false,
+                requireTLS: true,
+                connectionTimeout: 10000,
+                greetingTimeout: 10000,
+                socketTimeout: 15000,
                 auth: {
                   user: emailUser.trim(),
                   pass: emailPass.trim().replace(/\s+/g, '')
@@ -97,6 +103,13 @@ function clinicApiDevPlugin() {
               let friendlyMessage = err.message || 'Failed to dispatch email via Gmail.';
 
               if (
+                err.code === 'ETIMEDOUT' ||
+                err.code === 'ESOCKET' ||
+                err.code === 'ECONNECTION'
+              ) {
+                friendlyMessage =
+                  'Cannot reach the Gmail mail server. Your network may be blocking SMTP. Try another network or check your firewall.';
+              } else if (
                 err.code === 'EAUTH' ||
                 err.message?.includes('Invalid login') ||
                 err.message?.includes('Username and Password not accepted')

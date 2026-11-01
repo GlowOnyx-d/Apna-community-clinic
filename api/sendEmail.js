@@ -56,7 +56,13 @@ export default async function handler(req, res) {
       return res.status(500).json({ success: false, error: 'Email not configured.' });
     }
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
       auth: { user: emailUser.trim(), pass: emailPass.trim().replace(/\s+/g, '') }
     });
     const info = await transporter.sendMail({
@@ -69,6 +75,15 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, messageId: info.messageId, recipientEmail: to });
   } catch (err) {
     console.error('Email send error:', err);
-    return res.status(400).json({ success: false, error: 'Failed to send email.', code: err.code || 'EMAIL_ERROR' });
+    let friendlyError = 'Failed to send email.';
+    if (
+      err.code === 'ETIMEDOUT' ||
+      err.code === 'ESOCKET' ||
+      err.code === 'ECONNECTION'
+    ) {
+      friendlyError =
+        'Cannot reach the Gmail mail server. Your network may be blocking SMTP. Try another network or check your firewall.';
+    }
+    return res.status(400).json({ success: false, error: friendlyError, code: err.code || 'EMAIL_ERROR' });
   }
 }

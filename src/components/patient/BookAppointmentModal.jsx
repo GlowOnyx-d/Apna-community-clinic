@@ -5,16 +5,12 @@ import { collection, query, where, onSnapshot, getDocs, doc, getDoc } from 'fire
 import { db } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
-import { 
-  X, 
-  Calendar, 
-  Sparkles, 
-  Ticket, 
-  ChevronRight, 
+import {
+  X,
+  Calendar,
+  Ticket,
   AlertCircle,
-  Clock,
-  CheckCircle2,
-  CalendarDays
+  Check
 } from 'lucide-react';
 import { getDoctorAvatar, getDoctorFallbackAvatar } from '../../utils/doctorVisuals';
 
@@ -63,12 +59,12 @@ export const getNextWorkingDate = (doctor, fromDateStr) => {
   return fromDateStr;
 };
 
-export default function BookAppointmentModal({ 
-  isOpen = true, 
-  initialDoctor = null, 
-  selectedDoctor: propSelectedDoctor = null, 
-  onClose, 
-  onSuccess 
+export default function BookAppointmentModal({
+  isOpen = true,
+  initialDoctor = null,
+  selectedDoctor: propSelectedDoctor = null,
+  onClose,
+  onSuccess
 }) {
   const { userProfile, role } = useAuth();
   const { doctors, appointments, bookAppointment } = useData();
@@ -79,13 +75,14 @@ export default function BookAppointmentModal({
   const [selectedDoctorId, setSelectedDoctorId] = useState(
     effectiveInitialDoc ? effectiveInitialDoc.id : (doctors[0]?.id || '')
   );
-  
+
   const todayStr = new Date().toISOString().split('T')[0];
   const [date, setDate] = useState(() => {
     const initialDoc = doctors.find(d => d.id === (effectiveInitialDoc ? effectiveInitialDoc.id : doctors[0]?.id));
     return getNextWorkingDate(initialDoc, todayStr);
   });
 
+  const [showCustomDate, setShowCustomDate] = useState(false);
   const [time, setTime] = useState('');
   const [reason, setReason] = useState('');
 
@@ -244,6 +241,18 @@ export default function BookAppointmentModal({
   const availableSlotsCount = Math.max(0, totalSlotsCount - bookedSlotsCount);
   const isDateFullyBooked = isDateWorkingDay && availableSlotsCount === 0;
 
+  // Formatted date string for slots header and summary (e.g. "Mon, Nov 2")
+  const formattedDate = useMemo(() => {
+    if (!date) return '';
+    const [y, m, d] = date.split('-').map(Number);
+    const dObj = new Date(y, m - 1, d);
+    return dObj.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+  }, [date]);
+
   // Selected date object & day name
   const selectedDayInfo = useMemo(() => {
     if (!date) return { full: 'Today', short: 'Today' };
@@ -381,7 +390,7 @@ export default function BookAppointmentModal({
       errors.phone = "Please enter a valid phone number (at least 8 digits).";
     }
     if (!cleanReason) {
-      errors.reason = "Please describe your reason for visit / chief health concern.";
+      errors.reason = "Please describe your reason for visit.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -450,7 +459,7 @@ export default function BookAppointmentModal({
           </p>
           <button
             onClick={onClose}
-            className="w-full py-2.5 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
+            className="w-full h-11 px-4 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-white text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
           >
             Close
           </button>
@@ -461,87 +470,77 @@ export default function BookAppointmentModal({
   }
 
   return createPortal(
-    <div 
+    <div
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose?.();
         }
       }}
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs animate-in fade-in"
     >
-      <div 
+      <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-[#121C21] rounded-2xl max-w-xl w-full border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden flex flex-col max-h-[92vh] shadow-2xl"
+        className="bg-white dark:bg-[#121C21] rounded-2xl max-w-xl w-full border border-[#E0E7E5] dark:border-[#21333A] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl"
       >
-        
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#0F766E] text-[#F4F7F6] flex items-center justify-center shadow-xs">
-              <Ticket className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="font-bold text-[#132226] dark:text-[#F4F7F6] text-base font-heading">Book Clinic Appointment</h3>
-              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">Instant Token Queue Allocation</p>
-            </div>
-          </div>
-          <button 
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onClose?.();
-            }}
-            aria-label="Close booking modal"
-            className="p-1.5 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-lg hover:bg-[#E0E7E5]/50 dark:hover:bg-[#19272D] transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
 
-        {/* Scrollable Form Body */}
-        <form onSubmit={handleFormSubmit} className="p-6 overflow-y-auto space-y-5">
-          
-          {/* Booking Error Banner */}
-          {bookingError && (
-            <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/40 rounded-xl text-xs text-rose-800 dark:text-rose-200 flex items-start gap-2.5 animate-in fade-in">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400 mt-0.5" />
-              <div>
-                <p className="font-bold">{bookingError}</p>
-                <p className="text-[11px] opacity-90 mt-0.5">Please adjust the highlighted options to proceed.</p>
+          {/* 1. Sticky Header */}
+          <div className="shrink-0 flex items-center justify-between px-5 py-4 border-b border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114]">
+            <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#0F766E] text-white flex items-center justify-center shadow-xs">
+                  <Ticket className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#132226] dark:text-[#F4F7F6] text-base font-heading">
+                    Book Clinic Appointment
+                  </h3>
+                  <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                    Instant Token Queue Allocation
+                  </p>
+                </div>
               </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onClose?.();
+                }}
+                aria-label="Close booking modal"
+                className="p-1.5 text-[#5A7178] hover:text-[#132226] dark:text-[#9DB4BA] dark:hover:text-[#F4F7F6] rounded-lg hover:bg-[#E0E7E5]/50 dark:hover:bg-[#19272D] transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-          )}
 
-          {/* 1. Doctor Selection */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
-                1. Select Healthcare Specialist
-              </label>
-              <span className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] font-medium">
-                {selectedDoctor?.cabin || 'Cabin 101'}
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {doctors.map((docItem) => {
-                const isSelected = docItem.id === selectedDoctorId;
-                return (
-                  <button
-                    key={docItem.id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedDoctorId(docItem.id);
-                      setBookingError(null);
-                      setFieldErrors({});
-                    }}
-                    className={`flex flex-col text-left p-3 rounded-xl border transition-all cursor-pointer ${
-                      isSelected 
-                        ? 'border-[#0F766E] dark:border-[#2DD4BF] bg-[#0F766E]/10 dark:bg-[#0D9488]/20 shadow-xs' 
-                        : 'border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40 dark:hover:border-[#2C444E] bg-[#F4F7F6] dark:bg-[#19272D]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 mb-2">
+              {/* Form Container wrapping middle scrollable body + sticky footer */}
+              <form onSubmit={handleFormSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+
+                            {/* 2. Middle Scrollable Body */}
+                            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-7">
+
+                              {/* 1. Doctor Selection */}
+                              <div>
+                                <h4 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading mb-3">
+                                  1. Doctor
+                                </h4>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3">
+                                  {doctors.map((docItem) => {
+                                    const isSelected = docItem.id === selectedDoctorId;
+                                    return (
+                    <button
+                      key={docItem.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedDoctorId(docItem.id);
+                        setBookingError(null);
+                        setFieldErrors({});
+                      }}
+                      className={`flex flex-col text-left p-3 rounded-xl border transition-all cursor-pointer ${
+                        isSelected 
+                          ? 'border-[#0F766E] dark:border-[#2DD4BF] bg-[#0F766E]/10 dark:bg-[#0D9488]/20 shadow-xs ring-1 ring-[#0F766E] dark:ring-[#2DD4BF]' 
+                          : 'border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40 dark:hover:border-[#2C444E] bg-[#F4F7F6] dark:bg-[#19272D]'
+                      }`}
+                    >
                       <img 
                         src={getDoctorAvatar(docItem)} 
                         alt={docItem.name} 
@@ -549,343 +548,321 @@ export default function BookAppointmentModal({
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = getDoctorFallbackAvatar(docItem.name);
                         }}
-                        className="w-8 h-8 rounded-full object-cover border border-[#E0E7E5] dark:border-[#21333A] bg-white dark:bg-[#0B1114]"
+                        className="w-12 h-12 rounded-full object-cover border border-[#E0E7E5] dark:border-[#21333A] bg-white dark:bg-[#0B1114] mb-2.5 shrink-0"
                       />
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-[#132226] dark:text-[#F4F7F6] truncate font-heading">{docItem.name}</p>
-                        <p className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] font-medium truncate">{docItem.specialization.split('(')[0]}</p>
+                            <p className="text-sm font-bold text-[#132226] dark:text-[#F4F7F6] font-heading leading-snug">
+                              {docItem.name}
+                            </p>
+                            <p className="text-xs text-[#0F766E] dark:text-[#2DD4BF] font-medium leading-tight mt-1 line-clamp-2">
+                              {docItem.specialization}
+                            </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                      {/* Selected doctor's cabin and working days in a small line below grid */}
+                      {selectedDoctor && (
+                        <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-2.5 flex flex-wrap items-center gap-1.5">
+                          <span>Cabin: <strong className="font-semibold text-[#132226] dark:text-[#F4F7F6]">{selectedDoctor.cabin || 'Cabin 101'}</strong></span>
+                          <span className="opacity-40">·</span>
+                          <span>Working days: <strong className="font-semibold text-[#132226] dark:text-[#F4F7F6]">{doctorScheduleLabel}</strong></span>
+                        </p>
+                      )}
+                    </div>
+
+                        {/* 2. Date & Time Selection */ }
+            <div>
+              <h4 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading mb-3">
+                2. Date &amp; time
+              </h4>
+
+              <div className="space-y-4">
+                {/* 7-Day Strip + Optional Native Picker */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider block">
+                      Select Date
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowCustomDate(prev => !prev)}
+                      className="text-xs text-[#0F766E] dark:text-[#2DD4BF] hover:underline font-medium cursor-pointer"
+                    >
+                      {showCustomDate ? 'Hide date picker' : 'Pick another date'}
+                    </button>
+                  </div>
+
+                  {/* 7-Day Strip */}
+                  <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+                    {upcomingWeekDays.map((item) => {
+                      const isSelected = date === item.dateStr;
+                      const isWorking = item.isWorking;
+
+                      return (
+                        <button
+                          key={item.dateStr}
+                          type="button"
+                          disabled={!isWorking}
+                          onClick={() => {
+                            if (isWorking) {
+                              setDate(item.dateStr);
+                              setBookingError(null);
+                            }
+                          }}
+                          title={!isWorking ? `Dr. ${selectedDoctor?.name} is off duty on ${item.dayFull}` : `Select ${item.dayFull} (${item.dateStr})`}
+                          className={`py-2 px-1 rounded-xl text-center flex flex-col items-center justify-center transition-all ${
+                            !isWorking
+                              ? 'bg-[#E0E7E5]/30 dark:bg-[#21333A]/30 border border-[#E0E7E5] dark:border-[#21333A] text-[#758D94] dark:text-[#79949B] cursor-not-allowed opacity-50'
+                              : isSelected
+                                ? 'bg-[#0F766E] text-white border border-[#0F766E] dark:border-[#2DD4BF] shadow-xs cursor-pointer'
+                                : 'bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border border-[#CFDAD6] dark:border-[#2C444E] text-[#132226] dark:text-[#F4F7F6] cursor-pointer'
+                          }`}
+                        >
+                          <span className="text-xs uppercase font-bold">
+                            {item.isToday ? 'Today' : item.isTomorrow ? 'Tmrw' : item.dayShort}
+                          </span>
+                          <span className="text-sm font-black font-heading mt-0.5">
+                            {item.dayNumber}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Pick another date native input (revealed on click) */}
+                  {showCustomDate && (
+                    <div className="mt-2.5">
+                      <div className="relative">
+                        <Calendar className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3.5 pointer-events-none" />
+                        <input
+                          type="date"
+                          min={todayStr}
+                          value={date}
+                          onChange={(e) => {
+                            const newDate = e.target.value;
+                            if (newDate >= todayStr) {
+                              setDate(newDate);
+                              setBookingError(null);
+                            }
+                          }}
+                          className="w-full h-11 pl-10 pr-3.5 rounded-xl text-sm font-medium text-[#132226] dark:text-[#F4F7F6] bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:outline-none transition-colors"
+                        />
                       </div>
                     </div>
-                    <span className="text-[10px] text-[#758D94] dark:text-[#79949B] font-medium mt-auto">
-                      Works: {(docItem.availableDays || docItem.days || ['All']).slice(0, 3).map(d => d.slice(0, 3)).join(', ')}
-                    </span>
-                  </button>
-                );
-              })}
+                  )}
+                </div>
+
+                {/* Slots Grid */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider block">
+                      Select Time Slot
+                    </label>
+                    {loadingSlots && (
+                      <span className="text-xs text-[#0F766E] dark:text-[#2DD4BF] animate-pulse">
+                        Checking slots...
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Slots Free info line */}
+                  <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mb-2.5 font-medium">
+                    {!isDateWorkingDay ? (
+                      <span className="text-rose-600 dark:text-rose-400 font-semibold">
+                        Doctor off duty · {formattedDate}
+                      </span>
+                    ) : isDateFullyBooked ? (
+                      <span className="text-rose-600 dark:text-rose-400 font-semibold">
+                        0 slots free · {formattedDate} (Fully booked)
+                      </span>
+                    ) : (
+                      <span>
+                        <strong className="text-[#0F766E] dark:text-[#2DD4BF] font-semibold">
+                          {availableSlotsCount} {availableSlotsCount === 1 ? 'slot' : 'slots'} free
+                        </strong> · {formattedDate}
+                      </span>
+                    )}
+                  </p>
+
+                  {!isDateWorkingDay ? (
+                    <div className="p-4 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-center text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                      Dr. {selectedDoctor?.name} is off duty on this date. Please pick another working date above.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      {currentSlots.map((slot) => {
+                        const isBooked = allBookedSlotsSet.has(slot.trim().toLowerCase());
+                        const isSelected = activeSlot === slot && !isBooked;
+
+                        return (
+                          <button
+                            key={slot}
+                            type="button"
+                            disabled={isBooked}
+                            onClick={() => {
+                              if (!isBooked) {
+                                setTime(slot);
+                                setBookingError(null);
+                              }
+                            }}
+                            title={isBooked ? `${slot} is already booked` : `Select ${slot}`}
+                            className={`h-11 px-2 rounded-xl text-xs font-semibold border text-center transition-all flex items-center justify-center gap-1.5 ${
+                              isBooked
+                                ? 'bg-[#E0E7E5]/30 dark:bg-[#21333A]/30 border-[#E0E7E5] dark:border-[#21333A] text-[#758D94] dark:text-[#79949B] line-through cursor-not-allowed opacity-50'
+                                : isSelected
+                                  ? 'bg-[#0F766E] dark:bg-[#0D9488] text-white border-[#0F766E] dark:border-[#0D9488] shadow-xs cursor-pointer'
+                                  : 'bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border-[#CFDAD6] dark:border-[#2C444E] text-[#132226] dark:text-[#F4F7F6] cursor-pointer'
+                            }`}
+                          >
+                            <span>{slot}</span>
+                            {isSelected && <Check className="w-3.5 h-3.5 shrink-0 stroke-[2.5]" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* 2. Date Selection with Working Days Enforcement */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
-                2. Select Date (Today or Upcoming)
-              </label>
-              <span className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">
-                {selectedDoctor?.name}'s days: <strong>{doctorScheduleLabel}</strong>
-              </span>
-            </div>
+            {/* 3. Patient Details & Reason */}
+            <div>
+              <h4 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading mb-3">
+                3. Your details
+              </h4>
 
-            {/* Quick 7-Day Selector Strip */}
-            <div className="grid grid-cols-7 gap-1.5 mb-3">
-              {upcomingWeekDays.map((item) => {
-                const isSelected = date === item.dateStr;
-                const isWorking = item.isWorking;
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-sm font-semibold text-[#132226] dark:text-[#F4F7F6] mb-1.5">
+                      Patient Full Name <span className="text-rose-500 font-bold">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={patientName}
+                      onChange={(e) => {
+                        setPatientName(e.target.value);
+                        if (fieldErrors.name && e.target.value.trim()) {
+                          setFieldErrors(prev => ({ ...prev, name: null }));
+                        }
+                      }}
+                      placeholder="e.g. Maya Sharma"
+                      className={`w-full h-11 px-3.5 rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
+                        fieldErrors.name
+                          ? 'bg-rose-50/40 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
+                          : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
+                      }`}
+                    />
+                    {fieldErrors.name && (
+                      <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{fieldErrors.name}</span>
+                      </p>
+                    )}
+                  </div>
 
-                return (
-                  <button
-                    key={item.dateStr}
-                    type="button"
-                    disabled={!isWorking}
-                    onClick={() => {
-                      if (isWorking) {
-                        setDate(item.dateStr);
-                        setBookingError(null);
-                      }
-                    }}
-                    title={!isWorking ? `Dr. ${selectedDoctor?.name} is off duty on ${item.dayFull}` : `Select ${item.dayFull} (${item.dateStr})`}
-                    className={`p-2 rounded-xl text-center flex flex-col items-center justify-center transition-all ${
-                      !isWorking
-                        ? 'bg-[#E0E7E5]/30 dark:bg-[#21333A]/30 border border-dashed border-[#CFDAD6]/50 dark:border-[#2C444E]/40 text-[#758D94] dark:text-[#7A8A7A] cursor-not-allowed opacity-60'
-                        : isSelected
-                          ? 'bg-[#0F766E] text-[#F4F7F6] border border-[#0F766E] dark:border-[#2DD4BF] shadow-xs cursor-pointer ring-2 ring-[#0F766E]/20'
-                          : 'bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border border-[#CFDAD6] dark:border-[#2C444E] text-[#132226] dark:text-[#F4F7F6] cursor-pointer'
-                    }`}
-                  >
-                    <span className="text-[9px] uppercase tracking-wider font-bold">
-                      {item.isToday ? 'Today' : item.isTomorrow ? 'Tmrw' : item.dayShort}
-                    </span>
-                    <span className="text-sm font-black font-heading mt-0.5">
-                      {item.dayNumber}
-                    </span>
-                    <span className={`text-[8px] mt-0.5 font-bold uppercase tracking-wider ${
-                      !isWorking
-                        ? 'text-rose-600 dark:text-rose-400'
-                        : isSelected
-                          ? 'text-[#A3C9B8]'
-                          : 'text-[#0F766E] dark:text-[#2DD4BF]'
-                    }`}>
-                      {!isWorking ? 'Off' : 'Open'}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-[#132226] dark:text-[#F4F7F6] mb-1.5">
+                      Contact Phone <span className="text-rose-500 font-bold">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={patientPhone}
+                      onChange={(e) => {
+                        setPatientPhone(e.target.value);
+                        if (fieldErrors.phone && e.target.value.trim()) {
+                          setFieldErrors(prev => ({ ...prev, phone: null }));
+                        }
+                      }}
+                      placeholder="+91 98765 43210"
+                      className={`w-full h-11 px-3.5 rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
+                        fieldErrors.phone
+                          ? 'bg-rose-50/40 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
+                          : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
+                      }`}
+                    />
+                    {fieldErrors.phone && (
+                      <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{fieldErrors.phone}</span>
+                      </p>
+                    )}
+                  </div>
+                </div>
 
-            {/* Manual Date Input & Live Token Estimator */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <div className="relative">
-                  <Calendar className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-3" />
-                  <input
-                    type="date"
+                <div>
+                  <label className="block text-sm font-semibold text-[#132226] dark:text-[#F4F7F6] mb-1.5">
+                    Reason for Visit <span className="text-rose-500 font-bold">*</span>
+                  </label>
+                  <textarea
+                    rows="2"
                     required
-                    min={todayStr}
-                    value={date}
+                    value={reason}
                     onChange={(e) => {
-                      const newDate = e.target.value;
-                      if (newDate >= todayStr) {
-                        setDate(newDate);
-                        setBookingError(null);
+                      setReason(e.target.value);
+                      if (fieldErrors.reason && e.target.value.trim()) {
+                        setFieldErrors(prev => ({ ...prev, reason: null }));
                       }
                     }}
-                    className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs font-medium text-[#132226] dark:text-[#F4F7F6] focus:outline-none transition-colors ${
-                      !isDateWorkingDay
-                        ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 text-rose-800'
+                    placeholder="e.g. Mild fever, blood pressure checkup, cough for 2 days..."
+                    className={`w-full min-h-[44px] p-3 rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors resize-none ${
+                      fieldErrors.reason
+                        ? 'bg-rose-50/40 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
                         : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
                     }`}
                   />
-                </div>
-              </div>
-
-              {/* Live Token Estimator */}
-              <div className="p-2.5 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between">
-                <div>
-                  <span className="text-[9px] font-semibold text-[#EA580C] dark:text-[#FB923C] uppercase tracking-wider block">
-                    Next Queue Token
-                  </span>
-                  <p className="text-lg font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading leading-tight">{estimatedToken}</p>
-                  <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">Estimated token (final number is assigned when you book)</p>
-                </div>
-                <div className="w-8 h-8 rounded-lg bg-[#0F766E]/15 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center">
-                  <Sparkles className="w-4 h-4" />
+                  <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-1.5">
+                    Briefly describe your symptoms or reason for visit to help the doctor prepare.
+                  </p>
+                  {fieldErrors.reason && (
+                    <p className="text-xs text-rose-600 dark:text-rose-400 mt-1.5 flex items-center gap-1 animate-in fade-in">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{fieldErrors.reason}</span>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Live Date Availability Indicator */}
-            <div className="mt-2.5 p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs bg-white dark:bg-[#121C21] border-[#E0E7E5] dark:border-[#21333A] shadow-2xs">
-              <div className="flex items-center gap-2.5">
-                {!isDateWorkingDay ? (
-                  <>
-                    <div className="w-7 h-7 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 border border-rose-200 dark:border-rose-900/40">
-                      <AlertCircle className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="font-bold text-rose-600 dark:text-rose-400 block">
-                        Doctor Off Duty on {selectedDayInfo.full}
-                      </span>
-                      <p className="text-[11px] text-[#758D94] dark:text-[#79949B]">
-                        Available clinic days: <strong>{doctorScheduleLabel}</strong>
-                      </p>
-                    </div>
-                  </>
-                ) : isDateFullyBooked ? (
-                  <>
-                    <div className="w-7 h-7 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 border border-rose-200 dark:border-rose-900/40">
-                      <AlertCircle className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="font-bold text-rose-600 dark:text-rose-400 block">
-                        Fully Booked ({bookedSlotsCount} of {totalSlotsCount} slots taken)
-                      </span>
-                      <p className="text-[11px] text-[#758D94] dark:text-[#79949B]">
-                        No slots remaining on this day. Please pick another date.
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-200 dark:border-emerald-900/40">
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="font-bold text-emerald-700 dark:text-emerald-400 block">
-                        {availableSlotsCount} of {totalSlotsCount} slots available
-                      </span>
-                      <p className="text-[11px] text-[#5A7178] dark:text-[#9DB4BA]">
-                        {selectedDayInfo.full}, {date} • Standard OPD timings
-                      </p>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {isDateWorkingDay && (
-                <div className="shrink-0 flex items-center gap-1.5 self-start sm:self-center">
-                  <span className={`px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${
-                    isDateFullyBooked
-                      ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800/40'
-                      : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40'
-                  }`}>
-                    {isDateFullyBooked ? 'Fully Booked' : `${availableSlotsCount} Slots Free`}
-                  </span>
-                </div>
-              )}
-            </div>
           </div>
 
-          {/* 3. Time Slot Picker with Booked Detection */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider">
-                3. Available Time Slot
-              </label>
-              {loadingSlots && (
-                <span className="text-[10px] text-[#0F766E] dark:text-[#2DD4BF] animate-pulse">
-                  Checking slot availability...
-                </span>
-              )}
-            </div>
-
-            {!isDateWorkingDay ? (
-              <div className="p-4 bg-rose-50/50 dark:bg-rose-950/20 rounded-xl border border-dashed border-rose-300 dark:border-rose-900/40 text-center text-xs text-rose-700 dark:text-rose-300">
-                <p className="font-bold">No slots available on non-working days.</p>
-                <p className="text-[11px] opacity-80 mt-0.5">Please select one of Dr. {selectedDoctor?.name}'s scheduled days ({doctorScheduleLabel}) above.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {currentSlots.map((slot) => {
-                  const isBooked = allBookedSlotsSet.has(slot.trim().toLowerCase());
-                  const isSelected = activeSlot === slot && !isBooked;
-
-                  return (
-                    <button
-                      key={slot}
-                      type="button"
-                      disabled={isBooked}
-                      onClick={() => {
-                        if (!isBooked) {
-                          setTime(slot);
-                          setBookingError(null);
-                        }
-                      }}
-                      title={isBooked ? `${slot} is already booked on ${date}` : `Select ${slot}`}
-                      className={`py-2 px-2 rounded-xl text-xs font-medium border text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
-                        isBooked
-                          ? 'bg-[#E0E7E5]/40 dark:bg-[#21333A]/40 border-[#CFDAD6]/50 dark:border-[#2C444E]/40 text-[#758D94] dark:text-[#7A8A7A] cursor-not-allowed opacity-75'
-                          : isSelected
-                            ? 'bg-[#0F766E] dark:bg-[#0D9488] text-[#F4F7F6] border-[#0F766E] dark:border-[#2DD4BF] shadow-xs cursor-pointer ring-2 ring-[#0F766E]/20'
-                            : 'bg-[#F4F7F6] dark:bg-[#19272D] hover:bg-[#E0E7E5]/60 dark:hover:bg-[#21333A] border-[#CFDAD6] dark:border-[#2C444E] text-[#5A7178] dark:text-[#9DB4BA] cursor-pointer'
-                      }`}
-                    >
-                      <span className={isBooked ? 'line-through decoration-rose-500 font-semibold' : 'font-semibold'}>
-                        {slot}
-                      </span>
-                      {isBooked ? (
-                        <span className="text-[9px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider bg-rose-50 dark:bg-rose-950/40 px-1 py-0.2 rounded border border-rose-200 dark:border-rose-900/50">
-                          Booked
-                        </span>
-                      ) : (
-                        <span className="text-[9px] font-medium text-emerald-600 dark:text-emerald-400">
-                          Available
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
+          {/* 3. Sticky Footer with Error, Summary Row, and Confirm Button */}
+          <div className="shrink-0 p-4 sm:p-5 border-t border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#0B1114] space-y-3">
+            
+            {/* Error Banner if any */}
+            {bookingError && (
+              <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/40 rounded-xl text-xs text-rose-800 dark:text-rose-200 flex items-start gap-2 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400 mt-0.5" />
+                <p className="font-medium">{bookingError}</p>
               </div>
             )}
-          </div>
 
-          {/* 4. Patient Details & Reason */}
-          <div className="space-y-3 pt-2 border-t border-[#E0E7E5] dark:border-[#21333A]">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] mb-1">
-                  Patient Full Name <span className="text-rose-500 font-bold">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={patientName}
-                  onChange={(e) => {
-                    setPatientName(e.target.value);
-                    if (fieldErrors.name && e.target.value.trim()) {
-                      setFieldErrors(prev => ({ ...prev, name: null }));
-                    }
-                  }}
-                  placeholder="e.g. Maya Sharma"
-                  className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
-                    fieldErrors.name
-                      ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
-                      : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
-                  }`}
-                />
-                {fieldErrors.name && (
-                  <p className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 flex items-center gap-1 animate-in fade-in">
-                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                    <span>{fieldErrors.name}</span>
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] mb-1">
-                  Contact Phone <span className="text-rose-500 font-bold">*</span>
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={patientPhone}
-                  onChange={(e) => {
-                    setPatientPhone(e.target.value);
-                    if (fieldErrors.phone && e.target.value.trim()) {
-                      setFieldErrors(prev => ({ ...prev, phone: null }));
-                    }
-                  }}
-                  placeholder="+91 98765 43210"
-                  className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
-                    fieldErrors.phone
-                      ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
-                      : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
-                  }`}
-                />
-                {fieldErrors.phone && (
-                  <p className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 flex items-center gap-1 animate-in fade-in">
-                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                    <span>{fieldErrors.phone}</span>
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA]">
-                  Reason for Visit / Chief Health Concern <span className="text-rose-500 font-bold">*</span>
-                </label>
-                <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">
-                  Required for doctor
+            {/* Summary Row: Doctor, Date, Time, and Estimated Token */}
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-[#5A7178] dark:text-[#9DB4BA] px-1">
+              <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                <span className="font-bold text-[#132226] dark:text-[#F4F7F6]">
+                  {selectedDoctor?.name || 'Doctor'}
                 </span>
+                <span className="opacity-40">·</span>
+                <span className="font-medium text-[#132226] dark:text-[#F4F7F6]">
+                  {formattedDate || date}
+                </span>
+                {activeSlot && (
+                  <>
+                    <span className="opacity-40">·</span>
+                    <span className="font-semibold text-[#0F766E] dark:text-[#2DD4BF]">{activeSlot}</span>
+                  </>
+                )}
               </div>
-              <textarea
-                rows="2"
-                required
-                value={reason}
-                onChange={(e) => {
-                  setReason(e.target.value);
-                  if (fieldErrors.reason && e.target.value.trim()) {
-                    setFieldErrors(prev => ({ ...prev, reason: null }));
-                  }
-                }}
-                placeholder="e.g. Mild fever, blood pressure checkup, cough for 2 days..."
-                className={`w-full px-3.5 py-2 rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none transition-colors ${
-                  fieldErrors.reason
-                    ? 'bg-rose-50/30 dark:bg-rose-950/20 border-2 border-rose-500 focus:border-rose-600'
-                    : 'bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] focus:border-[#0F766E] dark:focus:border-[#2DD4BF]'
-                }`}
-              />
-              {fieldErrors.reason && (
-                <p className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 flex items-center gap-1 animate-in fade-in">
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                  <span>{fieldErrors.reason}</span>
-                </p>
-              )}
+              <div className="font-semibold text-[#0F766E] dark:text-[#2DD4BF] shrink-0">
+                Estimated token: <span className="font-bold text-[#132226] dark:text-[#F4F7F6]">{estimatedToken}</span>
+              </div>
             </div>
-          </div>
 
-          {/* Submit Action */}
-          <div className="pt-2">
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={
@@ -895,22 +872,13 @@ export default function BookAppointmentModal({
                 !activeSlot || 
                 allBookedSlotsSet.has(activeSlot.trim().toLowerCase())
               }
-              className={`w-full flex items-center justify-center gap-2 py-3 px-4 text-[#F4F7F6] text-sm font-semibold rounded-xl transition-all shadow-sm ${
+              className={`w-full h-11 flex items-center justify-center gap-2 px-4 text-white text-sm font-semibold rounded-xl transition-all shadow-sm ${
                 loading || !isDateWorkingDay || isDateFullyBooked || !activeSlot || allBookedSlotsSet.has(activeSlot.trim().toLowerCase())
-                  ? 'bg-[#E0E7E5]/50 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] cursor-not-allowed opacity-60'
+                  ? 'bg-[#E0E7E5]/60 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] cursor-not-allowed opacity-60'
                   : 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] cursor-pointer'
               }`}
             >
-              <span>
-                {loading
-                  ? 'Confirming Booking...'
-                  : !isDateWorkingDay
-                    ? `Doctor Off Duty on ${selectedDayInfo.full}`
-                    : isDateFullyBooked
-                      ? 'Fully Booked on This Date'
-                      : `Confirm Booking • Token ${estimatedToken}`}
-              </span>
-              <ChevronRight className="w-4 h-4" />
+              <span>{loading ? 'Confirming booking...' : 'Confirm booking'}</span>
             </button>
           </div>
 

@@ -73,7 +73,13 @@ exports.sendClinicEmail = onRequest(
         }
 
         const transporter = nodemailer.createTransport({
-          service: "gmail",
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          connectionTimeout: 10000,
+          greetingTimeout: 10000,
+          socketTimeout: 15000,
           auth: {
             user: user.trim(),
             pass: pass.trim().replace(/\s+/g, "")
@@ -100,6 +106,13 @@ exports.sendClinicEmail = onRequest(
 
         let friendlyMsg = emailErr.message || "Failed to dispatch email.";
         if (
+          emailErr.code === "ETIMEDOUT" ||
+          emailErr.code === "ESOCKET" ||
+          emailErr.code === "ECONNECTION"
+        ) {
+          friendlyMsg =
+            "Cannot reach the Gmail mail server. Your network may be blocking SMTP. Try another network or check your firewall.";
+        } else if (
           emailErr.code === "EAUTH" ||
           emailErr.message?.includes("Invalid login") ||
           emailErr.message?.includes("Username and Password not accepted")

@@ -16,7 +16,8 @@ import {
   Trash2,
   Edit2,
   X,
-  Key
+  MoreVertical,
+  Star
 } from 'lucide-react';
 
 import ConfirmModal from '../../components/common/ConfirmModal';
@@ -24,6 +25,16 @@ import { getDoctorAvatar, getDoctorFallbackAvatar, getSpecialtyConfig } from '..
 
 const DEFAULT_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const DEFAULT_SLOTS = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:30 AM", "02:00 PM", "02:30 PM", "03:30 PM"];
+
+const WEEK_DAYS = [
+  { label: 'M', name: 'Monday' },
+  { label: 'T', name: 'Tuesday' },
+  { label: 'W', name: 'Wednesday' },
+  { label: 'T', name: 'Thursday' },
+  { label: 'F', name: 'Friday' },
+  { label: 'S', name: 'Saturday' },
+  { label: 'S', name: 'Sunday' }
+];
 
 export default function DoctorManagement() {
   const { doctors, addDoctor, deleteDoctor, updateDoctorSlots, toggleDoctorLeave } = useData();
@@ -43,6 +54,7 @@ export default function DoctorManagement() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [doctorToDelete, setDoctorToDelete] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   // Editing Doctor state
   const [editingDoctor, setEditingDoctor] = useState(null);
@@ -50,6 +62,13 @@ export default function DoctorManagement() {
   const [editSlotsInput, setEditSlotsInput] = useState('');
   const [editDays, setEditDays] = useState([]);
   const [editLoading, setEditLoading] = useState(false);
+
+  // Close overflow menu on outside click
+  useEffect(() => {
+    const handleOutsideClick = () => setOpenMenuId(null);
+    window.addEventListener('click', handleOutsideClick);
+    return () => window.removeEventListener('click', handleOutsideClick);
+  }, []);
 
   // Lock background scroll when editing modal is open
   useEffect(() => {
@@ -121,7 +140,7 @@ export default function DoctorManagement() {
         .map(s => s.trim())
         .filter(Boolean);
 
-      // 1. Create or ensure doctor login account in Firestore users collection
+      // 1. Create doctor login account in Firebase Auth
       let doctorUid;
       try {
         const account = await createDoctorAccount({
@@ -136,7 +155,7 @@ export default function DoctorManagement() {
         console.warn('Doctor user account already exists or warning:', authErr);
       }
 
-      // 2. Add doctor profile to Firestore doctors collection
+      // 2. Add doctor profile to Firestore doctors collection (NO password stored here)
       await addDoctor({
         id: doctorUid || `doc_${Date.now()}`,
         name: name.startsWith('Dr.') ? name : `Dr. ${name}`,
@@ -153,7 +172,7 @@ export default function DoctorManagement() {
         consultationFee: "Free (Community Health Funded)"
       });
 
-      setSuccess(`Doctor profile for ${name} registered successfully! Login credentials created (Password: ${doctorPassword || 'wasd@121'}).`);
+      setSuccess(`Doctor profile for ${name} registered successfully!`);
       setName('');
       setEmail('');
       setDoctorPassword('wasd@121');
@@ -169,7 +188,6 @@ export default function DoctorManagement() {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
@@ -188,9 +206,9 @@ export default function DoctorManagement() {
 
         <button
           onClick={() => { setShowAddForm(!showAddForm); setError(''); }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6] font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-white font-bold text-xs rounded-xl shadow-xs transition-colors self-start sm:self-center cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
+          {showAddForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           <span>{showAddForm ? 'Close Form' : 'Add New Doctor'}</span>
         </button>
       </div>
@@ -237,7 +255,7 @@ export default function DoctorManagement() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Dr. Rajesh Patel"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
                   />
                 </div>
               </div>
@@ -254,7 +272,7 @@ export default function DoctorManagement() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="doctor@communityclinic.org"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
                   />
                 </div>
               </div>
@@ -271,7 +289,7 @@ export default function DoctorManagement() {
                     value={specialization}
                     onChange={(e) => setSpecialization(e.target.value)}
                     placeholder="e.g. General Physician, Pediatrics, Cardiology"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
                   />
                 </div>
               </div>
@@ -287,7 +305,7 @@ export default function DoctorManagement() {
                     value={qualification}
                     onChange={(e) => setQualification(e.target.value)}
                     placeholder="e.g. MBBS, MD (Internal Medicine)"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
                   />
                 </div>
               </div>
@@ -303,7 +321,7 @@ export default function DoctorManagement() {
                     value={cabin}
                     onChange={(e) => setCabin(e.target.value)}
                     placeholder="e.g. Cabin 101 - Primary Wing"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
                   />
                 </div>
               </div>
@@ -319,7 +337,7 @@ export default function DoctorManagement() {
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     placeholder="e.g. 10 years"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
                   />
                 </div>
               </div>
@@ -358,9 +376,9 @@ export default function DoctorManagement() {
                 value={slotsInput}
                 onChange={(e) => setSlotsInput(e.target.value)}
                 placeholder="09:00 AM, 10:00 AM, 11:00 AM, 02:00 PM"
-                className="w-full px-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-sm text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
+                className="w-full px-4 py-2.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#0F766E] dark:focus:ring-[#2DD4BF] transition-all"
               />
-              <p className="text-[11px] text-[#758D94] dark:text-[#79949B] mt-1">Patients will be able to book into these slots sequentially.</p>
+              <p className="text-xs text-[#758D94] dark:text-[#79949B] mt-1">Patients will be able to book into these slots sequentially.</p>
             </div>
 
             <div className="flex justify-end gap-3 pt-2">
@@ -385,7 +403,9 @@ export default function DoctorManagement() {
 
       {/* Doctor Registry List */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">Registered Clinic Specialists ({doctors.length})</h2>
+        <h2 className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
+          Registered Clinic Specialists ({doctors.length})
+        </h2>
 
         {doctors.length === 0 ? (
           <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-3xl border border-dashed border-[#CFDAD6] dark:border-[#21333A] p-12 text-center space-y-4">
@@ -407,128 +427,190 @@ export default function DoctorManagement() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {doctors.map((doctor) => (
-              <div
-                key={doctor.id}
-                className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-sm flex flex-col justify-between hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40 transition-colors"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-2.5">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wide border ${getSpecialtyConfig(doctor.specialization).badgeClass}`}>
-                        {getSpecialtyConfig(doctor.specialization).label}
-                      </span>
-                      {doctor.isOnLeave && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-800/60">
-                          On Leave Today
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {doctors.map((doctor) => {
+              const isOnLeave = Boolean(doctor.isOnLeave);
+              const specialtyInfo = getSpecialtyConfig(doctor.specialization);
+              const isMenuOpen = openMenuId === doctor.id;
+
+              return (
+                <div
+                  key={doctor.id}
+                  className={`relative bg-white dark:bg-[#121C21] rounded-2xl border p-5 shadow-xs flex flex-col justify-between transition-all ${
+                    isOnLeave
+                      ? 'opacity-75 border-amber-300 dark:border-amber-800/60 bg-amber-50/20 dark:bg-amber-950/10'
+                      : 'border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40'
+                  }`}
+                >
+                  <div>
+                    {/* Header: 56px Avatar + Name + Specialization + Specialty Pill + Cabin */}
+                    <div className="flex items-start gap-3.5 mb-3.5">
+                      <div className="relative shrink-0">
+                        <img
+                          src={getDoctorAvatar(doctor)}
+                          alt={doctor.name}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = getDoctorFallbackAvatar(doctor.name);
+                          }}
+                          className="w-14 h-14 rounded-full object-cover border border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6] dark:bg-[#19272D]"
+                        />
+                        {isOnLeave && (
+                          <span className="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-white shadow-xs">
+                            Leave
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <h3 className="font-bold text-[#132226] dark:text-[#F4F7F6] text-base font-heading truncate">
+                            {doctor.name}
+                          </h3>
+                        </div>
+                        <p className="text-xs text-[#0F766E] dark:text-[#2DD4BF] font-medium truncate mt-0.5">
+                          {doctor.specialization}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${specialtyInfo.badgeClass}`}>
+                            {specialtyInfo.label}
+                          </span>
+                          <span className="text-xs text-[#758D94] dark:text-[#79949B]">
+                            {doctor.cabin || 'Cabin 101'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 3 Stats Row: Experience, Slots/day, Rating */}
+                    <div className="grid grid-cols-3 gap-2 py-2.5 border-y border-[#E0E7E5] dark:border-[#21333A] text-center my-3 bg-[#F4F7F6]/50 dark:bg-[#19272D]/40 rounded-xl">
+                      <div>
+                        <span className="block text-xs text-[#758D94] dark:text-[#79949B]">Experience</span>
+                        <span className="font-semibold text-xs text-[#132226] dark:text-[#F4F7F6] mt-0.5 block truncate">
+                          {doctor.experience || '5+ yrs'}
                         </span>
-                      )}
-                    </div>
-                    <span className="text-[11px] text-[#758D94] dark:text-[#79949B]">{doctor.cabin || 'Cabin 101'}</span>
-                  </div>
-
-                  <div className="flex items-start gap-3.5 mb-3">
-                    <img
-                      src={getDoctorAvatar(doctor)}
-                      alt={doctor.name}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = getDoctorFallbackAvatar(doctor.name);
-                      }}
-                      className="w-12 h-12 rounded-2xl object-cover border border-[#E0E7E5] dark:border-[#21333A] shrink-0 bg-[#F4F7F6] dark:bg-[#19272D]"
-                    />
-                    <div className="min-w-0">
-                      <h3 className="font-bold text-[#132226] dark:text-[#F4F7F6] text-sm font-heading">{doctor.name}</h3>
-                      <p className="text-xs font-medium text-[#0F766E] dark:text-[#2DD4BF] truncate">{doctor.specialization}</p>
-                      <p className="text-[11px] text-[#758D94] dark:text-[#79949B] mt-0.5">{doctor.email}</p>
-                    </div>
-                  </div>
-
-                  <div className="py-2.5 border-y border-[#E0E7E5] dark:border-[#21333A] space-y-1.5 my-3 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-[#5A7178] dark:text-[#9DB4BA]">Qualifications:</span>
-                      <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">{doctor.qualification || 'MBBS, MD'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#5A7178] dark:text-[#9DB4BA]">Experience:</span>
-                      <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">{doctor.experience || '5+ years'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#5A7178] dark:text-[#9DB4BA]">Available Slots:</span>
-                      <span className="font-bold text-[#0F766E] dark:text-[#2DD4BF]">{doctor.availableSlots?.length || 0} slots/day</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 mb-2">
-                    <span className="text-[10px] font-bold text-[#758D94] dark:text-[#79949B] uppercase tracking-wider">Days Available</span>
-                    <div className="flex flex-wrap gap-1">
-                      {doctor.availableDays?.map(day => (
-                        <span key={day} className="px-2 py-0.5 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5] dark:border-[#21333A] text-[#5A7178] dark:text-[#9DB4BA] rounded text-[10px] font-medium">
-                          {day}
+                      </div>
+                      <div className="border-x border-[#E0E7E5] dark:border-[#21333A]">
+                        <span className="block text-xs text-[#758D94] dark:text-[#79949B]">Slots/Day</span>
+                        <span className="font-semibold text-xs text-[#0F766E] dark:text-[#2DD4BF] mt-0.5 block">
+                          {doctor.availableSlots?.length || 4}/day
                         </span>
-                      ))}
+                      </div>
+                      <div>
+                        <span className="block text-xs text-[#758D94] dark:text-[#79949B]">Rating</span>
+                        <span className="font-semibold text-xs text-amber-500 dark:text-amber-400 mt-0.5 block">
+                          ★ {Number(doctor.rating || 5.0).toFixed(1)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="pt-3 border-t border-[#E0E7E5] dark:border-[#21333A] space-y-2 text-xs">
-                  <div className="flex items-center justify-between text-[#758D94] dark:text-[#79949B]">
-                    <span>Email:</span>
-                    <span className="font-medium text-[#5A7178] dark:text-[#9DB4BA] truncate max-w-[180px]">{doctor.email}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-2 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[11px]">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`w-2 h-2 rounded-full ${doctor.isOnLeave ? 'bg-amber-500' : 'bg-emerald-500'}`} />
-                      <span className="font-semibold text-[#132226] dark:text-[#F4F7F6]">
-                        {doctor.isOnLeave ? 'On Leave' : 'Available'}
+                    {/* 7-letter Weekday Strip */}
+                    <div className="space-y-1.5 my-3">
+                      <span className="text-xs font-semibold text-[#758D94] dark:text-[#79949B] uppercase tracking-wider block">
+                        Consultation Days
                       </span>
+                      <div className="flex items-center justify-between gap-1">
+                        {WEEK_DAYS.map((day, idx) => {
+                          const isActive = doctor.availableDays?.some(d =>
+                            d.toLowerCase().startsWith(day.name.toLowerCase().slice(0, 3)) ||
+                            d.toLowerCase() === day.name.toLowerCase()
+                          );
+                          return (
+                            <span
+                              key={`${day.name}-${idx}`}
+                              title={`${day.name}: ${isActive ? 'Available' : 'Off'}`}
+                              className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center transition-colors ${
+                                isActive
+                                  ? 'bg-[#0F766E] dark:bg-[#0D9488] text-white'
+                                  : 'bg-[#E0E7E5]/50 text-[#758D94] dark:bg-[#21333A]/60 dark:text-[#79949B]'
+                              }`}
+                            >
+                              {day.label}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
+
+                    {/* Status Toggle Switch */}
+                    <div className="flex items-center justify-between py-2">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${isOnLeave ? 'bg-amber-500' : 'bg-emerald-500'}`} />
+                        <span className={`text-xs font-semibold ${isOnLeave ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-700 dark:text-emerald-400'}`}>
+                          {isOnLeave ? 'On leave' : 'Available'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={!isOnLeave}
+                        onClick={() => toggleDoctorLeave(doctor.id, !isOnLeave)}
+                        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                          !isOnLeave ? 'bg-[#0F766E] dark:bg-[#0D9488]' : 'bg-[#CFDAD6] dark:bg-[#21333A]'
+                        }`}
+                        title={isOnLeave ? 'Mark as Available' : 'Mark as On Leave'}
+                      >
+                        <span
+                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                            !isOnLeave ? 'translate-x-5' : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Footer: Outline Edit Schedule (Full width) + ... Overflow Menu */}
+                  <div className="flex items-center gap-2 pt-3 mt-2 border-t border-[#E0E7E5] dark:border-[#21333A] relative">
                     <button
                       type="button"
-                      onClick={() => toggleDoctorLeave(doctor.id, !doctor.isOnLeave)}
-                      className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors cursor-pointer border ${
-                        doctor.isOnLeave
-                          ? 'bg-amber-500 text-white border-amber-600 hover:bg-amber-600'
-                          : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#CFDAD6] dark:border-[#2C444E] hover:border-amber-500/50'
-                      }`}
-                    >
-                      {doctor.isOnLeave ? 'Mark Present' : 'Mark On Leave'}
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between p-2 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] text-[11px]">
-                    <span className="flex items-center gap-1 text-[#0F766E] dark:text-[#2DD4BF] font-semibold">
-                      <Key className="w-3 h-3" /> Initial Password:
-                    </span>
-                    <code className="font-mono text-[#132226] dark:text-[#F4F7F6]">wasd@121</code>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-1">
-                    <button
                       onClick={() => {
                         setEditingDoctor(doctor);
                         setEditCabin(doctor.cabin || '');
                         setEditSlotsInput(doctor.availableSlots?.join(', ') || '');
                         setEditDays(doctor.availableDays || []);
                       }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 bg-[#F4F7F6] hover:bg-[#E0E7E5]/60 dark:bg-[#19272D] dark:hover:bg-[#0D9488]/20 text-[#0F766E] dark:text-[#2DD4BF] rounded-lg border border-[#CFDAD6] dark:border-[#2C444E] font-semibold transition-colors cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-[#CFDAD6] dark:border-[#2C444E] hover:border-[#0F766E] dark:hover:border-[#2DD4BF] text-[#0F766E] dark:text-[#2DD4BF] text-xs font-semibold hover:bg-[#0F766E]/5 dark:hover:bg-[#0D9488]/10 transition-colors cursor-pointer"
                     >
-                      <Edit2 className="w-3 h-3" />
-                      <span>Edit Schedule</span>
+                      <Edit2 className="w-3.5 h-3.5" />
+                      <span>Edit schedule</span>
                     </button>
-                    <button
-                      onClick={() => setDoctorToDelete(doctor)}
-                      className="p-1.5 text-[#758D94] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg border border-[#CFDAD6] dark:border-[#2C444E] transition-colors cursor-pointer"
-                      title="Remove Doctor"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenMenuId(isMenuOpen ? null : doctor.id);
+                        }}
+                        className="p-2 text-[#758D94] hover:text-[#132226] dark:text-[#79949B] dark:hover:text-[#F4F7F6] rounded-xl border border-[#CFDAD6] dark:border-[#2C444E] hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] transition-colors cursor-pointer"
+                        title="More options"
+                      >
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+
+                      {isMenuOpen && (
+                        <div
+                          className="absolute right-0 bottom-full mb-1 w-36 bg-white dark:bg-[#121C21] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] shadow-lg py-1 z-20 animate-in fade-in zoom-in-95"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              setDoctorToDelete(doctor);
+                            }}
+                            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-left cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete Doctor</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

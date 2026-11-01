@@ -1,39 +1,28 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { useData } from '../../context/DataContext';
 import { useAuth } from '../../context/AuthContext';
 import { sendDirectEmail, generatePharmacyPickupEmailHtml } from '../../services/emailService';
 import {
-  Pill,
   CheckCircle2,
   Clock,
   Search,
-  FileText,
   Printer,
   Mail,
-  Sparkles,
-  AlertCircle,
-  Package,
-  Layers,
-  HeartHandshake,
-  User,
-  Stethoscope,
   X,
-  Phone,
   Check,
-  Plus,
-  RefreshCw,
-  Info,
-  Ticket,
+  Edit3,
+  ChevronDown,
   Loader2
 } from 'lucide-react';
 
 export default function PharmacyDesk() {
-  const { userProfile, role } = useAuth();
+  const { role } = useAuth();
   const { appointments, pharmacyStock, dispensePrescription, updatePharmacyStock, showToast } = useData();
 
-  const [activeTab, setActiveTab] = useState('queue'); // 'queue' | 'inventory'
+  const [activeTab, setActiveTab] = useState('queue'); // 'queue' | 'stock'
   const [filter, setFilter] = useState('pending'); // 'pending' | 'dispensed' | 'all'
+  const [stockFilter, setStockFilter] = useState('all'); // 'all' | 'low'
   const [search, setSearch] = useState('');
   const [processingId, setProcessingId] = useState(null);
   const [checkedMeds, setCheckedMeds] = useState({}); // { [aptId_medIndex]: boolean }
@@ -43,6 +32,9 @@ export default function PharmacyDesk() {
   const [emailErrorMap, setEmailErrorMap] = useState({});
   const [restockItem, setRestockItem] = useState(null);
   const [restockAmount, setRestockAmount] = useState('100');
+  const [expandedDispensed, setExpandedDispensed] = useState({}); // { [aptId]: boolean }
+
+  const isAdmin = role === 'admin';
 
   // Filter completed appointments that have prescriptions
   const prescriptionAppointments = useMemo(() => {
@@ -67,6 +59,15 @@ export default function PharmacyDesk() {
     });
   }, [appointments, filter, search]);
 
+  // Split into Awaiting (unfulfilled) and Dispensed lists
+  const awaitingAppointments = useMemo(() => {
+    return prescriptionAppointments.filter(a => a.dispensaryStatus !== 'dispensed');
+  }, [prescriptionAppointments]);
+
+  const dispensedAppointments = useMemo(() => {
+    return prescriptionAppointments.filter(a => a.dispensaryStatus === 'dispensed');
+  }, [prescriptionAppointments]);
+
   // Statistics
   const pendingCount = useMemo(() => {
     return appointments.filter(a => a.status === 'done' && a.prescription && a.dispensaryStatus !== 'dispensed').length;
@@ -75,10 +76,6 @@ export default function PharmacyDesk() {
   const dispensedCount = useMemo(() => {
     return appointments.filter(a => a.status === 'done' && a.prescription && a.dispensaryStatus === 'dispensed').length;
   }, [appointments]);
-
-  const totalStockItems = useMemo(() => {
-    return (pharmacyStock || []).reduce((acc, curr) => acc + (Number(curr.stock) || 0), 0);
-  }, [pharmacyStock]);
 
   const lowStockCount = useMemo(() => {
     return (pharmacyStock || []).filter(item => (Number(item.stock) || 0) <= (item.minAlert || 50)).length;
@@ -103,7 +100,7 @@ export default function PharmacyDesk() {
     }
 
     const emailHtml = generatePharmacyPickupEmailHtml(apt);
-    const subject = ` Prescriptions Ready for Pickup - Token ${apt.tokenNumber || 'TK'} (Apna Clinic)`;
+    const subject = `Prescriptions Ready for Pickup - Token ${apt.tokenNumber || 'TK'} (Apna Clinic)`;
     setEmailSendingId(apt.id);
     setEmailErrorMap(prev => ({ ...prev, [apt.id]: null }));
 
@@ -132,23 +129,6 @@ export default function PharmacyDesk() {
     setCheckedMeds(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleVerifyAllMeds = (aptId, totalCount) => {
-    setCheckedMeds(prev => {
-      const next = { ...prev };
-      let allChecked = true;
-      for (let i = 0; i < totalCount; i++) {
-        if (!next[`${aptId}_${i}`]) {
-          allChecked = false;
-          break;
-        }
-      }
-      for (let i = 0; i < totalCount; i++) {
-        next[`${aptId}_${i}`] = !allChecked;
-      }
-      return next;
-    });
-  };
-
   const handleApplyRestock = async () => {
     if (!restockItem) return;
     const addQty = parseInt(restockAmount, 10);
@@ -171,6 +151,43 @@ export default function PharmacyDesk() {
       .filter(line => line.length > 0);
   };
 
+  // Determines if a line is lifestyle/exercise/diet advice rather than a drug to verify
+  const isAdviceLine = (line) => {
+    const lower = line.toLowerCase();
+    const clean = lower.replace(/^[\d.)\s-]+/, '').trim();
+    return (
+      clean.startsWith('gentle') ||
+      lower.includes('exercise') ||
+      lower.includes('advice') ||
+      lower.includes('diet') ||
+      lower.includes('rest') ||
+      lower.includes('compress') ||
+      lower.includes('lifestyle') ||
+      lower.includes('stretch') ||
+      lower.includes('walk') ||
+      lower.includes('intake encouraged') ||
+      lower.includes('counseling') ||
+      lower.includes('annual screening')
+    );
+  };
+
+  // Parses drug name and dose instructions
+  const parseMedLine = (line) => {
+    const clean = line.replace(/^[\d.)\s-]+/, '').trim();
+    if (clean.includes(' - ')) {
+      const [name, ...rest] = clean.split(' - ');
+      return { name: name.trim(), instructions: rest.join(' - ').trim() };
+    }
+    const match = clean.match(/\b(TDS|BD|OD|PRN|HS|SOS|QID|TID|BID|\d+\s*times|twice|thrice|daily|every|at bedtime|before|after)\b/i);
+    if (match && match.index > 0) {
+      return {
+        name: clean.slice(0, match.index).trim(),
+        instructions: clean.slice(match.index).trim()
+      };
+    }
+    return { name: clean, instructions: '' };
+  };
+
   // Resolves legacy demo "TK-00" tokens to unique sequential tokens
   const getCleanTokenNumber = (apt) => {
     if (!apt) return 'TK-01';
@@ -188,18 +205,7 @@ export default function PharmacyDesk() {
     if (!line || !stockList || stockList.length === 0) return null;
     const cleanLine = line.toLowerCase();
 
-    // Exclude non-medication lifestyle / therapy instructions
-    if (
-      cleanLine.includes('exercise') ||
-      cleanLine.includes('compress') ||
-      cleanLine.includes('avoid') ||
-      cleanLine.includes('lifestyle') ||
-      cleanLine.includes('rest') ||
-      cleanLine.includes('diet') ||
-      cleanLine.includes('walk') ||
-      cleanLine.includes('adjustment') ||
-      cleanLine.includes('ergonomic')
-    ) {
+    if (isAdviceLine(line)) {
       return null;
     }
 
@@ -236,439 +242,147 @@ export default function PharmacyDesk() {
     });
   };
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
+  // Filtered & sorted stock list (low items first)
+  const sortedStock = useMemo(() => {
+    let list = [...(pharmacyStock || [])];
+    if (stockFilter === 'low') {
+      list = list.filter(m => (Number(m.stock) || 0) <= (m.minAlert || 50));
+    }
+    if (search.trim() && activeTab === 'stock') {
+      const q = search.toLowerCase();
+      list = list.filter(m =>
+        m.name?.toLowerCase().includes(q) ||
+        m.generic?.toLowerCase().includes(q) ||
+        m.batch?.toLowerCase().includes(q) ||
+        m.category?.toLowerCase().includes(q)
+      );
+    }
+    list.sort((a, b) => {
+      const aIsLow = (Number(a.stock) || 0) <= (a.minAlert || 50) ? 1 : 0;
+      const bIsLow = (Number(b.stock) || 0) <= (b.minAlert || 50) ? 1 : 0;
+      if (aIsLow !== bIsLow) return bIsLow - aIsLow;
+      return (a.name || '').localeCompare(b.name || '');
+    });
+    return list;
+  }, [pharmacyStock, stockFilter, search, activeTab]);
 
-      {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#E8F0EE] to-[#E0E7E5]/50 dark:from-[#121C21] dark:to-[#0B1114] border border-[#DCE5E2] dark:border-[#21333A] p-6 sm:p-8 shadow-sm">
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-semibold border border-[#0F766E]/20 dark:border-[#2DD4BF]/30">
-              <Pill className="w-3.5 h-3.5" />
-              <span>SDG 3 Universal Essential Medicine Access Scheme</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#132226] dark:text-[#F4F7F6] tracking-tight">
-              Community Pharmacy &amp; Medicine Dispensary Desk
-            </h1>
-            <p className="text-sm text-[#5A7178] dark:text-[#9DB4BA] leading-relaxed">
-              Verify digital doctor prescriptions, package essential medicines, dispatch email pickup notifications, and print thermal dosage instructions for patients.
-            </p>
-          </div>
+  // Render Awaiting (unfulfilled) Prescription Card (in 2-column items-start grid)
+  const renderAwaitingCard = (apt) => {
+    const cleanToken = getCleanTokenNumber(apt);
+    const rxLines = parseRxLines(apt.prescription);
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#EA580C] dark:text-[#FB923C] block">Awaiting Dispense</span>
-              <div className="text-2xl font-black text-[#EA580C] dark:text-[#FB923C] font-heading mt-0.5">
-                {pendingCount}
+    const medItems = [];
+    const adviceItems = [];
+
+    rxLines.forEach((line, idx) => {
+      if (isAdviceLine(line)) {
+        adviceItems.push({ text: line, originalIdx: idx });
+      } else {
+        medItems.push({
+          line,
+          parsed: parseMedLine(line),
+          originalIdx: idx,
+          stockMatch: findStockMatch(line, pharmacyStock)
+        });
+      }
+    });
+
+    const checkedMedsCount = medItems.filter(m => checkedMeds[`${apt.id}_${m.originalIdx}`]).length;
+    const totalMedsCount = medItems.length;
+    const isAllMedsChecked = totalMedsCount === 0 || checkedMedsCount === totalMedsCount;
+    const emailSent = emailSentMap[apt.id];
+
+    return (
+      <div
+        key={apt.id}
+        className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-2xs flex flex-col justify-between space-y-4 hover:border-[#0F766E]/40 transition-colors"
+      >
+        <div className="space-y-3">
+          {/* Top Row: Token badge next to patient name (18px semibold), age/gender muted, status dot on right */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="px-2.5 py-1 bg-[#0F766E]/10 dark:bg-[#0D9488]/20 text-[#0F766E] dark:text-[#2DD4BF] rounded-lg font-mono text-xs font-bold shrink-0">
+                  {cleanToken}
+                </span>
+                <h3 className="text-lg font-semibold text-[#132226] dark:text-[#F4F7F6] truncate">
+                  {apt.patientName}
+                </h3>
+                <span className="text-xs text-[#758D94] dark:text-[#79949B]">
+                  ({apt.patientAge || 'Adult'}y • {apt.patientGender || 'Unspecified'})
+                </span>
               </div>
-              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">Pending fulfillment</span>
-            </div>
 
-            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF] block">Dispensed Today</span>
-              <div className="text-2xl font-black text-[#0F766E] dark:text-[#2DD4BF] font-heading mt-0.5">
-                {dispensedCount}
-              </div>
-              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">Patients served</span>
-            </div>
-
-            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">Essential Medicines</span>
-              <div className="text-2xl font-black text-[#132226] dark:text-[#F4F7F6] font-heading mt-0.5">
-                {(pharmacyStock || []).length}
-              </div>
-              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">Free generic lines</span>
-            </div>
-
-            <div className="p-3.5 bg-white dark:bg-[#19272D] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] text-center shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">Low Stock Alerts</span>
-              <div className={`text-2xl font-black font-heading mt-0.5 ${lowStockCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-[#0F766E] dark:text-[#2DD4BF]'}`}>
-                {lowStockCount}
-              </div>
-              <span className="text-[10px] text-[#758D94] dark:text-[#79949B]">{lowStockCount > 0 ? 'Requires restock' : 'Supplies healthy'}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Tabs Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E0E7E5] dark:border-[#21333A] pb-4">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setActiveTab('queue')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'queue'
-                ? 'bg-[#0F766E] text-[#F4F7F6] shadow-xs'
-                : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] border border-[#E0E7E5] dark:border-[#21333A]'
-              }`}
-          >
-            <Clock className="w-3.5 h-3.5" />
-            <span>Prescription Queue ({pendingCount} pending)</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('inventory')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'inventory'
-                ? 'bg-[#0F766E] text-[#F4F7F6] shadow-xs'
-                : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] border border-[#E0E7E5] dark:border-[#21333A]'
-              }`}
-          >
-            <Package className="w-3.5 h-3.5" />
-            <span>Essential Medicines Stock ({totalStockItems} total units)</span>
-          </button>
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3.5 top-2.5" />
-          <input
-            type="text"
-            placeholder={activeTab === 'queue' ? "Search patient, token, medicine, or phone..." : "Search medicine by name or generic..."}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#121C21] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF]"
-          />
-        </div>
-      </div>
-
-      {/* TAB 1: PRESCRIPTION FULFILLMENT QUEUE */}
-      {activeTab === 'queue' && (
-        <div className="space-y-6">
-
-          {/* Sub-Filters */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setFilter('pending')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'pending'
-                  ? 'bg-[#F97316] text-white border-[#F97316]'
-                  : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#E0E7E5] dark:border-[#21333A]'
-                }`}
-            >
-              Awaiting Dispense ({pendingCount})
-            </button>
-            <button
-              onClick={() => setFilter('dispensed')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'dispensed'
-                  ? 'bg-[#0F766E] text-white border-[#0F766E]'
-                  : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#E0E7E5] dark:border-[#21333A]'
-                }`}
-            >
-              Dispensed Today ({dispensedCount})
-            </button>
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${filter === 'all'
-                  ? 'bg-[#132226] text-[#F4F7F6] border-[#132226] dark:bg-[#F4F7F6] dark:text-[#121C21] dark:border-[#F4F7F6]'
-                  : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#E0E7E5] dark:border-[#21333A]'
-                }`}
-            >
-              All Prescriptions
-            </button>
-          </div>
-
-          {/* Prescriptions List */}
-          {prescriptionAppointments.length === 0 ? (
-            <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-2xl border border-dashed border-[#CFDAD6] dark:border-[#21333A] p-12 text-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#0F766E]/10 dark:bg-[#2DD4BF]/20 text-[#0F766E] dark:text-[#2DD4BF] flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
-                No Prescriptions in this View
-              </h3>
-              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] max-w-md mx-auto">
-                Prescriptions issued by clinic doctors during consultations will automatically appear here for verification and medicine packing.
+              {/* Under it: Doctor name, date, and phone as one muted line */}
+              <p className="text-xs text-[#758D94] dark:text-[#79949B] mt-1 truncate">
+                {apt.doctorName} · {apt.date} {apt.patientPhone ? `· ${apt.patientPhone}` : ''}
               </p>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {prescriptionAppointments.map((apt) => {
-                const isDispensed = apt.dispensaryStatus === 'dispensed';
-                const rxLines = parseRxLines(apt.prescription);
-                const emailSent = emailSentMap[apt.id];
-                const cleanToken = getCleanTokenNumber(apt);
-                const checkedCount = rxLines.filter((_, idx) => checkedMeds[`${apt.id}_${idx}`] || isDispensed).length;
-                const isAllMedsChecked = rxLines.length === 0 || checkedCount === rxLines.length;
+
+            {/* Status dot + label */}
+            <div className="shrink-0 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-400">
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
+                <span>Awaiting pickup</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Diagnosis: One muted line "Dx: ..." clamp to 2 lines */}
+          {apt.diagnosis && (
+            <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] line-clamp-2">
+              <strong className="font-semibold text-[#132226] dark:text-[#F4F7F6]">Dx:</strong> {apt.diagnosis}
+            </p>
+          )}
+
+          {/* Medicine List: Checklist, one row per item, 14px normal font, NOT monospace */}
+          {medItems.length > 0 && (
+            <div className="space-y-2 pt-1">
+              {medItems.map((med) => {
+                const isChecked = checkedMeds[`${apt.id}_${med.originalIdx}`];
+                const stock = med.stockMatch;
+                const isOutStock = stock ? (Number(stock.stock) || 0) <= 0 : false;
+                const isLowStock = stock ? (Number(stock.stock) || 0) <= (stock.minAlert || 50) : false;
 
                 return (
                   <div
-                    key={apt.id}
-                    className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-sm space-y-4 hover:border-[#0F766E]/40 transition-colors"
+                    key={med.originalIdx}
+                    onClick={() => toggleMedCheck(apt.id, med.originalIdx)}
+                    className={`flex items-start gap-3 p-2.5 rounded-xl transition-colors cursor-pointer hover:bg-[#F4F7F6] dark:hover:bg-[#19272D] ${
+                      isChecked ? 'opacity-85' : ''
+                    }`}
                   >
-                    {/* Top Identity Row */}
-                    <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#E0E7E5]/60 dark:border-[#21333A]">
-                      <div className="flex items-center gap-4">
-                        {/* High-visibility Dispensary Ticket Badge */}
-                        <div className="flex items-stretch rounded-xl overflow-hidden border-2 border-[#0F766E] dark:border-[#2DD4BF] shadow-sm shrink-0 bg-white dark:bg-[#0B1114]">
-                          <div className="bg-[#0F766E] text-[#F4F7F6] px-3 py-2 flex flex-col items-center justify-center min-w-[58px]">
-                            <span className="text-[9px] uppercase tracking-wider font-extrabold text-[#A3C9B8]">Ticket</span>
-                            <Ticket className="w-4 h-4 text-[#F4F7F6] mt-0.5" />
-                          </div>
-                          <div className="px-4 py-2 flex items-center justify-center bg-[#EAF3EE] dark:bg-[#1F3327] min-w-[80px]">
-                            <span className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-[#1B4D36] dark:text-[#2DD4BF]">
-                              {cleanToken}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-base text-[#132226] dark:text-[#F4F7F6] font-heading">{apt.patientName}</h3>
-                            <span className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">
-                              ({apt.patientAge || 'Adult'}y • {apt.patientGender || 'Unspecified'})
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-0.5">
-                            <span className="flex items-center gap-1">
-                              <Stethoscope className="w-3 h-3 text-[#0F766E] dark:text-[#2DD4BF]" />
-                              <span>{apt.doctorName}</span>
-                            </span>
-                            <span>•</span>
-                            <span>{apt.date}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Status Badge */}
-                      <div>
-                        {isDispensed ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-[#0F766E]/12 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border border-[#0F766E]/25">
-                            <Check className="w-3 h-3" /> Dispensed
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-[#F97316]/15 text-[#EA580C] dark:bg-[#FB923C]/20 dark:text-[#FB923C] border border-[#F97316]/25 animate-pulse">
-                            <Clock className="w-3 h-3" /> Awaiting Pickup
-                          </span>
-                        )}
-                      </div>
+                    <div
+                      className={`w-4 h-4 rounded mt-0.5 flex items-center justify-center shrink-0 border transition-colors ${
+                        isChecked
+                          ? 'bg-[#0F766E] border-[#0F766E] text-white dark:bg-[#2DD4BF] dark:border-[#2DD4BF] dark:text-[#0B1114]'
+                          : 'border-[#CFDAD6] dark:border-[#2C444E] bg-white dark:bg-[#121C21]'
+                      }`}
+                    >
+                      {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
 
-                    {/* Patient Phone & Contact */}
-                    {apt.patientPhone && (
-                      <div className="flex items-center justify-between text-xs py-1.5 px-3 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#E0E7E5]/60 dark:border-[#21333A]">
-                        <span className="text-[#5A7178] dark:text-[#9DB4BA] flex items-center gap-1.5">
-                          <Phone className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
-                          <span>Contact:</span>
-                        </span>
-                        <span className="font-mono font-bold text-[#132226] dark:text-[#F4F7F6]">{apt.patientPhone}</span>
-                      </div>
-                    )}
+                    <div className="min-w-0 flex-1 text-sm font-normal">
+                      <span className={`font-semibold block ${isChecked ? 'line-through text-[#758D94] dark:text-[#79949B]' : 'text-[#132226] dark:text-[#F4F7F6]'}`}>
+                        {med.parsed.name}
+                      </span>
 
-                    {/* Diagnosis */}
-                    {apt.diagnosis && (
-                      <div className="p-2.5 rounded-xl bg-[#F4F7F6]/60 dark:bg-[#19272D]/60 border border-[#E0E7E5]/60 dark:border-[#21333A] text-xs">
-                        <span className="font-bold text-[#0F766E] dark:text-[#2DD4BF] uppercase tracking-wider text-[10px] block mb-0.5">
-                          Clinical Diagnosis:
-                        </span>
-                        <p className="font-medium text-[#132226] dark:text-[#F4F7F6]">{apt.diagnosis}</p>
-                      </div>
-                    )}
-
-                    {/* Medication Verification Checklist with Progress Indicator & Low-Stock Warnings */}
-                    <div className="space-y-2.5">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div className="flex items-center gap-1.5">
-                          <Pill className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#5A7178] dark:text-[#9DB4BA]">
-                            Medication Verification Checklist ({rxLines.length} prescribed):
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2 self-start sm:self-center">
-                          {/* 3. Progress indicator */}
-                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider transition-colors ${checkedCount === rxLines.length
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
-                              : checkedCount > 0
-                                ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-800'
-                                : 'bg-[#F4F7F6] text-[#5A7178] dark:bg-[#19272D] dark:text-[#9DB4BA] border border-[#E0E7E5] dark:border-[#21333A]'
-                            }`}>
-                            {checkedCount === rxLines.length ? `All ${rxLines.length} Verified ✓` : `${checkedCount} of ${rxLines.length} verified`}
-                          </span>
-
-                          {!isDispensed && rxLines.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => handleVerifyAllMeds(apt.id, rxLines.length)}
-                              className="text-[10px] text-[#0F766E] hover:text-[#115E59] dark:text-[#2DD4BF] dark:hover:text-[#6ee7b7] font-bold hover:underline cursor-pointer transition-colors"
-                            >
-                              {checkedCount === rxLines.length ? 'Uncheck All' : 'Verify All'}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div className="w-full bg-[#E0E7E5]/50 dark:bg-[#21333A] rounded-full h-1.5 overflow-hidden">
-                        <div
-                          className={`h-full transition-all duration-300 ${checkedCount === rxLines.length
-                              ? 'bg-[#0F766E] dark:bg-[#2DD4BF]'
-                              : 'bg-[#F97316] dark:bg-[#FB923C]'
-                            }`}
-                          style={{ width: `${rxLines.length > 0 ? (checkedCount / rxLines.length) * 100 : 0}%` }}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        {rxLines.map((line, idx) => {
-                          const isChecked = checkedMeds[`${apt.id}_${idx}`] || isDispensed;
-                          const matchedStock = findStockMatch(line, pharmacyStock);
-                          const isLowStock = matchedStock ? ((Number(matchedStock.stock) || 0) <= (matchedStock.minAlert || 50)) : false;
-                          const isOutStock = matchedStock ? ((Number(matchedStock.stock) || 0) <= 0) : false;
-
-                          return (
-                            <div
-                              key={idx}
-                              onClick={() => !isDispensed && toggleMedCheck(apt.id, idx)}
-                              className={`flex items-start justify-between gap-3 p-3 rounded-xl border text-xs transition-all ${isChecked
-                                  ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/60 shadow-2xs'
-                                  : 'bg-[#F4F7F6] dark:bg-[#19272D] border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/50 cursor-pointer shadow-2xs'
-                                }`}
-                            >
-                              <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                                <div className={`w-4 h-4 rounded mt-0.5 flex items-center justify-center shrink-0 border transition-colors ${isChecked
-                                    ? 'bg-[#0F766E] border-[#0F766E] text-[#F4F7F6] dark:bg-[#2DD4BF] dark:border-[#2DD4BF] dark:text-[#0B1114]'
-                                    : 'border-[#758D94] dark:border-[#79949B] bg-white dark:bg-[#121C21]'
-                                  }`}>
-                                  {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
-                                </div>
-
-                                <div className="min-w-0 flex-1 space-y-1">
-                                  <p className={`font-mono text-xs leading-relaxed transition-all ${isChecked
-                                      ? 'line-through text-emerald-950/70 dark:text-emerald-200/70 font-medium'
-                                      : 'text-[#132226] dark:text-[#F4F7F6] font-semibold'
-                                    }`}>
-                                    {line}
-                                  </p>
-
-                                  {/* 5. Low-stock / Stock Indicator on line item */}
-                                  {matchedStock && (
-                                    <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
-                                      {isOutStock ? (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
-                                          <AlertCircle className="w-3 h-3 text-rose-600 dark:text-rose-400" />
-                                          Out of Stock (0 {matchedStock.unit})
-                                        </span>
-                                      ) : isLowStock ? (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-800 animate-pulse">
-                                          <AlertCircle className="w-3 h-3 text-amber-700 dark:text-amber-400" />
-                                          Low Stock: {matchedStock.stock} {matchedStock.unit} remaining (Min: {matchedStock.minAlert})
-                                        </span>
-                                      ) : (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-[#0F766E]/10 text-[#0F766E] dark:bg-[#2DD4BF]/20 dark:text-[#2DD4BF] border border-[#0F766E]/20 dark:border-[#2DD4BF]/30">
-                                          <Package className="w-3 h-3 text-[#0F766E] dark:text-[#2DD4BF]" />
-                                          In Stock ({matchedStock.stock} {matchedStock.unit})
-                                        </span>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-
-                              <div className="shrink-0 flex items-center">
-                                <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${isChecked
-                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40'
-                                    : 'bg-[#E0E7E5]/50 text-[#758D94] dark:bg-[#21333A] dark:text-[#79949B]'
-                                  }`}>
-                                  {isChecked ? 'Verified ✓' : 'To Pack'}
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Action Bar */}
-                    <div className="pt-2 border-t border-[#E0E7E5]/60 dark:border-[#21333A] flex flex-wrap items-center justify-between gap-2 text-xs">
-
-                      {/* Secondary Actions */}
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedLabelApt(apt)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#19272D] hover:bg-[#F4F7F6] dark:hover:bg-[#21333A] border border-[#CFDAD6] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6] font-semibold transition-colors cursor-pointer"
-                        >
-                          <Printer className="w-3.5 h-3.5 text-[#5A7178] dark:text-[#9DB4BA]" />
-                          <span>Print Label</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          disabled={emailSendingId === apt.id}
-                          onClick={() => handleSendPickupEmail(apt)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer font-semibold ${emailSendingId === apt.id
-                              ? 'bg-[#F4F7F6] dark:bg-[#19272D] text-[#758D94] border-[#CFDAD6] cursor-not-allowed'
-                              : emailSent
-                                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-300'
-                                : emailErrorMap[apt.id]
-                                  ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-300'
-                                  : 'bg-white dark:bg-[#19272D] hover:bg-[#F4F7F6] dark:hover:bg-[#21333A] border-[#CFDAD6] dark:border-[#21333A] text-[#132226] dark:text-[#F4F7F6]'
-                            }`}
-                        >
-                          {emailSendingId === apt.id ? (
-                            <>
-                              <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0F766E] dark:text-[#2DD4BF]" />
-                              <span>Sending...</span>
-                            </>
-                          ) : emailSent ? (
-                            <>
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                              <span>Email Sent ✓</span>
-                            </>
-                          ) : emailErrorMap[apt.id] ? (
-                            <>
-                              <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
-                              <span>Retry Email</span>
-                            </>
-                          ) : (
-                            <>
-                              <Mail className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#2DD4BF]" />
-                              <span>Email Notice</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-
-                      {/* Display Email Error Message if failed */}
-                      {emailErrorMap[apt.id] && (
-                        <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/40 text-[11px] text-rose-700 dark:text-rose-300 flex items-start gap-1.5">
-                          <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
-                          <span className="leading-tight">{emailErrorMap[apt.id]}</span>
-                        </div>
-                      )}
-
-                      {/* Primary Dispense Action - Validated */}
-                      {!isDispensed ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (!isAllMedsChecked) {
-                              showToast(`Please verify all medications before dispensing (${checkedCount} of ${rxLines.length} verified).`, 'warning');
-                              return;
-                            }
-                            handleDispense(apt.id);
-                          }}
-                          disabled={processingId === apt.id}
-                          title={!isAllMedsChecked ? `Verify all ${rxLines.length} checklist items before dispensing` : 'Confirm all medications packaged and dispensed'}
-                          className={`flex items-center gap-1.5 px-4 py-2 font-bold rounded-xl shadow-xs transition-all text-xs cursor-pointer ${!isAllMedsChecked
-                              ? 'bg-[#E0E7E5]/60 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] border border-[#CFDAD6] dark:border-[#2C444E] hover:bg-[#E0E7E5]/80'
-                              : 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-[#F4F7F6]'
-                            }`}
-                        >
-                          <CheckCircle2 className={`w-4 h-4 ${!isAllMedsChecked ? 'text-[#758D94] dark:text-[#79949B]' : ''}`} />
-                          <span>
-                            {processingId === apt.id
-                              ? 'Updating...'
-                              : !isAllMedsChecked
-                                ? `Verify All to Dispense (${checkedCount}/${rxLines.length})`
-                                : 'Mark as Dispensed'}
-                          </span>
-                        </button>
-                      ) : (
-                        <span className="text-[11px] text-[#758D94] dark:text-[#79949B] italic">
-                          Dispensed: {apt.dispensedAt ? new Date(apt.dispensedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Today'}
+                      {med.parsed.instructions && (
+                        <span className="text-xs text-[#758D94] dark:text-[#79949B] block mt-0.5">
+                          {med.parsed.instructions}
                         </span>
                       )}
 
+                      {/* Stock warning only when low or out (amber text), show nothing when fine */}
+                      {isOutStock ? (
+                        <span className="text-xs font-semibold text-rose-600 dark:text-rose-400 block mt-0.5">
+                          Out of stock (0 left)
+                        </span>
+                      ) : isLowStock ? (
+                        <span className="text-xs font-semibold text-amber-600 dark:text-amber-400 block mt-0.5">
+                          Low stock: {stock.stock} left
+                        </span>
+                      ) : null}
                     </div>
                   </div>
                 );
@@ -676,86 +390,551 @@ export default function PharmacyDesk() {
             </div>
           )}
 
+          {/* Advice section: no checkbox, not required for verify all */}
+          {adviceItems.length > 0 && (
+            <div className="pt-2 border-t border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1">
+              <span className="text-xs font-semibold text-[#758D94] dark:text-[#79949B] uppercase tracking-wider block">
+                Advice
+              </span>
+              {adviceItems.map((adv, idx) => (
+                <p key={idx} className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                  • {adv.text.replace(/^[\d.)\s-]+/, '').trim()}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
-      )}
 
-      {/* TAB 2: ESSENTIAL MEDICINES INVENTORY LEDGER */}
-      {activeTab === 'inventory' && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
-                Free Community Healthcare Formulary
-              </h2>
-              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
-                WHO Model List of Essential Medicines supplied 100% free of charge to community patients under SDG 3.
+        {/* Footer Row: Ghost "Print label" & "Email notice" on left, single primary "Dispense (x/y)" on right */}
+        <div className="pt-3 border-t border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between gap-2 text-xs">
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setSelectedLabelApt(apt)}
+              className="flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/5 transition-colors cursor-pointer"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print label</span>
+            </button>
+
+            <button
+              type="button"
+              disabled={emailSendingId === apt.id}
+              onClick={() => handleSendPickupEmail(apt)}
+              className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+                emailSent
+                  ? 'text-emerald-600 dark:text-emerald-400'
+                  : emailErrorMap[apt.id]
+                    ? 'text-rose-600 dark:text-rose-400'
+                    : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/5'
+              }`}
+            >
+              {emailSendingId === apt.id ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Sending...</span>
+                </>
+              ) : emailSent ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Email sent ✓</span>
+                </>
+              ) : (
+                <>
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Email notice</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          <button
+            type="button"
+            disabled={!isAllMedsChecked || processingId === apt.id}
+            onClick={() => handleDispense(apt.id)}
+            className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer ${
+              isAllMedsChecked
+                ? 'bg-[#0F766E] hover:bg-[#115E59] dark:bg-[#0D9488] dark:hover:bg-[#0F766E] text-white'
+                : 'bg-[#E0E7E5]/60 dark:bg-[#21333A]/60 text-[#758D94] dark:text-[#79949B] cursor-not-allowed'
+            }`}
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>
+              {processingId === apt.id
+                ? 'Dispensing...'
+                : `Dispense (${checkedMedsCount}/${totalMedsCount})`}
+            </span>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // Render Dispensed Compact Row (in single-column list, never stretched by neighbour)
+  const renderDispensedRow = (apt) => {
+    const isExpanded = Boolean(expandedDispensed[apt.id]);
+    const cleanToken = getCleanTokenNumber(apt);
+    const rxLines = parseRxLines(apt.prescription);
+
+    const medItems = [];
+    const adviceItems = [];
+
+    rxLines.forEach((line, idx) => {
+      if (isAdviceLine(line)) {
+        adviceItems.push({ text: line, originalIdx: idx });
+      } else {
+        medItems.push({
+          line,
+          parsed: parseMedLine(line),
+          originalIdx: idx,
+          stockMatch: findStockMatch(line, pharmacyStock)
+        });
+      }
+    });
+
+    const emailSent = emailSentMap[apt.id];
+
+    return (
+      <div
+        key={apt.id}
+        className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xs overflow-hidden transition-all hover:border-[#0F766E]/40"
+      >
+        {/* Compact Header Row: token, name, time, "Dispensed" dot, chevron */}
+        <div
+          onClick={() => setExpandedDispensed(prev => ({ ...prev, [apt.id]: !prev[apt.id] }))}
+          className="p-3.5 sm:p-4 flex items-center justify-between gap-3 cursor-pointer"
+          title="Click to expand/collapse"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="px-2.5 py-1 bg-[#0F766E]/10 dark:bg-[#0D9488]/20 text-[#0F766E] dark:text-[#2DD4BF] rounded-lg font-mono text-xs font-bold shrink-0">
+              {cleanToken}
+            </span>
+            <h4 className="font-semibold text-sm sm:text-base text-[#132226] dark:text-[#F4F7F6] truncate">
+              {apt.patientName}
+            </h4>
+            <span className="text-xs text-[#758D94] dark:text-[#79949B] hidden sm:inline truncate">
+              {apt.dispensedAt ? new Date(apt.dispensedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : apt.time || 'Today'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>Dispensed</span>
+            </span>
+            <ChevronDown className={`w-4 h-4 text-[#758D94] transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+          </div>
+        </div>
+
+        {/* Expanded Details Body: grows only itself vertically, completely isolated */}
+        {isExpanded && (
+          <div className="p-4 sm:p-5 pt-0 border-t border-[#E0E7E5] dark:border-[#21333A] space-y-3.5 animate-in fade-in duration-200">
+            <div className="pt-3">
+              <p className="text-xs text-[#758D94] dark:text-[#79949B]">
+                Consulted by <strong className="text-[#132226] dark:text-[#F4F7F6]">{apt.doctorName}</strong> ({apt.specialization}) · {apt.date} {apt.patientPhone ? `· ${apt.patientPhone}` : ''}
               </p>
+            </div>
+
+            {apt.diagnosis && (
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                <strong className="font-semibold text-[#132226] dark:text-[#F4F7F6]">Dx:</strong> {apt.diagnosis}
+              </p>
+            )}
+
+            {medItems.length > 0 && (
+              <div className="space-y-1.5">
+                <span className="text-xs font-semibold text-[#758D94] dark:text-[#79949B] uppercase tracking-wider block">
+                  Dispensed Medicines
+                </span>
+                <div className="space-y-1.5">
+                  {medItems.map((med) => (
+                    <div key={med.originalIdx} className="flex items-center gap-2 text-sm text-[#132226] dark:text-[#F4F7F6]">
+                      <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span className="font-medium">{med.parsed.name}</span>
+                      {med.parsed.instructions && (
+                        <span className="text-xs text-[#758D94] dark:text-[#79949B]">({med.parsed.instructions})</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {adviceItems.length > 0 && (
+              <div className="pt-2 border-t border-[#E0E7E5]/60 dark:border-[#21333A] space-y-1">
+                <span className="text-xs font-semibold text-[#758D94] dark:text-[#79949B] uppercase tracking-wider block">
+                  Advice
+                </span>
+                {adviceItems.map((adv, idx) => (
+                  <p key={idx} className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                    • {adv.text.replace(/^[\d.)\s-]+/, '').trim()}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            <div className="pt-3 border-t border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setSelectedLabelApt(apt)}
+                  className="flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl text-xs font-medium text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/5 transition-colors cursor-pointer"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Print label</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={emailSendingId === apt.id}
+                  onClick={() => handleSendPickupEmail(apt)}
+                  className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+                    emailSent
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : emailErrorMap[apt.id]
+                        ? 'text-rose-600 dark:text-rose-400'
+                        : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/5'
+                  }`}
+                >
+                  {emailSendingId === apt.id ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : emailSent ? (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Email sent ✓</span>
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>Email notice</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <span className="text-xs text-[#758D94] dark:text-[#79949B]">
+                Dispensed at {apt.dispensedAt ? new Date(apt.dispensedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Today'}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-in fade-in duration-300">
+
+      {/* Header: Clean title + one-line subtitle */}
+      <div>
+        <h1 className="text-2xl font-black text-[#132226] dark:text-[#F4F7F6] tracking-tight font-heading">
+          Pharmacy &amp; Dispensary
+        </h1>
+        <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA] mt-1">
+          Verify digital prescriptions, package medications, and manage clinic formulary stock.
+        </p>
+      </div>
+
+      {/* Slim Row of 4 Compact Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="p-3 bg-white dark:bg-[#121C21] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between shadow-2xs">
+          <span className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">Awaiting</span>
+          <span className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{pendingCount}</span>
+        </div>
+
+        <div className="p-3 bg-white dark:bg-[#121C21] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between shadow-2xs">
+          <span className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">Dispensed today</span>
+          <span className="text-lg font-bold text-[#0F766E] dark:text-[#2DD4BF] font-heading">{dispensedCount}</span>
+        </div>
+
+        <div className="p-3 bg-white dark:bg-[#121C21] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between shadow-2xs">
+          <span className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">Medicines</span>
+          <span className="text-lg font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">{(pharmacyStock || []).length}</span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('stock');
+            setStockFilter('low');
+          }}
+          className={`p-3 rounded-xl border flex items-center justify-between text-left transition-colors cursor-pointer shadow-2xs ${
+            lowStockCount > 0
+              ? 'bg-amber-50/60 dark:bg-amber-950/20 border-amber-300 dark:border-amber-800/60 hover:border-amber-400'
+              : 'bg-white dark:bg-[#121C21] border-[#E0E7E5] dark:border-[#21333A] hover:border-[#0F766E]/40'
+          }`}
+          title="Filter stock to low items"
+        >
+          <span className={`text-xs ${lowStockCount > 0 ? 'text-amber-800 dark:text-amber-300 font-medium' : 'text-[#5A7178] dark:text-[#9DB4BA]'}`}>
+            Low stock
+          </span>
+          <span className={`text-lg font-bold font-heading ${lowStockCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-[#132226] dark:text-[#F4F7F6]'}`}>
+            {lowStockCount}
+          </span>
+        </button>
+      </div>
+
+      {/* Main Navigation: Queue | Stock */}
+      <div className="flex items-center p-1 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] w-fit">
+        <button
+          type="button"
+          onClick={() => setActiveTab('queue')}
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            activeTab === 'queue'
+              ? 'bg-white dark:bg-[#121C21] text-[#0F766E] dark:text-[#2DD4BF] shadow-xs'
+              : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
+          }`}
+        >
+          Queue
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('stock')}
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            activeTab === 'stock'
+              ? 'bg-white dark:bg-[#121C21] text-[#0F766E] dark:text-[#2DD4BF] shadow-xs'
+              : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
+          }`}
+        >
+          Stock
+        </button>
+      </div>
+
+      {/* QUEUE TAB */}
+      {activeTab === 'queue' && (
+        <div className="space-y-6">
+          {/* Sub-navigation: Underline Tabs on left, Search on right */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E0E7E5] dark:border-[#21333A] pb-2">
+            <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
+              <button
+                type="button"
+                onClick={() => setFilter('pending')}
+                className={`pb-2 text-xs font-semibold transition-colors cursor-pointer relative whitespace-nowrap ${
+                  filter === 'pending'
+                    ? 'text-[#0F766E] dark:text-[#2DD4BF]'
+                    : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
+                }`}
+              >
+                Awaiting ({pendingCount})
+                {filter === 'pending' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0F766E] dark:bg-[#2DD4BF] rounded-full" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('dispensed')}
+                className={`pb-2 text-xs font-semibold transition-colors cursor-pointer relative whitespace-nowrap ${
+                  filter === 'dispensed'
+                    ? 'text-[#0F766E] dark:text-[#2DD4BF]'
+                    : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
+                }`}
+              >
+                Dispensed today ({dispensedCount})
+                {filter === 'dispensed' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0F766E] dark:bg-[#2DD4BF] rounded-full" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('all')}
+                className={`pb-2 text-xs font-semibold transition-colors cursor-pointer relative whitespace-nowrap ${
+                  filter === 'all'
+                    ? 'text-[#0F766E] dark:text-[#2DD4BF]'
+                    : 'text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#132226] dark:hover:text-[#F4F7F6]'
+                }`}
+              >
+                All
+                {filter === 'all' && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0F766E] dark:bg-[#2DD4BF] rounded-full" />
+                )}
+              </button>
+            </div>
+
+            {/* Search Bar on same row */}
+            <div className="relative w-full sm:w-72">
+              <Search className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3 top-2.5" />
+              <input
+                type="text"
+                placeholder="Search patient, token, medicine..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-9 pr-3.5 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF]"
+              />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(pharmacyStock || []).map((med) => {
-              const isLow = (Number(med.stock) || 0) <= (med.minAlert || 50);
+          {/* Prescriptions List */}
+          {prescriptionAppointments.length === 0 ? (
+            <div className="bg-[#F4F7F6] dark:bg-[#121C21] rounded-2xl border border-dashed border-[#CFDAD6] dark:border-[#21333A] p-12 text-center space-y-2">
+              <p className="font-semibold text-sm text-[#132226] dark:text-[#F4F7F6]">No prescriptions in this view</p>
+              <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                Doctor prescriptions will appear here automatically for packaging and dispensing.
+              </p>
+            </div>
+          ) : filter === 'pending' ? (
+            // Awaiting view: 2-column grid with items-start
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+              {awaitingAppointments.map((apt) => renderAwaitingCard(apt))}
+            </div>
+          ) : filter === 'dispensed' ? (
+            // Dispensed view: separate single-column list of compact rows
+            <div className="space-y-3">
+              {dispensedAppointments.map((apt) => renderDispensedRow(apt))}
+            </div>
+          ) : (
+            // All view: Awaiting group first (2-col items-start), then Dispensed section header and compact rows
+            <div className="space-y-6">
+              {awaitingAppointments.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+                  {awaitingAppointments.map((apt) => renderAwaitingCard(apt))}
+                </div>
+              )}
 
-              return (
-                <div
-                  key={med.id}
-                  className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] p-5 shadow-xs space-y-3"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF] block">
-                        {med.category}
-                      </span>
-                      <h3 className="font-bold text-base text-[#132226] dark:text-[#F4F7F6] font-heading mt-0.5">
-                        {med.name}
-                      </h3>
-                      <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">
-                        Generic: {med.generic}
-                      </p>
-                    </div>
-
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${isLow
-                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200'
-                        : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200'
-                      }`}>
-                      {isLow ? 'Low Stock' : 'In Stock'}
-                    </span>
-                  </div>
-
-                  <div className="p-3 bg-[#F4F7F6] dark:bg-[#19272D] rounded-xl border border-[#E0E7E5] dark:border-[#21333A] flex items-center justify-between text-xs">
-                    <div>
-                      <span className="text-[10px] text-[#758D94] dark:text-[#79949B] block">Available Count</span>
-                      <span className="text-lg font-black font-heading text-[#132226] dark:text-[#F4F7F6]">
-                        {med.stock} <span className="text-xs font-normal text-[#5A7178] dark:text-[#9DB4BA]">{med.unit}</span>
-                      </span>
-                    </div>
-
-                    <div className="text-right">
-                      <span className="text-[10px] text-[#758D94] dark:text-[#79949B] block">Batch / Expiry</span>
-                      <span className="font-mono text-xs font-semibold text-[#132226] dark:text-[#F4F7F6]">
-                        {med.batch} ({med.expiry})
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-[10px] text-[#758D94]">
-                      Min. Threshold: {med.minAlert} {med.unit}
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={() => setRestockItem(med)}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#0F766E]/10 hover:bg-[#0F766E]/20 text-[#0F766E] dark:text-[#2DD4BF] text-xs font-semibold transition-colors cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Restock</span>
-                    </button>
+              {dispensedAppointments.length > 0 && (
+                <div className={awaitingAppointments.length > 0 ? "pt-4 border-t border-[#E0E7E5] dark:border-[#21333A] space-y-3" : "space-y-3"}>
+                  <h3 className="text-sm font-bold text-[#132226] dark:text-[#F4F7F6] font-heading">
+                    Dispensed ({dispensedAppointments.length})
+                  </h3>
+                  <div className="space-y-3">
+                    {dispensedAppointments.map((apt) => renderDispensedRow(apt))}
                   </div>
                 </div>
-              );
-            })}
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* STOCK TAB */}
+      {activeTab === 'stock' && (
+        <div className="space-y-4">
+          {/* Sub-header: Filter chips (All / Low) on left, Search on right */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setStockFilter('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
+                  stockFilter === 'all'
+                    ? 'bg-[#0F766E] text-white border-[#0F766E] dark:bg-[#0D9488] dark:border-[#0D9488]'
+                    : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#CFDAD6] dark:border-[#2C444E]'
+                }`}
+              >
+                All ({(pharmacyStock || []).length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setStockFilter('low')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
+                  stockFilter === 'low'
+                    ? 'bg-amber-600 text-white border-amber-600'
+                    : 'bg-white dark:bg-[#121C21] text-[#5A7178] dark:text-[#9DB4BA] border-[#CFDAD6] dark:border-[#2C444E]'
+                }`}
+              >
+                Low ({lowStockCount})
+              </button>
+            </div>
+
+            <div className="relative w-full sm:w-72">
+              <Search className="w-4 h-4 text-[#758D94] dark:text-[#79949B] absolute left-3 top-2.5" />
+              <input
+                type="text"
+                placeholder="Search medicine by name or generic..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-9 pr-3.5 py-2 bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] rounded-xl text-xs text-[#132226] dark:text-[#F4F7F6] placeholder-[#758D94] dark:placeholder-[#79949B] focus:outline-none focus:border-[#0F766E] dark:focus:border-[#2DD4BF]"
+              />
+            </div>
+          </div>
+
+          {/* Clean Stock Table */}
+          <div className="bg-white dark:bg-[#121C21] rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-[#E0E7E5] dark:border-[#21333A] bg-[#F4F7F6]/80 dark:bg-[#0B1114] text-[#5A7178] dark:text-[#9DB4BA] font-bold uppercase tracking-wider text-xs">
+                    <th className="py-3 px-4">Medicine</th>
+                    <th className="py-3 px-4">Batch</th>
+                    <th className="py-3 px-4">Stock</th>
+                    <th className="py-3 px-4">Min level</th>
+                    <th className="py-3 px-4">Status</th>
+                    {isAdmin && <th className="py-3 px-4 text-right">Action</th>}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E0E7E5] dark:divide-[#21333A]">
+                  {sortedStock.map((med) => {
+                    const stockQty = Number(med.stock) || 0;
+                    const minLvl = med.minAlert || 50;
+                    const isOut = stockQty <= 0;
+                    const isLow = stockQty <= minLvl;
+
+                    return (
+                      <tr key={med.id} className="hover:bg-[#F4F7F6]/60 dark:hover:bg-[#19272D]/50 transition-colors">
+                        {/* Medicine */}
+                        <td className="py-3 px-4">
+                          <p className="font-semibold text-xs text-[#132226] dark:text-[#F4F7F6]">{med.name}</p>
+                          <p className="text-xs text-[#758D94] dark:text-[#79949B]">{med.generic || med.category}</p>
+                        </td>
+
+                        {/* Batch */}
+                        <td className="py-3 px-4 font-mono text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                          {med.batch || 'BCH-01'} <span className="opacity-75">({med.expiry || '2026'})</span>
+                        </td>
+
+                        {/* Stock */}
+                        <td className="py-3 px-4 font-semibold text-xs text-[#132226] dark:text-[#F4F7F6]">
+                          {med.stock} <span className="font-normal text-xs text-[#758D94] dark:text-[#79949B]">{med.unit}</span>
+                        </td>
+
+                        {/* Min level */}
+                        <td className="py-3 px-4 text-xs text-[#5A7178] dark:text-[#9DB4BA]">
+                          {med.minAlert} {med.unit}
+                        </td>
+
+                        {/* Status dot */}
+                        <td className="py-3 px-4">
+                          {isOut ? (
+                            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-rose-600 dark:text-rose-400">
+                              <span className="w-2 h-2 rounded-full bg-rose-500" />
+                              <span>Out</span>
+                            </span>
+                          ) : isLow ? (
+                            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-400">
+                              <span className="w-2 h-2 rounded-full bg-amber-500" />
+                              <span>Low</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                              <span>OK</span>
+                            </span>
+                          )}
+                        </td>
+
+                        {/* Edit Icon (Admin only) */}
+                        {isAdmin && (
+                          <td className="py-3 px-4 text-right">
+                            <button
+                              type="button"
+                              onClick={() => setRestockItem(med)}
+                              className="p-1.5 rounded-lg text-[#5A7178] dark:text-[#9DB4BA] hover:text-[#0F766E] dark:hover:text-[#2DD4BF] hover:bg-[#0F766E]/5 transition-colors cursor-pointer"
+                              title="Restock medicine"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -786,25 +965,20 @@ export default function PharmacyDesk() {
             >
               <div className="text-center pb-2 border-b border-[#E0E7E5] dark:border-[#21333A]">
                 <h4 className="font-extrabold text-sm font-heading">APNA COMMUNITY CLINIC PHARMACY</h4>
-                <p className="text-[10px] text-[#5A7178] dark:text-[#9DB4BA]">SDG 3 Free Drug Supply • Counter #2</p>
+                <p className="text-xs text-[#5A7178] dark:text-[#9DB4BA]">SDG 3 Free Drug Supply • Counter #2</p>
               </div>
 
-              {/* High-visibility Dispensary Ticket Section */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-[#EAF3EE] dark:bg-[#1F3327] border-2 border-[#0F766E] dark:border-[#2DD4BF]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#0F766E] text-white flex items-center justify-center shrink-0">
-                    <Ticket className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-[9px] uppercase font-bold tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">
-                      Dispensary Ticket
-                    </span>
-                    <span className="text-2xl font-black font-mono tracking-wider text-[#1B4D36] dark:text-[#2DD4BF]">
-                      {getCleanTokenNumber(selectedLabelApt)}
-                    </span>
-                  </div>
+              {/* Dispensary Ticket Section */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#0F766E]/30 dark:border-[#2DD4BF]/30">
+                <div>
+                  <span className="text-xs uppercase font-bold tracking-wider text-[#5A7178] dark:text-[#9DB4BA] block">
+                    Dispensary Ticket
+                  </span>
+                  <span className="text-2xl font-black font-mono tracking-wider text-[#0F766E] dark:text-[#2DD4BF]">
+                    {getCleanTokenNumber(selectedLabelApt)}
+                  </span>
                 </div>
-                <div className="text-right text-[11px] font-mono text-[#5A7178] dark:text-[#9DB4BA]">
+                <div className="text-right text-xs font-mono text-[#5A7178] dark:text-[#9DB4BA]">
                   <div>Date: <strong className="text-[#132226] dark:text-[#F4F7F6]">{selectedLabelApt.date}</strong></div>
                   <div>Time: <strong>{selectedLabelApt.time || 'Today'}</strong></div>
                 </div>
@@ -817,15 +991,15 @@ export default function PharmacyDesk() {
               </div>
 
               <div className="p-3 bg-[#F4F7F6] dark:bg-[#19272D] rounded-lg border border-[#E0E7E5] dark:border-[#21333A] space-y-1.5">
-                <span className="font-bold uppercase tracking-wider text-[10px] text-[#0F766E] dark:text-[#2DD4BF] block">
+                <span className="font-bold uppercase tracking-wider text-xs text-[#0F766E] dark:text-[#2DD4BF] block">
                   Prescription &amp; Dosage Instructions:
                 </span>
-                <pre className="font-mono text-[11px] whitespace-pre-wrap font-bold">
+                <p className="text-xs whitespace-pre-wrap font-medium">
                   {selectedLabelApt.prescription}
-                </pre>
+                </p>
               </div>
 
-              <div className="pt-2 text-center text-[9px] text-[#758D94] leading-tight">
+              <div className="pt-2 text-center text-xs text-[#758D94] leading-tight">
                 Take medicines on time with clean water. Store in a cool dry place out of reach of children.
               </div>
             </div>
@@ -834,7 +1008,7 @@ export default function PharmacyDesk() {
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#0F766E] hover:bg-[#115E59] text-[#F4F7F6] text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print Sticker Label</span>
@@ -852,8 +1026,8 @@ export default function PharmacyDesk() {
         document.body
       )}
 
-      {/* MODAL 2: RESTOCK MEDICINE */}
-      {restockItem && createPortal(
+      {/* MODAL 2: RESTOCK MEDICINE (Admin only) */}
+      {restockItem && isAdmin && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white dark:bg-[#121C21] w-full max-w-sm rounded-2xl border border-[#E0E7E5] dark:border-[#21333A] shadow-2xl p-6 space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-[#E0E7E5] dark:border-[#21333A]">
@@ -867,10 +1041,10 @@ export default function PharmacyDesk() {
 
             <div className="space-y-2 text-xs">
               <p className="font-bold text-sm text-[#0F766E] dark:text-[#2DD4BF]">{restockItem.name}</p>
-              <p className="text-[#5A7178]">Current Stock: <strong>{restockItem.stock} {restockItem.unit}</strong></p>
+              <p className="text-[#5A7178] dark:text-[#9DB4BA]">Current Stock: <strong>{restockItem.stock} {restockItem.unit}</strong></p>
 
               <div>
-                <label className="block text-[11px] font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider mb-1 mt-3">
+                <label className="block text-xs font-semibold text-[#5A7178] dark:text-[#9DB4BA] uppercase tracking-wider mb-1 mt-3">
                   Add Quantity ({restockItem.unit}):
                 </label>
                 <input
@@ -878,7 +1052,7 @@ export default function PharmacyDesk() {
                   min="1"
                   value={restockAmount}
                   onChange={(e) => setRestockAmount(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] text-sm font-bold text-[#132226] dark:text-[#F4F7F6]"
+                  className="w-full px-3 py-2 rounded-xl bg-[#F4F7F6] dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] text-sm font-bold text-[#132226] dark:text-[#F4F7F6]"
                 />
               </div>
             </div>
@@ -894,7 +1068,7 @@ export default function PharmacyDesk() {
               <button
                 type="button"
                 onClick={() => setRestockItem(null)}
-                className="py-2 px-3 bg-white dark:bg-[#19272D] border border-[#CFDAD6] text-xs font-semibold rounded-xl cursor-pointer"
+                className="py-2 px-3 bg-white dark:bg-[#19272D] border border-[#CFDAD6] dark:border-[#2C444E] text-xs font-semibold rounded-xl cursor-pointer"
               >
                 Cancel
               </button>
